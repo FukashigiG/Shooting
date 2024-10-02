@@ -1,0 +1,13 @@
+{
+  "name": "シューター",
+
+  "cooltime_Attack": 1.3,
+  "sec_MaxCharge": 0.7,
+
+  "interval_shot": 0.15,
+  "length_Ray_SearchTatget": 30,
+  "num_Missile": 7,
+  "mag_Shake": 36,
+
+  "ratio_Missile": 1
+}

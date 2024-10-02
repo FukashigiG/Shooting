@@ -1,0 +1,18 @@
+{
+  "name": "シューター",
+
+  "cooltime_Attack": 1.3,
+  "sec_MaxCharge": 0.7,
+
+  "interval_Shot": 0.1,
+  "maxNum_Bullet": 10,
+  "maxMag_Shake": 20,
+  "minMag_Shake": 2,
+
+  "distance_Slide": 1.8,
+
+  "ratio_cooltime_Shot": 1,
+  "ratio_cooltime_Slide": 0.5,
+
+  "flame_JustAction": 4
+}

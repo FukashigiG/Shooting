@@ -1,0 +1,15 @@
+{
+  "name": "サムライ",
+
+  "cooltime_Attack": 1.6,
+  "sec_MaxCharge": 1,
+
+  "maxNum_SlashHit": 10,
+  "maxLength_Slash": 8,
+  "fleezeTime_AfterAttack": 0.4,
+
+  "ratio_cooltime_Dash": 1,
+  "ratio_cooltime_Spiral": 0.85,
+
+  "flame_JustAction": 10
+}

@@ -1,0 +1,145 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+using Cysharp.Threading.Tasks;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+using Cinemachine;
+using UnityEngine.UI;
+using DG.Tweening;
+
+public class GameDirector : MonoBehaviour
+{
+    float randomAngle;
+
+    [SerializeField] GameObject[] bossEnemy;
+    [SerializeField] HPGaugeController HPBar_Boss;
+
+    GameObject theBoss;
+    MobStatus bossStatus;
+    Base_BossController _bossController;
+
+    Sceneloader sceneloader;
+
+    [SerializeField] GameObject player;
+    MobStatus playerStatus;
+
+    [NonSerialized] public UnityEvent onFinish = new UnityEvent();
+
+    CinemachineImpulseSource impulseSource;
+
+    public static float remainingHP_Boss;
+
+    [SerializeField] Sprite[] icon_Player;
+    [SerializeField] Image image_UI;
+
+    [SerializeField] GameObject tranjitionPanel;
+
+    public static float elapsedTime = 0;
+
+    bool onGame = true;
+
+    void Start()
+    {
+
+        TryGetComponent(out impulseSource);
+        TryGetComponent(out sceneloader);
+
+        switch (StartSceneDirector.stage)
+        {
+            case StartSceneDirector.stageEnum.stage0:
+
+                theBoss = Instantiate(bossEnemy[0], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
+
+                break;
+
+            case StartSceneDirector.stageEnum.stage1:
+
+                theBoss = Instantiate(bossEnemy[1], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
+
+                break;
+        }
+
+        switch (StartSceneDirector.weapon)
+        {
+            case StartSceneDirector.weaponEnum.weapon0:
+
+                image_UI.overrideSprite = icon_Player[0];
+                break;
+
+            case StartSceneDirector.weaponEnum.weapon1:
+
+                image_UI.overrideSprite = icon_Player[1];
+                break;
+
+            case StartSceneDirector.weaponEnum.weapon2:
+
+                image_UI.overrideSprite = icon_Player[2];
+                break;
+        }
+
+        theBoss.TryGetComponent(out _bossController);
+        bossStatus = _bossController.status;
+
+        bossStatus.SetHPGauge(HPBar_Boss);
+
+        bossStatus.onDie.AddListener(ClearGame);
+
+        player.TryGetComponent(out playerStatus);
+        playerStatus.onDie.AddListener(PlayerDied);
+
+        tranjitionPanel.SetActive(true);
+        tranjitionPanel.TryGetComponent(out RectTransform _rect);
+        _rect.DOAnchorPos(new Vector2(0, -1200), 0.8f);
+    }
+
+    private void Update()
+    {
+        elapsedTime += Time.deltaTime;
+    }
+
+    void PlayerDied()
+    {
+        if (!onGame) return;
+
+        impulseSource.GenerateImpulse();
+
+        remainingHP_Boss = bossStatus.TheHP / bossStatus.TheMaxHP;
+
+        Time.timeScale *= 0.4f;
+
+        onGame = false;
+
+        onFinish.Invoke();
+
+        sceneloader.GoToGamaOverScene();
+    }
+
+
+    void ClearGame()
+    {
+        if (!onGame) return;
+
+        impulseSource.GenerateImpulse();
+
+        Time.timeScale *= 0.4f;
+
+        onGame = false;
+
+        onFinish.Invoke();
+
+        sceneloader.GoToGameClearScene();
+    }
+
+    public void Retire()
+    {
+        if (! onGame) return;
+
+        onGame = false;
+
+        onFinish.Invoke();
+
+        sceneloader.GoToTitleScene();
+    }
+}
