@@ -79,9 +79,9 @@ public class Base_PlayerAttack : MonoBehaviour
             {
                 cooling = data.cooltime_Attack;
             }
-
-            image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
         }
+
+        image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
 
         if (isCharging) ChargePower(Time.deltaTime);
     }

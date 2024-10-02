@@ -9,5 +9,8 @@
   "num_Missile": 7,
   "mag_Shake": 36,
 
-  "ratio_Missile": 1
+  "ratio_Missile": 1,
+
+  "sec_DeployableShield": 2,
+  "ratio_DeploySheld": 0.05
 }

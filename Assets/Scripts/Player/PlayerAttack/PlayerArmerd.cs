@@ -17,6 +17,9 @@ public class PlayerArmerd : Base_PlayerAttack
         public float mag_Shake;
 
         public float ratio_Missile;
+
+        public float sec_DeployableShield;
+        public float ratio_DeploySheld;
     }
 
     ArmerdData armerdData = new ArmerdData();
@@ -25,6 +28,8 @@ public class PlayerArmerd : Base_PlayerAttack
 
     [SerializeField] LayerMask enemyLayer;
 
+    bool onGuard;
+
     protected override void Awake()
     {
         base.Awake();
@@ -32,6 +37,8 @@ public class PlayerArmerd : Base_PlayerAttack
         string jsonStr = jsonFile.ToString();
 
         armerdData = JsonUtility.FromJson<ArmerdData>(jsonStr);
+
+        onGuard = false;
     }
 
     protected override void OnAttackTapped()
@@ -48,32 +55,42 @@ public class PlayerArmerd : Base_PlayerAttack
         image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
     }
 
+    protected override void Update()
+    {
+        if (onGuard)
+        {
+            cooling -= data.cooltime_Attack * Time.deltaTime / armerdData.sec_DeployableShield;
+        }
+
+        base.Update();
+    }
+
     protected override void OnAttackHolded()
     {
         if (onPlay != true) return;
         if (onAttack) return;
-        if (cooling < data.cooltime_Attack) return;
+        if (cooling < data.cooltime_Attack * armerdData.ratio_DeploySheld) return;
 
         base.OnAttackHolded();
 
-        chargeValue = 0;
+        onAttack = true;
 
-        isCharging = true;
+        cooling -= data.cooltime_Attack * armerdData.ratio_DeploySheld;
+        image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
+
+        DeployShield();
     }
 
     protected override void OnAttackReleased()
     {
         if (onPlay != true) return;
-        if (isCharging != true) return;
+        if (onAttack != true) return;
 
         base.OnAttackPlessed();
 
-        isCharging = false;
-        chargeValue = 0;
-        attackable = false;
-        cooling -= data.cooltime_Attack;
-        image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
-        image_Fill_charge.fillAmount = 0;
+        onAttack = false;
+        
+        CloseShield();
     }
 
     async UniTask FiringMissiles(CancellationToken token)
@@ -100,5 +117,15 @@ public class PlayerArmerd : Base_PlayerAttack
         }
 
         onAttack = false;
+    }
+
+    void DeployShield()
+    {
+        onGuard = true;
+    }
+
+    void CloseShield()
+    {
+        onGuard = false;
     }
 }
