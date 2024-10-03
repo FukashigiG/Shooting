@@ -65,7 +65,6 @@ public class MobStatus : MonoBehaviour, IDamagable
         Vector3 dmgTxtPosi = Vector3.Lerp(transform.position, damagedPosi, 0.5f);
 
         var screenPosi = RectTransformUtility.WorldToScreenPoint(Camera.main, dmgTxtPosi);
-        screenPosi = new Vector2(screenPosi.x * UnityEngine.Random.Range(0.96f, 1.04f), screenPosi.y * UnityEngine.Random.Range(0.96f, 1.04f));
 
         if (damageTxt.txtScript == null)
         {
@@ -78,7 +77,7 @@ public class MobStatus : MonoBehaviour, IDamagable
         }
         
         damageTxt.sum_Damage += damage;
-        damageTxt.txtScript.SetTxt(damageTxt.sum_Damage);
+        damageTxt.txtScript.SetTxt(damageTxt.sum_Damage, screenPosi);
 
         HP -= damage;
         if (HPG_C != null) HPG_C.SetGauge_Damage(HP / MaxHP);
@@ -97,7 +96,7 @@ public class MobStatus : MonoBehaviour, IDamagable
         screenPosi = new Vector2(screenPosi.x * UnityEngine.Random.Range(0.96f, 1.04f), screenPosi.y * UnityEngine.Random.Range(0.96f, 1.04f));
 
         Txt_DamageValue txt = Instantiate(obj_Txt_RecoverHP, screenPosi, Quaternion.identity, canvas.transform).GetComponent<Txt_DamageValue>();
-        txt.SetTxt(point);
+        txt.SetTxt(point, screenPosi);
 
 
         if (MaxHP - HP <= point)

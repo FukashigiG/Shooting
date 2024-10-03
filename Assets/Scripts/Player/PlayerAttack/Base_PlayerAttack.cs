@@ -46,6 +46,8 @@ public class Base_PlayerAttack : MonoBehaviour
         string jsonStr = jsonFile.ToString();
 
         data = JsonUtility.FromJson<BaseData>(jsonStr);
+
+        _cancellationToken = cancellationTokenSource.Token;
     }
 
     protected virtual void Start()
@@ -63,8 +65,6 @@ public class Base_PlayerAttack : MonoBehaviour
 
         image_Fill.fillAmount = 0;
         image_Fill_charge.fillAmount = 0;
-
-        _cancellationToken = cancellationTokenSource.Token;
     }
 
     protected virtual void Update()

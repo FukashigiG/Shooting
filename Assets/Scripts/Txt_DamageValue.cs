@@ -17,19 +17,20 @@ public class Txt_DamageValue : MonoBehaviour
 
     Vector3 defScale;
 
-    readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+    CancellationTokenSource cancellationTokenSource;
     CancellationToken _cancellationToken;
 
     private void Awake()
     {
         TryGetComponent(out rectTransform);
         TryGetComponent(out TMP);
+
+        cancellationTokenSource = new CancellationTokenSource();
+        _cancellationToken = cancellationTokenSource.Token;
     }
 
     void Start()
     {
-        _cancellationToken = cancellationTokenSource.Token;
-
         defScale = rectTransform.localScale;
 
         rectTransform.localScale = defScale * 0.1f;
@@ -37,13 +38,18 @@ public class Txt_DamageValue : MonoBehaviour
         rectTransform.DOScale(defScale, 0.05f);
     }
 
-    public void SetTxt(float x)
+    public void SetTxt(float x, Vector2 screenPosi)
     {
+        var posi = new Vector2(screenPosi.x * UnityEngine.Random.Range(0.96f, 1.04f), screenPosi.y * UnityEngine.Random.Range(0.96f, 1.04f));
+        transform.position = posi;
+
         TMP.text = x.ToString();
 
         cancellationTokenSource.Cancel();
 
-        TxtAnim(_cancellationToken).Forget();
+        cancellationTokenSource = new CancellationTokenSource();
+
+        TxtAnim(cancellationTokenSource.Token).Forget();
     }
 
     async UniTask TxtAnim(CancellationToken token)
@@ -53,7 +59,6 @@ public class Txt_DamageValue : MonoBehaviour
         rectTransform.DOMoveY(rectTransform.position.y + 10, 0.1f);
         await rectTransform.DOScale(defScale * 0.4f, 0.1f).ToUniTask(cancellationToken: token);
 
-        Debug.Log(Time.time);
         Destroy(gameObject);
     }
 
