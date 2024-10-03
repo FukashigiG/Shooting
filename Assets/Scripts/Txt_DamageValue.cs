@@ -13,18 +13,21 @@ public class Txt_DamageValue : MonoBehaviour
     [SerializeField] float sec_disappear;
 
     RectTransform rectTransform;
-    TextMeshPro textMeshPro;
+    TextMeshProUGUI TMP;
 
     Vector3 defScale;
 
     readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     CancellationToken _cancellationToken;
 
-    void Start()
+    private void Awake()
     {
         TryGetComponent(out rectTransform);
-        TryGetComponent(out textMeshPro);
+        TryGetComponent(out TMP);
+    }
 
+    void Start()
+    {
         _cancellationToken = cancellationTokenSource.Token;
 
         defScale = rectTransform.localScale;
@@ -32,6 +35,13 @@ public class Txt_DamageValue : MonoBehaviour
         rectTransform.localScale = defScale * 0.1f;
 
         rectTransform.DOScale(defScale, 0.05f);
+    }
+
+    public void SetTxt(float x)
+    {
+        TMP.text = x.ToString();
+
+        cancellationTokenSource.Cancel();
 
         TxtAnim(_cancellationToken).Forget();
     }
@@ -43,6 +53,7 @@ public class Txt_DamageValue : MonoBehaviour
         rectTransform.DOMoveY(rectTransform.position.y + 10, 0.1f);
         await rectTransform.DOScale(defScale * 0.4f, 0.1f).ToUniTask(cancellationToken: token);
 
+        Debug.Log(Time.time);
         Destroy(gameObject);
     }
 

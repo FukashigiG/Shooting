@@ -28,6 +28,9 @@ public class PlayerArmerd : Base_PlayerAttack
 
     [SerializeField] LayerMask enemyLayer;
 
+    [SerializeField] GameObject prefab_Shield;
+
+    GameObject shield;
     bool onGuard;
 
     protected override void Awake()
@@ -38,6 +41,7 @@ public class PlayerArmerd : Base_PlayerAttack
 
         armerdData = JsonUtility.FromJson<ArmerdData>(jsonStr);
 
+        shield = null;
         onGuard = false;
     }
 
@@ -53,6 +57,8 @@ public class PlayerArmerd : Base_PlayerAttack
 
         cooling -= data.cooltime_Attack * armerdData.ratio_Missile;
         image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
+
+        Debug.Log(Time.time);
     }
 
     protected override void Update()
@@ -60,6 +66,8 @@ public class PlayerArmerd : Base_PlayerAttack
         if (onGuard)
         {
             cooling -= data.cooltime_Attack * Time.deltaTime / armerdData.sec_DeployableShield;
+
+            if (cooling <= 0f) CloseShield();
         }
 
         base.Update();
@@ -73,8 +81,6 @@ public class PlayerArmerd : Base_PlayerAttack
 
         base.OnAttackHolded();
 
-        onAttack = true;
-
         cooling -= data.cooltime_Attack * armerdData.ratio_DeploySheld;
         image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
 
@@ -84,11 +90,9 @@ public class PlayerArmerd : Base_PlayerAttack
     protected override void OnAttackReleased()
     {
         if (onPlay != true) return;
-        if (onAttack != true) return;
+        if (onAttack != true || onGuard != true) return;
 
         base.OnAttackPlessed();
-
-        onAttack = false;
         
         CloseShield();
     }
@@ -121,11 +125,17 @@ public class PlayerArmerd : Base_PlayerAttack
 
     void DeployShield()
     {
+        onAttack = true;
         onGuard = true;
+
+        shield = Instantiate(prefab_Shield, transform.position + transform.up * 2f, transform.rotation, parent: this.transform); 
     }
 
     void CloseShield()
     {
+        onAttack = false;
         onGuard = false;
+
+        Destroy(shield);
     }
 }

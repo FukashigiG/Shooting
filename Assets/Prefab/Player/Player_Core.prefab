@@ -503,6 +503,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
+  prefab_Shield: {fileID: 103723487517675475, guid: 825f807009799f445925b97a7963884e, type: 3}
 --- !u!82 &1184841642594167414
 AudioSource:
   m_ObjectHideFlags: 0

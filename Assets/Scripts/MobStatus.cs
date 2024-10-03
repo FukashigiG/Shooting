@@ -26,7 +26,22 @@ public class MobStatus : MonoBehaviour, IDamagable
     [NonSerialized] public UnityEvent onDie = new UnityEvent();
 
     [SerializeField] HPGaugeController HPG_C;
+
+    class TheDamageTxt
+    {
+        public Txt_DamageValue txtScript;
+        public float sum_Damage;
+
+        public TheDamageTxt(Txt_DamageValue theScript, float num)
+        {
+            this.txtScript = theScript;
+            this.sum_Damage = num;
+        }
+    }
+
+    TheDamageTxt damageTxt;
  
+
     protected virtual void Start()
     {
         HP = MaxHP;
@@ -34,6 +49,8 @@ public class MobStatus : MonoBehaviour, IDamagable
         canvas = GameObject.Find("Canvas");
 
         canTakeDamage = true;
+
+        damageTxt = new TheDamageTxt(null, 0);
     }
 
     public virtual bool Damage(float damage, Vector3 damagedPosi, bool isCritical)
@@ -50,8 +67,18 @@ public class MobStatus : MonoBehaviour, IDamagable
         var screenPosi = RectTransformUtility.WorldToScreenPoint(Camera.main, dmgTxtPosi);
         screenPosi = new Vector2(screenPosi.x * UnityEngine.Random.Range(0.96f, 1.04f), screenPosi.y * UnityEngine.Random.Range(0.96f, 1.04f));
 
-        TextMeshProUGUI txt = Instantiate(obj_Txt_Damage, screenPosi, Quaternion.identity, canvas.transform).GetComponent<TextMeshProUGUI>();
-        txt.text = damage.ToString();
+        if (damageTxt.txtScript == null)
+        {
+            GameObject obj = Instantiate(obj_Txt_Damage, screenPosi, Quaternion.identity, canvas.transform);
+            obj.TryGetComponent(out Txt_DamageValue txt_DamageValue);
+            damageTxt.sum_Damage = 0;
+
+            //ê∂ê¨ÇµÇΩobjÇÃèÓïÒÇì¸ÇÍÇÈèâä˙âª
+            damageTxt = new TheDamageTxt(txt_DamageValue, 0);
+        }
+        
+        damageTxt.sum_Damage += damage;
+        damageTxt.txtScript.SetTxt(damageTxt.sum_Damage);
 
         HP -= damage;
         if (HPG_C != null) HPG_C.SetGauge_Damage(HP / MaxHP);
@@ -69,8 +96,8 @@ public class MobStatus : MonoBehaviour, IDamagable
         var screenPosi = RectTransformUtility.WorldToScreenPoint(Camera.main, dmgTxtPosi);
         screenPosi = new Vector2(screenPosi.x * UnityEngine.Random.Range(0.96f, 1.04f), screenPosi.y * UnityEngine.Random.Range(0.96f, 1.04f));
 
-        TextMeshProUGUI txt = Instantiate(obj_Txt_RecoverHP, screenPosi, Quaternion.identity, canvas.transform).GetComponent<TextMeshProUGUI>();
-        txt.text = point.ToString();
+        Txt_DamageValue txt = Instantiate(obj_Txt_RecoverHP, screenPosi, Quaternion.identity, canvas.transform).GetComponent<Txt_DamageValue>();
+        txt.SetTxt(point);
 
 
         if (MaxHP - HP <= point)

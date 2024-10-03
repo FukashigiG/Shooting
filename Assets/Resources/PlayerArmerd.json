@@ -7,7 +7,7 @@
   "interval_shot": 0.15,
   "length_Ray_SearchTatget": 30,
   "num_Missile": 7,
-  "mag_Shake": 36,
+  "mag_Shake": 40,
 
   "ratio_Missile": 1,
 

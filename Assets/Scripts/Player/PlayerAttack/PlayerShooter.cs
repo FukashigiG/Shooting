@@ -156,6 +156,8 @@ public class PlayerShooter : Base_PlayerAttack
         int num_bullet = (int)((float)shooterData.maxNum_Bullet * chargeWariai);
         if (num_bullet <= 0) return;
 
+        Debug.Log(Time.time);
+
         onAttack = true;
 
         Instantiate(effect_StartShot, transform.position, Quaternion.identity, transform.parent);
