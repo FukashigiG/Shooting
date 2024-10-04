@@ -112,9 +112,9 @@ public class PlayerShooter : Base_PlayerAttack
 
         Vector3 slideDirection  = Vector3.zero;
 
-        if(_controller.TheMoveVec != Vector2.zero)
+        if(_controller.moveVector != Vector2.zero)
         {
-            slideDirection = (Vector3)_controller.TheMoveVec;
+            slideDirection = (Vector3)_controller.moveVector;
         } else
         {
             slideDirection = transform.up;

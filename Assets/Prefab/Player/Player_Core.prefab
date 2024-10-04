@@ -232,8 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acaad67446d7a9e4080401dd2daca71c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHP: 300
-  HP: 0
+  <MaxHP>k__BackingField: 300
   obj_Txt_Damage: {fileID: 1598026534661515434, guid: 6d3add8c94975bf43ac69f89703bc5e3, type: 3}
   obj_Txt_RecoverHP: {fileID: 1598026534661515434, guid: 14564ae9bd90fb34fa43878bbc34d67f, type: 3}
   HPG_C: {fileID: 0}

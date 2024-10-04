@@ -195,8 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c37bd86d4075524684f7e8281bce847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHP: 2000
-  HP: 0
+  <MaxHP>k__BackingField: 2000
   obj_Txt_Damage: {fileID: 1598026534661515434, guid: b7485cf645e3cba46ba7bfa8cdb2228b, type: 3}
   obj_Txt_RecoverHP: {fileID: 1598026534661515434, guid: 14564ae9bd90fb34fa43878bbc34d67f, type: 3}
   HPG_C: {fileID: 0}
@@ -353,7 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cb01c1519d760246a57c73c5f0dcf1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  status: {fileID: 1027775502477435347}
+  <status>k__BackingField: {fileID: 1027775502477435347}
   bullet_Attack01: {fileID: 1808744609976278198, guid: 5d63dde1f491f064ca160f6b2ee7f7e7, type: 3}
   range_Bullet_Attack01: 180
   effect_AnnounceUfo: {fileID: 6811810496045127516, guid: a4a46a6c1c4ce854e939072383195bed, type: 3}

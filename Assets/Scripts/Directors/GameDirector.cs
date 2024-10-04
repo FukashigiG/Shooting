@@ -29,14 +29,14 @@ public class GameDirector : MonoBehaviour
 
     CinemachineImpulseSource impulseSource;
 
-    public static float remainingHP_Boss;
+    public static float remainingHP_Boss {  get; private set; }
 
     [SerializeField] Sprite[] icon_Player;
     [SerializeField] Image image_UI;
 
     [SerializeField] GameObject tranjitionPanel;
 
-    public static float elapsedTime = 0;
+    public static float elapsedTime {  get; private set; } = 0;
 
     bool onGame = true;
 
@@ -105,7 +105,7 @@ public class GameDirector : MonoBehaviour
 
         impulseSource.GenerateImpulse();
 
-        remainingHP_Boss = bossStatus.TheHP / bossStatus.TheMaxHP;
+        remainingHP_Boss = bossStatus.HP / bossStatus.MaxHP;
 
         Time.timeScale *= 0.4f;
 

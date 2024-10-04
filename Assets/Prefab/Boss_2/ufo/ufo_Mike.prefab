@@ -164,8 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c37bd86d4075524684f7e8281bce847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHP: 40
-  HP: 0
+  <MaxHP>k__BackingField: 50
   obj_Txt_Damage: {fileID: 1598026534661515434, guid: b7485cf645e3cba46ba7bfa8cdb2228b, type: 3}
   obj_Txt_RecoverHP: {fileID: 1598026534661515434, guid: 14564ae9bd90fb34fa43878bbc34d67f, type: 3}
   HPG_C: {fileID: 0}
@@ -181,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6c9f60495d37ea4d863f368be9f9c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  status: {fileID: 8638994356508264290}
+  <status>k__BackingField: {fileID: 8638994356508264290}
   bullet: {fileID: 3387600967565597642, guid: d8e281204ca3e5f4d824fa2538dadc55, type: 3}
   Impuct_bomb_forPlayer: {fileID: 725748389856807714, guid: d3581b6cffea86d439495c0ca4faceaa, type: 3}
   Impuct_bomb_forEnemy: {fileID: 725748389856807714, guid: 703cb225ad99521459b193ca6bf0290b, type: 3}

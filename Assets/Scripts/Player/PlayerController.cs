@@ -11,10 +11,8 @@ public class PlayerController : MonoBehaviour
 
     PlayerInput playerInput;
 
-    Vector2 moveVector = Vector2.zero;
-    Vector2 turnVector = Vector2.zero;
-
-    public Vector2 TheMoveVec => moveVector;
+    public Vector2 moveVector { get; private set; } = Vector2.zero;
+    public Vector2 turnVector { get; private set; } = Vector2.zero;
 
     [SerializeField] GameDirector _gameDirector;
 

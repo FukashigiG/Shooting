@@ -20,6 +20,8 @@ public class Txt_DamageValue : MonoBehaviour
     CancellationTokenSource cancellationTokenSource;
     CancellationToken _cancellationToken;
 
+    public bool reloadable { get; private set; }
+
     private void Awake()
     {
         TryGetComponent(out rectTransform);
@@ -38,9 +40,8 @@ public class Txt_DamageValue : MonoBehaviour
         rectTransform.DOScale(defScale, 0.05f);
     }
 
-    public void SetTxt(float x, Vector2 screenPosi)
+    public void SetTxt(float x, Vector2 posi)
     {
-        var posi = new Vector2(screenPosi.x * UnityEngine.Random.Range(0.96f, 1.04f), screenPosi.y * UnityEngine.Random.Range(0.96f, 1.04f));
         transform.position = posi;
 
         TMP.text = x.ToString();
@@ -54,9 +55,12 @@ public class Txt_DamageValue : MonoBehaviour
 
     async UniTask TxtAnim(CancellationToken token)
     {
+        reloadable = true;
+
         await UniTask.Delay(TimeSpan.FromSeconds(sec_delay), cancellationToken: token);
 
-        rectTransform.DOMoveY(rectTransform.position.y + 10, 0.1f);
+        reloadable = false;
+
         await rectTransform.DOScale(defScale * 0.4f, 0.1f).ToUniTask(cancellationToken: token);
 
         Destroy(gameObject);

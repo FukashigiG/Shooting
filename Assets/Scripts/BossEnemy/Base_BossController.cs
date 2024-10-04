@@ -9,7 +9,7 @@ public class Base_BossController : MonoBehaviour
     protected GameObject player;
 
     protected GameDirector _director;
-    [SerializeField] public MobStatus status;
+    [field: SerializeField] public MobStatus status {  get; protected set; }
     protected CinemachineImpulseSource impulseSource;
     protected Collider2D collider2d;
     protected AudioSource audioSource;

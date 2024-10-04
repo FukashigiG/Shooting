@@ -64,7 +64,7 @@ public class MikeController : Base_BossController
 
     void DrawAttack()
     {
-        if (flag_HPUnder50 == false && status.TheHP <= status.TheMaxHP * 0.5f)
+        if (flag_HPUnder50 == false && status.HP <= status.MaxHP * 0.5f)
         {
             SpecialAttack(_cancellationToken).Forget();
             flag_HPUnder50 = true;

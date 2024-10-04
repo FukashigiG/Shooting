@@ -164,8 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c37bd86d4075524684f7e8281bce847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHP: 1600
-  HP: 0
+  <MaxHP>k__BackingField: 1600
   obj_Txt_Damage: {fileID: 1598026534661515434, guid: b7485cf645e3cba46ba7bfa8cdb2228b, type: 3}
   obj_Txt_RecoverHP: {fileID: 1598026534661515434, guid: 14564ae9bd90fb34fa43878bbc34d67f, type: 3}
   HPG_C: {fileID: 0}
@@ -181,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaa7cab811cbf0144a6f0bae0e0f2091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  status: {fileID: 8117344686155969207}
+  <status>k__BackingField: {fileID: 8117344686155969207}
   bullet_A01: {fileID: 2660528191220576932, guid: 55c0155e3c3100046adca9c517094ca6, type: 3}
   Rock_A03: {fileID: 6983502308090482586, guid: 1bb6f360f6c21bf48a476e11677df084, type: 3}
   onigiri_A03: {fileID: 6023453101839085912, guid: 1673c372f5f558c47a3ca0b9c0badd52, type: 3}

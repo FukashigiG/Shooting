@@ -8,13 +8,9 @@ using UnityEngine.UI;
 
 public class MobStatus : MonoBehaviour, IDamagable
 {
-    [SerializeField] float MaxHP;
+    [field:SerializeField] public float MaxHP {  get; private set; }
 
-    public float TheMaxHP => MaxHP;
-
-    [SerializeField] float HP;
-
-    public float TheHP => HP;
+    public float HP { get; private set; }
 
     bool canTakeDamage;
 
@@ -29,13 +25,23 @@ public class MobStatus : MonoBehaviour, IDamagable
 
     class TheDamageTxt
     {
-        public Txt_DamageValue txtScript;
-        public float sum_Damage;
+        GameObject txtObj;
+        public Txt_DamageValue txtScript {  get; private set; }
+        float sum_Damage;
 
-        public TheDamageTxt(Txt_DamageValue theScript, float num)
+        public TheDamageTxt(GameObject obj, float num)
         {
-            this.txtScript = theScript;
+            this.txtObj = obj;
+            this.txtScript = obj?.GetComponent<Txt_DamageValue>();
+
             this.sum_Damage = num;
+        }
+
+        public void AddDamage(float damage, Vector2 posi)
+        {
+            sum_Damage += damage;
+
+            txtScript?.SetTxt(sum_Damage, posi);
         }
     }
 
@@ -62,22 +68,18 @@ public class MobStatus : MonoBehaviour, IDamagable
             damage *= 2;
         }
 
-        Vector3 dmgTxtPosi = Vector3.Lerp(transform.position, damagedPosi, 0.5f);
+        Vector3 dmgPosi = Vector3.Lerp(transform.position, damagedPosi, 0.5f);
+        var screenPosi = RectTransformUtility.WorldToScreenPoint(Camera.main, dmgPosi);
 
-        var screenPosi = RectTransformUtility.WorldToScreenPoint(Camera.main, dmgTxtPosi);
-
-        if (damageTxt.txtScript == null)
+        if (damageTxt.txtScript == null || damageTxt.txtScript.reloadable != true)
         {
             GameObject obj = Instantiate(obj_Txt_Damage, screenPosi, Quaternion.identity, canvas.transform);
-            obj.TryGetComponent(out Txt_DamageValue txt_DamageValue);
-            damageTxt.sum_Damage = 0;
 
             //ê∂ê¨ÇµÇΩobjÇÃèÓïÒÇì¸ÇÍÇÈèâä˙âª
-            damageTxt = new TheDamageTxt(txt_DamageValue, 0);
+            damageTxt = new TheDamageTxt(obj, 0);
         }
-        
-        damageTxt.sum_Damage += damage;
-        damageTxt.txtScript.SetTxt(damageTxt.sum_Damage, screenPosi);
+
+        damageTxt.AddDamage(damage, screenPosi);
 
         HP -= damage;
         if (HPG_C != null) HPG_C.SetGauge_Damage(HP / MaxHP);

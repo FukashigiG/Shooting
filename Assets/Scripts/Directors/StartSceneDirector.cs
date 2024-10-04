@@ -15,14 +15,14 @@ public class StartSceneDirector : MonoBehaviour
     {
         weapon0, weapon1, weapon2
     }
-    public static weaponEnum weapon;
+    public static weaponEnum weapon { get; private set; }
 
 
     public enum stageEnum
     {
         stage0, stage1
     }
-    public static stageEnum stage;
+    public static stageEnum stage { get; private set;}
 
     [SerializeField] TextMeshProUGUI[] txt_Title_Stage;
     [SerializeField] TextMeshProUGUI txt_Explanation_Stage;

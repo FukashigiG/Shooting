@@ -49,7 +49,7 @@ public class Boss_1Controller : Base_BossController
 
     void DrawingMove()
     {
-        if(flag_HPUnder50 == false && status.TheHP <= status.TheMaxHP * 0.5f)
+        if(flag_HPUnder50 == false && status.HP <= status.MaxHP * 0.5f)
         {
             Attack04(_cancellationToken).Forget();
             flag_HPUnder50 = true;
