@@ -14618,7 +14618,7 @@ GameObject:
   - component: {fileID: 5592345250874215177}
   - component: {fileID: 5592345250874215178}
   m_Layer: 0
-  m_Name: Effect_Evasion
+  m_Name: Effect_JustAction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

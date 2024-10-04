@@ -128,7 +128,9 @@ public class PlayerArmerd : Base_PlayerAttack
         onAttack = true;
         onGuard = true;
 
-        shield = Instantiate(prefab_Shield, transform.position + transform.up * 2f, transform.rotation, parent: this.transform); 
+        shield = Instantiate(prefab_Shield, transform.position + transform.up * 1f, transform.rotation, parent: this.transform); 
+
+        ShieldStatus _shieldStatus = shield.GetComponent<ShieldStatus>();
     }
 
     void CloseShield()

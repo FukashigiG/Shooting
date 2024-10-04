@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1025916143464572005}
   - component: {fileID: 470103674029835865}
-  - component: {fileID: 7654247964282368150}
   - component: {fileID: -6527232268157269151}
+  - component: {fileID: -3700649456602929}
   m_Layer: 10
   m_Name: Shield
   m_TagString: Wall
@@ -86,18 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7654247964282368150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103723487517675475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb7526e6c29718f49b377892c1efc661, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &-6527232268157269151
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -143,3 +131,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-3700649456602929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103723487517675475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d49f51de289aff47bffc88b04cae2d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FX_JustGuard: {fileID: 5592345250874215172, guid: 7537cdf749f23ce40993f545d4ba9048, type: 3}
