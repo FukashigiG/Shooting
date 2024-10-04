@@ -6,52 +6,102 @@ using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
+using Unity.VisualScripting;
 
 public class Base_PlayerAttack : MonoBehaviour
 {
-    [Serializable] protected class BaseData
+    [Serializable] protected class BaseFunction_Weapon
     {
-        public float cooltime_Attack;
-        public float sec_MaxCharge;
+        public WeaponEnum _weaponEnum;
+
+        float cooltime_Attack;
+        public float ratio_Cooling {  get; private set; }
+
+        Image image_Fill;
+
+
+        public void Cooling()
+        {
+            if (_weaponEnum == WeaponEnum.standBy)
+            {
+                ratio_Cooling += Time.deltaTime / cooltime_Attack;
+
+                ratio_Cooling = Mathf.Clamp01(ratio_Cooling);
+            }
+
+            image_Fill.fillAmount = 1 - ratio_Cooling;
+        }
+
+        public void SetCooling(float size)
+        {
+            size = Mathf.Clamp01(size);
+
+            ratio_Cooling = size;
+
+            image_Fill.fillAmount = 1f - ratio_Cooling;
+        }
+
+        public bool isReadyToAct()
+        {
+            if(ratio_Cooling >= 1f)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        public BaseFunction_Weapon(BaseStatus status, Image fillImage)
+        {
+            cooltime_Attack = status.cooltime_Attack;
+
+            image_Fill = fillImage;
+
+            SetCooling(1f);
+        }
     }
 
-    protected BaseData data = new BaseData();
+    [Serializable] protected class BaseStatus
+    {
+        public float cooltime_Attack;
+    }
 
     [SerializeField] protected TextAsset jsonFile;
-
-    protected bool attackable;
-    protected bool onPlay;
-
-    [SerializeField] protected Image image_Fill;
-    [SerializeField] protected Image image_Fill_charge;
-
     [SerializeField] protected LayerMask wallLayer;
+    [SerializeField] protected Image image_ForFill_Main;
+    [SerializeField] protected Image image_ForFill_Sub;
 
     protected PlayerController _controller;
     protected PlayerStatus _status;
-
-    protected float cooling;
-    protected bool onAttack;
-    protected bool isCharging = false;
-
     protected AudioSource AS;
 
     readonly protected CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     protected CancellationToken _cancellationToken;
 
-    protected float chargeValue = 0;
+    protected enum WeaponEnum
+    {
+        standBy,
+        onAction,
+        onCharge,
+    }
+
+    WeaponEnum _weaponEnum;
+
+    protected bool onPlay;
+
+
+
+    //à»â∫ÉÅÉCÉìèàóù
+
+
 
     protected virtual void Awake()
     {
-        string jsonStr = jsonFile.ToString();
-
-        data = JsonUtility.FromJson<BaseData>(jsonStr);
-
         _cancellationToken = cancellationTokenSource.Token;
-    }
 
-    protected virtual void Start()
-    {
         onPlay = true;
 
         TryGetComponent(out AS);
@@ -59,31 +109,17 @@ public class Base_PlayerAttack : MonoBehaviour
         transform.parent.TryGetComponent(out _controller);
         transform.parent.TryGetComponent(out _status);
 
-        _status.Evasioned.AddListener(WhenEvasioned);
+        _status.Evasioned.AddListener(WhenJustAction);
+    }
 
-        cooling = data.cooltime_Attack;
+    protected virtual void Start()
+    {
 
-        image_Fill.fillAmount = 0;
-        image_Fill_charge.fillAmount = 0;
     }
 
     protected virtual void Update()
     {
-        if(onAttack != true)
-        {
-            if(cooling < data.cooltime_Attack)
-            {
-                cooling += Time.deltaTime;
-            }
-            else
-            {
-                cooling = data.cooltime_Attack;
-            }
-        }
 
-        image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
-
-        if (isCharging) ChargePower(Time.deltaTime);
     }
 
     protected virtual void OnAttackPlessed()
@@ -106,26 +142,9 @@ public class Base_PlayerAttack : MonoBehaviour
 
     }
 
-    protected void ChargePower(float sec)
+    protected virtual void WhenJustAction()
     {
-        if (chargeValue >= data.sec_MaxCharge) return;
 
-        chargeValue += sec;
-
-        image_Fill_charge.fillAmount = chargeValue / data.sec_MaxCharge;
-
-        if (chargeValue >= data.sec_MaxCharge)
-        {
-            chargeValue = data.sec_MaxCharge;
-            image_Fill_charge.fillAmount = 1;
-        }
-    }
-
-    protected virtual void WhenEvasioned()
-    {
-        cooling = data.cooltime_Attack;
-
-        image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
     }
 
     public void FInishPlaying()

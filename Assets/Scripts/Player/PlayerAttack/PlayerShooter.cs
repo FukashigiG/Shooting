@@ -6,29 +6,77 @@ using Cysharp.Threading.Tasks;
 using System;
 using DG.Tweening;
 using System.Threading;
+using UnityEngine.UI;
 
 public class PlayerShooter : Base_PlayerAttack
 {
     [Serializable]
-    protected class ShooterData : BaseData
+    protected class ShooterFunction_MainWeapon : BaseFunction_Weapon
     {
+        public float ratio_Charging {  get; private set; }
+
+        public void StartCharge()
+        {
+            ratio_Charging = 0;
+
+            _weaponEnum = WeaponEnum.onCharge;
+        }
+
+        public void FinishCharge()
+        {
+            ratio_Charging = 0;
+
+            _weaponEnum = WeaponEnum.standBy;
+
+            SetCooling(0f);
+        }
+
+        public ShooterFunction_MainWeapon(BaseStatus _status, Image _fillImage) :base(_status, _fillImage)
+        {
+            ratio_Charging = 0f;
+        }
+    }
+
+
+    [Serializable] class ShooterFunction_SubWeapon : BaseFunction_Weapon
+    {
+        public ShooterFunction_SubWeapon(BaseStatus _status, Image _fillImage) : base(_status, _fillImage)
+        {
+        }
+    }
+
+
+    ShooterFunction_MainWeapon funk_Main;
+    ShooterFunction_SubWeapon funk_Sub;
+
+
+
+    [Serializable] protected class ShooterStatus
+    {
+        public ShooterStatus_MainWeapon main;
+        public ShooterStatus_SubWeapon sub;
+    }
+
+    [Serializable] protected class ShooterStatus_MainWeapon : BaseStatus
+    {
+        public float sec_MaxCharge;
         public float interval_Shot;
         public int maxNum_Bullet;
         public float maxMag_Shake;
         public float minMag_Shake;
+    }
 
+    [Serializable] protected class ShooterStatus_SubWeapon : BaseStatus
+    {
         public float distance_Slide;
-
-        public float ratio_cooltime_Shot;
-        public float ratio_cooltime_Slide;
-
         public int flame_JustAction;
     }
 
-    ShooterData shooterData = new ShooterData();
+
+
+    ShooterStatus status = new ShooterStatus();
 
     [SerializeField] GameObject bullet;
-
     [SerializeField] GameObject effect_Slide;
     [SerializeField] GameObject effect_Charge;
     [SerializeField] GameObject effect_StartShot;
@@ -40,40 +88,46 @@ public class PlayerShooter : Base_PlayerAttack
 
     GameObject chargeEffect;
 
+
+
+    //à»â∫ÉÅÉCÉìèàóù
+
+
+
     protected override void Awake()
     {
         base.Awake();
 
         string jsonStr = jsonFile.ToString();
 
-        shooterData = JsonUtility.FromJson<ShooterData>(jsonStr);
+        status = JsonUtility.FromJson<ShooterStatus>(jsonStr);
+
+        funk_Main = new ShooterFunction_MainWeapon(status.main, image_ForFill_Main);
+        funk_Sub = new ShooterFunction_SubWeapon(status.sub, image_ForFill_Sub);
     }
 
     protected override void OnAttackTapped()
     {
         if (onPlay != true) return;
-        if (onAttack) return;
-        if (cooling < (data.cooltime_Attack * shooterData.ratio_cooltime_Slide)) return;
+        if (funk_Sub._weaponEnum != WeaponEnum.standBy) return;
+        if (funk_Sub.ratio_Cooling < 1f) return;
 
         base.OnAttackPlessed();
 
         Slide(_cancellationToken).Forget();
 
-        cooling -= (data.cooltime_Attack * shooterData.ratio_cooltime_Slide);
-        image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
+        funk_Sub.SetCooling(0f);
     }
 
     protected override void OnAttackHolded()
     {
         if (onPlay != true) return;
-        if (onAttack) return;
-        if (cooling < (data.cooltime_Attack * shooterData.ratio_cooltime_Shot)) return;
+        if (funk_Main._weaponEnum != WeaponEnum.standBy) return;
+        if (funk_Main.ratio_Cooling < 1f) return;
 
         base.OnAttackHolded();
 
-        chargeValue = 0;
-
-        isCharging = true;
+        funk_Main.StartCharge();
 
         chargeEffect = Instantiate(effect_Charge, transform.position, Quaternion.identity, transform.parent);
     }
@@ -81,32 +135,30 @@ public class PlayerShooter : Base_PlayerAttack
     protected override void OnAttackReleased()
     {
         if (onPlay != true) return;
-        if (isCharging != true) return;
+        if (funk_Main._weaponEnum != WeaponEnum.onCharge) return;
 
         base.OnAttackPlessed();
 
-        Shot(_cancellationToken, chargeValue / data.sec_MaxCharge).Forget();
+        Shot(_cancellationToken, funk_Main.ratio_Charging / status.main.sec_MaxCharge).Forget();
 
         if (chargeEffect != null) Destroy(chargeEffect);
 
-        isCharging = false;
-        chargeValue = 0;
-        attackable = false;
-        cooling -= (data.cooltime_Attack * shooterData.ratio_cooltime_Shot);
-        image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
-        image_Fill_charge.fillAmount = 0;
+        funk_Main.FinishCharge();
     }
 
-    protected override void WhenEvasioned()
+    protected override void WhenJustAction()
     {
-        base.WhenEvasioned();
+        base.WhenJustAction();
+
+        funk_Main.SetCooling(1);
+        funk_Sub.SetCooling(1);
 
         Shot360(_cancellationToken).Forget();
     }
 
     async UniTask Slide(CancellationToken token)
     {
-        onAttack = true;
+        funk_Main._weaponEnum = WeaponEnum.onAction;
 
         _controller.isMovable = false;
 
@@ -132,10 +184,10 @@ public class PlayerShooter : Base_PlayerAttack
         AS.PlayOneShot(SE_Slide);
 
 
-        _status.Evasing(shooterData.flame_JustAction);
+        _status.Evasing(status.sub.flame_JustAction);
 
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, slideDirection, shooterData.distance_Slide, wallLayer);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, slideDirection, status.sub.distance_Slide, wallLayer);
 
         if (hit.collider)
         {
@@ -143,22 +195,20 @@ public class PlayerShooter : Base_PlayerAttack
         }
         else
         {
-            await transform.parent.DOMove(transform.position + slideDirection * shooterData.distance_Slide, 0.08f).ToUniTask(cancellationToken: token);
+            await transform.parent.DOMove(transform.position + slideDirection * status.sub.distance_Slide, 0.08f).ToUniTask(cancellationToken: token);
         }
 
         _controller.isMovable = true;
 
-        onAttack = false;
+        funk_Main._weaponEnum = WeaponEnum.standBy;
     }
 
     async UniTask Shot(CancellationToken token, float chargeWariai)
     {
-        int num_bullet = (int)((float)shooterData.maxNum_Bullet * chargeWariai);
+        int num_bullet = (int)((float)status.main.maxNum_Bullet * chargeWariai);
         if (num_bullet <= 0) return;
 
-        Debug.Log(Time.time);
-
-        onAttack = true;
+        funk_Main._weaponEnum = WeaponEnum.onAction;
 
         Instantiate(effect_StartShot, transform.position, Quaternion.identity, transform.parent);
 
@@ -166,37 +216,37 @@ public class PlayerShooter : Base_PlayerAttack
         {
             if (_controller.isMoving)
             {
-                magnitude_Shake = UnityEngine.Random.Range(-1 * shooterData.maxMag_Shake, shooterData.maxMag_Shake);
+                magnitude_Shake = UnityEngine.Random.Range(-1 * status.main.maxMag_Shake, status.main.maxMag_Shake);
             }
             else
             {
-                magnitude_Shake = UnityEngine.Random.Range(-1 * shooterData.minMag_Shake, shooterData.minMag_Shake);
+                magnitude_Shake = UnityEngine.Random.Range(-1 * status.main.minMag_Shake, status.main.minMag_Shake);
             }
 
             Instantiate(bullet, transform.position, Quaternion.Euler(0, 0, transform.localEulerAngles.z + magnitude_Shake));
             AS.PlayOneShot(SE_Shot);
 
-            await transform.DOShakePosition(shooterData.interval_Shot, 0.5f, 15).ToUniTask(cancellationToken: token);
+            await transform.DOShakePosition(status.main.interval_Shot, 0.5f, 15).ToUniTask(cancellationToken: token);
         }
 
-        onAttack = false;
+        funk_Main._weaponEnum = WeaponEnum.standBy;
     }
 
     async UniTask Shot360(CancellationToken token)
     {
-        onAttack = true;
+
 
         _controller.isRotatable = false;
 
-        for(int i = 0; i < shooterData.maxNum_Bullet; i++)
+        for(int i = 0; i < status.main.maxNum_Bullet; i++)
         {
             Instantiate(bullet, transform.position, transform.rotation);
 
-            await transform.DORotate(new Vector3(0, 0, transform.localEulerAngles.z + (360f / shooterData.maxNum_Bullet)), 0.05f).SetEase(Ease.Linear).ToUniTask(cancellationToken: token);
+            await transform.DORotate(new Vector3(0, 0, transform.localEulerAngles.z + (360f / status.main.maxNum_Bullet)), 0.05f).SetEase(Ease.Linear).ToUniTask(cancellationToken: token);
         }
 
         _controller.isRotatable = true;
 
-        onAttack = false;
+        
     }
 }

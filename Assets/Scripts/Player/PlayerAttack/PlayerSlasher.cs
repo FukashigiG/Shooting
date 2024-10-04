@@ -6,27 +6,80 @@ using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine.InputSystem;
 using System.Threading;
+using UnityEngine.UI;
 
 public class PlayerSlasher : Base_PlayerAttack
 {
     [Serializable]
-    protected class SlasherData : BaseData
+    class SlasherFunction_MainWeapon : BaseFunction_Weapon
     {
+        public float ratio_Charging { get; private set; }
+
+        public void StartCharge()
+        {
+            ratio_Charging = 0;
+
+            _weaponEnum = WeaponEnum.onCharge;
+        }
+
+        public void FinishCharge()
+        {
+            ratio_Charging = 0;
+
+            _weaponEnum = WeaponEnum.standBy;
+
+            SetCooling(0f);
+        }
+
+        public SlasherFunction_MainWeapon(BaseStatus _status, Image _fillImage) : base(_status, _fillImage)
+        {
+            ratio_Charging = 0f;
+        }
+    }
+
+    [Serializable]
+    class SlasherFunction_SubWeapon : BaseFunction_Weapon
+    {
+        public SlasherFunction_SubWeapon(BaseStatus _status, Image _fillImage) : base(_status, _fillImage)
+        {
+        }
+    }
+
+
+    SlasherFunction_MainWeapon funk_Main;
+    SlasherFunction_SubWeapon funk_Sub;
+
+
+
+    [Serializable]
+    protected class SlasherStatus
+    {
+        public SlasherStatus_MainWeapon main;
+        public SlasherStatus_SubWeapon sub;
+    }
+
+    [Serializable]
+    protected class SlasherStatus_MainWeapon : BaseStatus
+    {
+        public float sec_MaxCharge;
         public int maxNum_SlashHit;
         public float maxLength_Slash;
         public float fleezeTime_AfterAttack;
-
-        public float ratio_cooltime_Dash;
-        public float ratio_cooltime_Spiral;
-
         public int flame_JustAction;
     }
 
-    [SerializeField] SlasherData slasherData = new SlasherData();
+    [Serializable]
+    protected class SlasherStatus_SubWeapon : BaseStatus
+    {
+        
+    }
+
+
+    SlasherStatus status = new SlasherStatus();
+
 
     [SerializeField] GameObject Slashbullet;
     [SerializeField] GameObject SpiralSlash;
-
     [SerializeField] GameObject effect_Charging;
     [SerializeField] GameObject effect_AnnounceMaxCharge;
     GameObject chargeEffect;
@@ -40,32 +93,29 @@ public class PlayerSlasher : Base_PlayerAttack
 
         string jsonStr = jsonFile.ToString();
 
-        slasherData = JsonUtility.FromJson<SlasherData>(jsonStr);
+        status = JsonUtility.FromJson<SlasherStatus>(jsonStr);
     }
 
     protected override void OnAttackTapped()
     {
         if (onPlay != true) return;
-        if (cooling < data.cooltime_Attack * slasherData.ratio_cooltime_Spiral) return;
+        if (! funk_Sub.isReadyToAct()) return;
 
         base.OnAttackTapped();
 
         Slash(_cancellationToken).Forget();
 
-        cooling -= (data.cooltime_Attack * slasherData.ratio_cooltime_Spiral);
-        image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
+        funk_Sub.SetCooling(0f);
     }
 
     protected override void OnAttackHolded()
     {
         if (onPlay != true) return;
-        if (cooling < data.cooltime_Attack * slasherData.ratio_cooltime_Dash) return;
+        if (! funk_Main.isReadyToAct()) return;
 
         base.OnAttackHolded();
 
-        chargeValue = 0;
-
-        isCharging=true;
+        funk_Main.StartCharge();
 
         _controller.isMovable = false;
 
@@ -77,19 +127,14 @@ public class PlayerSlasher : Base_PlayerAttack
     protected override void OnAttackReleased()
     {
         if (onPlay != true) return;
-        if(isCharging != true) return;
+        if(funk_Main._weaponEnum != WeaponEnum.onCharge) return;
 
         base.OnAttackPlessed();
 
-        float ratio_Power = chargeValue / data.sec_MaxCharge;
-        DashSlash(ratio_Power, _cancellationToken).Forget();
+        DashSlash(funk_Main.ratio_Charging, _cancellationToken).Forget();
 
-        isCharging = false;
-        chargeValue = 0;
-
-        cooling -= (data.cooltime_Attack * slasherData.ratio_cooltime_Dash);
-        image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
-        image_Fill_charge.fillAmount = 0;
+        funk_Main.FinishCharge();
+        funk_Main.SetCooling(0);
 
         Destroy(chargeEffect);
 
@@ -114,17 +159,17 @@ public class PlayerSlasher : Base_PlayerAttack
         Debug.Log(power);
         AS.PlayOneShot(SE_AttackEnd);
 
-        onAttack = true;
+        funk_Main._weaponEnum = WeaponEnum.onAction;
 
         _controller.isRotatable = false;
 
         Vector2 posi_BeforeSlash = transform.position;
 
-        _status.Evasing((int)(slasherData.flame_JustAction * power));
+        _status.Evasing((int)(status.main.flame_JustAction * power));
 
-        int num_slash = (int)(slasherData.maxNum_SlashHit * power);
+        int num_slash = (int)(status.main.maxNum_SlashHit * power);
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, slasherData.maxLength_Slash * power, wallLayer);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, status.main.maxLength_Slash * power, wallLayer);
 
         if (hit.collider)
         {
@@ -132,14 +177,14 @@ public class PlayerSlasher : Base_PlayerAttack
         }
         else
         {
-            await transform.parent.DOMove(transform.position + this.transform.up * power * slasherData.maxLength_Slash, 0.08f).SetEase(Ease.OutCubic).ToUniTask(cancellationToken: token);
+            await transform.parent.DOMove(transform.position + this.transform.up * power * status.main.maxLength_Slash, 0.08f).SetEase(Ease.OutCubic).ToUniTask(cancellationToken: token);
         }
 
         if(num_slash > 0)
         {
             Vector2 posi;
 
-            float fleezeTime_This = slasherData.fleezeTime_AfterAttack * power * 0.7f + slasherData.fleezeTime_AfterAttack * 0.3f;
+            float fleezeTime_This = status.main.fleezeTime_AfterAttack * power * 0.7f + status.main.fleezeTime_AfterAttack * 0.3f;
 
             for (int i = 1; i <= num_slash; i++)
             {
@@ -151,15 +196,18 @@ public class PlayerSlasher : Base_PlayerAttack
             }
         }
 
-        onAttack = false;
+        funk_Main._weaponEnum = WeaponEnum.standBy;
 
         _controller.isMovable = true;
         _controller.isRotatable = true;
     }
 
-    protected override void WhenEvasioned()
+    protected override void WhenJustAction()
     {
-        base.WhenEvasioned();
+        base.WhenJustAction();
+
+        funk_Main.SetCooling(1);
+        funk_Sub.SetCooling(1);
 
         Slash(_cancellationToken).Forget();
     }

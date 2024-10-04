@@ -5,24 +5,61 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerArmerd : Base_PlayerAttack
 {
     [Serializable]
-    protected class ArmerdData : BaseData
+    class ArmerdFunction_MainWeapon : BaseFunction_Weapon
+    {
+        public ArmerdFunction_MainWeapon(BaseStatus _status, Image _fillImage) : base(_status, _fillImage)
+        {
+        }
+    }
+
+    [Serializable]
+    class ArmerdFunction_SubWeapon : BaseFunction_Weapon
+    {
+        public ArmerdFunction_SubWeapon(BaseStatus _status, Image _fillImage) : base(_status, _fillImage)
+        {
+        }
+    }
+
+
+    ArmerdFunction_MainWeapon funk_Main;
+    ArmerdFunction_SubWeapon funk_Sub;
+
+
+
+
+
+    [Serializable]
+    protected class ArmerdStatus
+    {
+        public ArmerdStatus_MainWeapon main;
+        public ArmerdStatus_SubWeapon sub;
+    }
+
+    [Serializable]
+    protected class ArmerdStatus_MainWeapon : BaseStatus
     {
         public float interval_shot;
         public float length_Ray_SearchTatget;
         public int num_Missile;
         public float mag_Shake;
-
-        public float ratio_Missile;
-
-        public float sec_DeployableShield;
-        public float ratio_DeploySheld;
     }
 
-    ArmerdData armerdData = new ArmerdData();
+    [Serializable]
+    protected class ArmerdStatus_SubWeapon : BaseStatus
+    {
+        public float sec_DeployableShield;
+    }
+
+
+
+    ArmerdStatus status = new ArmerdStatus();
+
+
 
     [SerializeField] GameObject laser;
 
@@ -31,7 +68,6 @@ public class PlayerArmerd : Base_PlayerAttack
     [SerializeField] GameObject prefab_Shield;
 
     GameObject shield;
-    bool onGuard;
 
     protected override void Awake()
     {
@@ -39,50 +75,37 @@ public class PlayerArmerd : Base_PlayerAttack
 
         string jsonStr = jsonFile.ToString();
 
-        armerdData = JsonUtility.FromJson<ArmerdData>(jsonStr);
+        status = JsonUtility.FromJson<ArmerdStatus>(jsonStr);
 
         shield = null;
-        onGuard = false;
     }
 
     protected override void OnAttackTapped()
     {
         if (!onPlay) return;
-        if (onAttack) return;
-        if (cooling < data.cooltime_Attack) return;
+        if (!funk_Main.isReadyToAct()) return;
 
         base.OnAttackTapped();
 
         FiringMissiles(_cancellationToken).Forget();
 
-        cooling -= data.cooltime_Attack * armerdData.ratio_Missile;
-        image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
-
-        Debug.Log(Time.time);
+        funk_Main.SetCooling(0);
     }
 
     protected override void Update()
     {
-        if (onGuard)
-        {
-            cooling -= data.cooltime_Attack * Time.deltaTime / armerdData.sec_DeployableShield;
-
-            if (cooling <= 0f) CloseShield();
-        }
-
         base.Update();
+
+        funk_Main.Cooling();
+        funk_Sub.Cooling();
     }
 
     protected override void OnAttackHolded()
     {
         if (onPlay != true) return;
-        if (onAttack) return;
-        if (cooling < data.cooltime_Attack * armerdData.ratio_DeploySheld) return;
+        if (funk_Sub.ratio_Cooling <= 0) return;
 
         base.OnAttackHolded();
-
-        cooling -= data.cooltime_Attack * armerdData.ratio_DeploySheld;
-        image_Fill.fillAmount = 1 - (cooling / data.cooltime_Attack);
 
         DeployShield();
     }
@@ -90,7 +113,7 @@ public class PlayerArmerd : Base_PlayerAttack
     protected override void OnAttackReleased()
     {
         if (onPlay != true) return;
-        if (onAttack != true || onGuard != true) return;
+        if (funk_Sub._weaponEnum != WeaponEnum.onAction) return;
 
         base.OnAttackPlessed();
         
@@ -99,34 +122,33 @@ public class PlayerArmerd : Base_PlayerAttack
 
     async UniTask FiringMissiles(CancellationToken token)
     {
-        onAttack = true;
+        funk_Main._weaponEnum = WeaponEnum.onAction;
 
         GameObject theBullet;
         GameObject terget = null;
 
-        RaycastHit2D hit = Physics2D.CircleCast(transform.position, 3f, transform.up, armerdData.length_Ray_SearchTatget, enemyLayer);
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, 3f, transform.up, status.main.length_Ray_SearchTatget, enemyLayer);
 
         if (hit.collider)
         {
             terget = hit.collider.gameObject;
         }
 
-        for (int i = 0; i < armerdData.num_Missile; i++)
+        for (int i = 0; i < status.main.num_Missile; i++)
         {
-            theBullet = Instantiate(laser, transform.position, Quaternion.Euler(0, 0, transform.localEulerAngles.z + UnityEngine.Random.Range(-1f, 1f) * armerdData.mag_Shake));
+            theBullet = Instantiate(laser, transform.position, Quaternion.Euler(0, 0, transform.localEulerAngles.z + UnityEngine.Random.Range(-1f, 1f) * status.main.mag_Shake));
 
             if (theBullet.TryGetComponent(out PlayerMissileCtrl missileCtrl)) missileCtrl.SetTerget(terget);
 
-            await transform.DOShakePosition(armerdData.interval_shot, 0.5f, 15).ToUniTask(cancellationToken: token);
+            await transform.DOShakePosition(status.main.interval_shot, 0.5f, 15).ToUniTask(cancellationToken: token);
         }
 
-        onAttack = false;
+        funk_Main._weaponEnum = WeaponEnum.standBy;
     }
 
     void DeployShield()
     {
-        onAttack = true;
-        onGuard = true;
+        funk_Sub._weaponEnum = WeaponEnum.onAction;
 
         shield = Instantiate(prefab_Shield, transform.position + transform.up * 1f, transform.rotation, parent: this.transform); 
 
@@ -135,9 +157,16 @@ public class PlayerArmerd : Base_PlayerAttack
 
     void CloseShield()
     {
-        onAttack = false;
-        onGuard = false;
+        funk_Sub._weaponEnum = WeaponEnum.standBy;
 
         Destroy(shield);
+    }
+
+    protected override void WhenJustAction()
+    {
+        base.WhenJustAction();
+
+        funk_Main.SetCooling(1);
+        funk_Sub.SetCooling(1);
     }
 }
