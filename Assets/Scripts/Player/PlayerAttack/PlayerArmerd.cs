@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PlayerArmerd : Base_PlayerAttack
@@ -12,7 +13,7 @@ public class PlayerArmerd : Base_PlayerAttack
     [Serializable]
     class ArmerdFunction_MainWeapon : BaseFunction_Weapon
     {
-        public ArmerdFunction_MainWeapon(BaseStatus _status, Image _fillImage) : base(_status, _fillImage)
+        public ArmerdFunction_MainWeapon(ArmerdStatus_MainWeapon _status, Image _fillImage) : base(_status, _fillImage)
         {
         }
     }
@@ -20,8 +21,31 @@ public class PlayerArmerd : Base_PlayerAttack
     [Serializable]
     class ArmerdFunction_SubWeapon : BaseFunction_Weapon
     {
-        public ArmerdFunction_SubWeapon(BaseStatus _status, Image _fillImage) : base(_status, _fillImage)
+        float guargableTime;
+
+        public UnityEvent _event;
+
+        public void onGuardIf()
         {
+            if (_weaponEnum != WeaponEnum.onAction) return;
+            if (ratio_Cooling <= 0)
+            {
+                _event.Invoke();
+
+                return;
+            }
+
+            ratio_Cooling -= Time.deltaTime / guargableTime;
+            image_Fill.fillAmount = 1 - ratio_Cooling;
+
+            
+        }
+
+        public ArmerdFunction_SubWeapon(ArmerdStatus_SubWeapon _status, Image _fillImage) : base(_status, _fillImage)
+        {
+            guargableTime = _status.sec_DeployableShield;
+
+            _event = new UnityEvent();
         }
     }
 
@@ -77,48 +101,68 @@ public class PlayerArmerd : Base_PlayerAttack
 
         status = JsonUtility.FromJson<ArmerdStatus>(jsonStr);
 
+        funk_Main = new ArmerdFunction_MainWeapon(_status: status.main, _fillImage: image_ForFill_Main);
+        funk_Sub = new ArmerdFunction_SubWeapon(_status: status.sub, _fillImage: image_ForFill_Sub);
+
         shield = null;
     }
 
-    protected override void OnAttackTapped()
+    protected override void Start()
+    {
+        base.Start();
+
+        funk_Sub._event.AddListener(CloseShield);
+    }
+
+    protected override void Update()
+    {
+        if (!onPlay) return;
+
+        base.Update();
+
+        funk_Main.Cooling();
+        funk_Sub.Cooling();
+
+        funk_Sub.onGuardIf();
+    }
+
+    protected override void OnMainAttackPlessed()
     {
         if (!onPlay) return;
         if (!funk_Main.isReadyToAct()) return;
 
-        base.OnAttackTapped();
+        base.OnSubAttackPlessed();
 
         FiringMissiles(_cancellationToken).Forget();
 
         funk_Main.SetCooling(0);
     }
 
-    protected override void Update()
-    {
-        base.Update();
-
-        funk_Main.Cooling();
-        funk_Sub.Cooling();
-    }
-
-    protected override void OnAttackHolded()
+    protected override void OnSubAttackHolded()
     {
         if (onPlay != true) return;
         if (funk_Sub.ratio_Cooling <= 0) return;
 
-        base.OnAttackHolded();
+        base.OnSubAttackHolded();
 
         DeployShield();
     }
 
-    protected override void OnAttackReleased()
+    protected override void OnSubAttackReleased()
     {
         if (onPlay != true) return;
         if (funk_Sub._weaponEnum != WeaponEnum.onAction) return;
 
-        base.OnAttackPlessed();
+        base.OnSubAttackPlessed();
         
         CloseShield();
     }
+
+
+
+
+    //-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^--^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^-^
+
 
     async UniTask FiringMissiles(CancellationToken token)
     {

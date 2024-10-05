@@ -10,9 +10,12 @@ using UnityEngine.UI;
 
 public class PlayerShooter : Base_PlayerAttack
 {
+
     [Serializable]
     protected class ShooterFunction_MainWeapon : BaseFunction_Weapon
     {
+        float maxChargeTime;
+
         public float ratio_Charging {  get; private set; }
 
         public void StartCharge()
@@ -22,17 +25,31 @@ public class PlayerShooter : Base_PlayerAttack
             _weaponEnum = WeaponEnum.onCharge;
         }
 
-        public void FinishCharge()
+        public void ChargingIfOn()
         {
+            if (_weaponEnum != WeaponEnum.onCharge) return;
+
+            ratio_Charging += Time.deltaTime / maxChargeTime;
+            ratio_Charging = Mathf.Clamp01(ratio_Charging);
+        }
+
+        public float SubmitChargeValue()
+        {
+            float x = ratio_Charging;
+
             ratio_Charging = 0;
 
             _weaponEnum = WeaponEnum.standBy;
 
             SetCooling(0f);
+
+            return x;
         }
 
-        public ShooterFunction_MainWeapon(BaseStatus _status, Image _fillImage) :base(_status, _fillImage)
+        public ShooterFunction_MainWeapon(ShooterStatus_MainWeapon _status, Image _fillImage) :base(_status, _fillImage)
         {
+            maxChargeTime = _status.sec_MaxCharge;
+
             ratio_Charging = 0f;
         }
     }
@@ -40,7 +57,7 @@ public class PlayerShooter : Base_PlayerAttack
 
     [Serializable] class ShooterFunction_SubWeapon : BaseFunction_Weapon
     {
-        public ShooterFunction_SubWeapon(BaseStatus _status, Image _fillImage) : base(_status, _fillImage)
+        public ShooterFunction_SubWeapon(ShooterStatus_SubWeapon _status, Image _fillImage) : base(_status, _fillImage)
         {
         }
     }
@@ -106,48 +123,62 @@ public class PlayerShooter : Base_PlayerAttack
         funk_Sub = new ShooterFunction_SubWeapon(status.sub, image_ForFill_Sub);
     }
 
-    protected override void OnAttackTapped()
+    protected override void Update()
     {
         if (onPlay != true) return;
-        if (funk_Sub._weaponEnum != WeaponEnum.standBy) return;
-        if (funk_Sub.ratio_Cooling < 1f) return;
 
-        base.OnAttackPlessed();
+        base.Update();
 
-        Slide(_cancellationToken).Forget();
+        funk_Main.Cooling();
+        funk_Sub.Cooling();
 
-        funk_Sub.SetCooling(0f);
+        funk_Main.ChargingIfOn();
     }
 
-    protected override void OnAttackHolded()
+    protected override void OnMainAttackHolded()
     {
         if (onPlay != true) return;
         if (funk_Main._weaponEnum != WeaponEnum.standBy) return;
         if (funk_Main.ratio_Cooling < 1f) return;
 
-        base.OnAttackHolded();
+        base.OnMainAttackHolded();
 
         funk_Main.StartCharge();
 
         chargeEffect = Instantiate(effect_Charge, transform.position, Quaternion.identity, transform.parent);
     }
 
-    protected override void OnAttackReleased()
+    protected override void OnMainAttackReleased()
     {
         if (onPlay != true) return;
         if (funk_Main._weaponEnum != WeaponEnum.onCharge) return;
 
-        base.OnAttackPlessed();
+        base.OnMainAttackPlessed();
 
-        Shot(_cancellationToken, funk_Main.ratio_Charging / status.main.sec_MaxCharge).Forget();
+        Shot(_cancellationToken, funk_Main.SubmitChargeValue()).Forget();
 
         if (chargeEffect != null) Destroy(chargeEffect);
-
-        funk_Main.FinishCharge();
     }
+
+    protected override void OnSubAttackPlessed()
+    {
+        if (onPlay != true) return;
+        if (funk_Sub._weaponEnum != WeaponEnum.standBy) return;
+        if (funk_Sub.ratio_Cooling < 1f) return;
+
+        base.OnSubAttackPlessed();
+
+        Slide(_cancellationToken).Forget();
+
+        funk_Sub.SetCooling(0f);
+    }
+
+
 
     protected override void WhenJustAction()
     {
+        if (onPlay != true) return;
+
         base.WhenJustAction();
 
         funk_Main.SetCooling(1);
@@ -158,6 +189,8 @@ public class PlayerShooter : Base_PlayerAttack
 
     async UniTask Slide(CancellationToken token)
     {
+        if (onPlay != true) return;
+
         funk_Main._weaponEnum = WeaponEnum.onAction;
 
         _controller.isMovable = false;
@@ -205,6 +238,8 @@ public class PlayerShooter : Base_PlayerAttack
 
     async UniTask Shot(CancellationToken token, float chargeWariai)
     {
+        if (onPlay != true) return;
+
         int num_bullet = (int)((float)status.main.maxNum_Bullet * chargeWariai);
         if (num_bullet <= 0) return;
 
@@ -234,7 +269,7 @@ public class PlayerShooter : Base_PlayerAttack
 
     async UniTask Shot360(CancellationToken token)
     {
-
+        if (onPlay != true) return;
 
         _controller.isRotatable = false;
 

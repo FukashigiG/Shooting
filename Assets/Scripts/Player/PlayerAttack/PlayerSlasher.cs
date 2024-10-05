@@ -13,6 +13,7 @@ public class PlayerSlasher : Base_PlayerAttack
     [Serializable]
     class SlasherFunction_MainWeapon : BaseFunction_Weapon
     {
+        float maxChargeTime;
         public float ratio_Charging { get; private set; }
 
         public void StartCharge()
@@ -22,17 +23,31 @@ public class PlayerSlasher : Base_PlayerAttack
             _weaponEnum = WeaponEnum.onCharge;
         }
 
-        public void FinishCharge()
+        public void ChargingIfOn()
         {
+            if (_weaponEnum != WeaponEnum.onCharge) return;
+
+            ratio_Charging += Time.deltaTime / maxChargeTime;
+            ratio_Charging = Mathf.Clamp01(ratio_Charging);
+        }
+
+        public float SubmitChargeValue()
+        {
+            float x = ratio_Charging;
+
             ratio_Charging = 0;
 
             _weaponEnum = WeaponEnum.standBy;
 
             SetCooling(0f);
+
+            return x;
         }
 
-        public SlasherFunction_MainWeapon(BaseStatus _status, Image _fillImage) : base(_status, _fillImage)
+        public SlasherFunction_MainWeapon(SlasherStatus_MainWeapon _status, Image _fillImage) : base(_status, _fillImage)
         {
+            maxChargeTime = _status.sec_MaxCharge;
+
             ratio_Charging = 0f;
         }
     }
@@ -40,7 +55,7 @@ public class PlayerSlasher : Base_PlayerAttack
     [Serializable]
     class SlasherFunction_SubWeapon : BaseFunction_Weapon
     {
-        public SlasherFunction_SubWeapon(BaseStatus _status, Image _fillImage) : base(_status, _fillImage)
+        public SlasherFunction_SubWeapon(SlasherStatus_SubWeapon _status, Image _fillImage) : base(_status, _fillImage)
         {
         }
     }
@@ -94,26 +109,29 @@ public class PlayerSlasher : Base_PlayerAttack
         string jsonStr = jsonFile.ToString();
 
         status = JsonUtility.FromJson<SlasherStatus>(jsonStr);
+
+        funk_Main = new SlasherFunction_MainWeapon(_status: status.main, _fillImage: image_ForFill_Main);
+        funk_Sub = new SlasherFunction_SubWeapon(_status: status.sub, _fillImage: image_ForFill_Sub);
     }
 
-    protected override void OnAttackTapped()
+    protected override void Update()
     {
         if (onPlay != true) return;
-        if (! funk_Sub.isReadyToAct()) return;
 
-        base.OnAttackTapped();
+        base.Update();
 
-        Slash(_cancellationToken).Forget();
+        funk_Main.Cooling();
+        funk_Sub.Cooling();
 
-        funk_Sub.SetCooling(0f);
+        funk_Main.ChargingIfOn();
     }
 
-    protected override void OnAttackHolded()
+    protected override void OnMainAttackHolded()
     {
         if (onPlay != true) return;
         if (! funk_Main.isReadyToAct()) return;
 
-        base.OnAttackHolded();
+        base.OnMainAttackHolded();
 
         funk_Main.StartCharge();
 
@@ -124,25 +142,36 @@ public class PlayerSlasher : Base_PlayerAttack
         chargeEffect = Instantiate(effect_Charging, transform.position, Quaternion.identity, this.transform);
     }
 
-    protected override void OnAttackReleased()
+    protected override void OnMainAttackReleased()
     {
         if (onPlay != true) return;
         if(funk_Main._weaponEnum != WeaponEnum.onCharge) return;
 
-        base.OnAttackPlessed();
+        base.OnMainAttackReleased();
 
-        DashSlash(funk_Main.ratio_Charging, _cancellationToken).Forget();
-
-        funk_Main.FinishCharge();
-        funk_Main.SetCooling(0);
+        DashSlash(funk_Main.SubmitChargeValue(), _cancellationToken).Forget();
 
         Destroy(chargeEffect);
 
     }
-    
+
+    protected override void OnSubAttackPlessed()
+    {
+        if (onPlay != true) return;
+        if (!funk_Sub.isReadyToAct()) return;
+
+        base.OnSubAttackPlessed();
+
+        Slash(_cancellationToken).Forget();
+
+        funk_Sub.SetCooling(0f);
+    }
+
 
     async UniTask Slash(CancellationToken token)
     {
+        if (onPlay != true) return;
+
         _controller.isMovable = false;
         _controller.isRotatable = false;
 
@@ -156,7 +185,8 @@ public class PlayerSlasher : Base_PlayerAttack
 
     async UniTask DashSlash(float power, CancellationToken token)
     {
-        Debug.Log(power);
+        if (onPlay != true) return;
+
         AS.PlayOneShot(SE_AttackEnd);
 
         funk_Main._weaponEnum = WeaponEnum.onAction;
@@ -204,6 +234,8 @@ public class PlayerSlasher : Base_PlayerAttack
 
     protected override void WhenJustAction()
     {
+        if (onPlay != true) return;
+
         base.WhenJustAction();
 
         funk_Main.SetCooling(1);

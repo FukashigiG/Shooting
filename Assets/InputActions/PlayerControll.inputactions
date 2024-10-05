@@ -24,16 +24,25 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "AttackPlessed",
+                    "name": "MainAttackPlessed",
                     "type": "Button",
-                    "id": "9dfecae2-a5d7-421a-8e2d-2cf50bb5676d",
+                    "id": "e74da5f7-81a0-4e3b-9a2f-8af880fe2fcb",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "AttackHolded",
+                    "name": "MainAttackTapped",
+                    "type": "Button",
+                    "id": "2e1522e3-9bfa-4470-b9b2-e93986b55c70",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Tap(pressPoint=0.2)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MainAttackHolded",
                     "type": "Button",
                     "id": "ea34014e-31a8-49b5-807e-696115b07b47",
                     "expectedControlType": "Button",
@@ -42,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "AttackReleased",
+                    "name": "MainAttackReleased",
                     "type": "Button",
                     "id": "ebe1a88c-02c6-438a-86bc-b2b41b5104fc",
                     "expectedControlType": "Button",
@@ -51,12 +60,39 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "AttackTapped",
+                    "name": "SubAttackPlessed",
                     "type": "Button",
-                    "id": "2e1522e3-9bfa-4470-b9b2-e93986b55c70",
+                    "id": "11c4b6c2-671c-4c69-8d45-e91c214c64ee",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SubAttackTapped",
+                    "type": "Button",
+                    "id": "81ccd244-0ab1-439e-ac42-cdcd614d5e75",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Tap(pressPoint=0.2)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SubAttackHolded",
+                    "type": "Button",
+                    "id": "05c2950a-4fd6-428a-aa53-fa1cda85b61d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.22,pressPoint=0.5)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SubAttackReleased",
+                    "type": "Button",
+                    "id": "ddd199b0-ab49-475e-af12-f356dc7069b4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
                     "initialStateCheck": false
                 },
                 {
@@ -213,56 +249,12 @@
                 },
                 {
                     "name": "",
-                    "id": "f4afec5d-f02f-4013-9f5c-36770436c46d",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "AttackPlessed",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c9211e20-dbb6-4f82-aadf-c91bdf73c8c3",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "AttackPlessed",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ab070e0e-a9fd-41c6-a6ec-834fcb72fe49",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "AttackReleased",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9f459e94-6e27-4081-8a8a-e2e999139eae",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "AttackReleased",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "8263c3c2-01a0-4621-8b9a-03324d54bc3a",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AttackHolded",
+                    "action": "MainAttackHolded",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -273,29 +265,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AttackHolded",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5fc17da4-eb5b-4c8d-a366-f6ca32fccaed",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "AttackTapped",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "dd49f572-5ad4-4b77-ac3c-c59f0a68c41d",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "AttackTapped",
+                    "action": "MainAttackHolded",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -329,6 +299,160 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "75a2e89a-090c-4ade-b912-3f03b6d74535",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SubAttackHolded",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "12bb350c-2cdb-439f-9c44-c56ae7d396db",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SubAttackHolded",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "49b1872f-21a5-410b-bc60-e9dd4b5c2d06",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SubAttackReleased",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bcd7306d-7eb1-4c3d-b7e4-efba70c21525",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SubAttackReleased",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9da43c69-c4fd-460f-ab8a-685f17d4f478",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SubAttackPlessed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e5310e3c-e647-43ce-8642-5e5c49263d60",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SubAttackPlessed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b3403187-db70-4ddc-8b18-3603a3943fee",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MainAttackPlessed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d84290df-9e86-421b-8739-68b3d15d6bf7",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MainAttackPlessed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5fc17da4-eb5b-4c8d-a366-f6ca32fccaed",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MainAttackTapped",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dd49f572-5ad4-4b77-ac3c-c59f0a68c41d",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MainAttackTapped",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ab070e0e-a9fd-41c6-a6ec-834fcb72fe49",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MainAttackReleased",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9f459e94-6e27-4081-8a8a-e2e999139eae",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MainAttackReleased",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d1fb4d38-0f9e-4cf1-b57d-0f439f1102ae",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SubAttackTapped",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ccaa69f8-99f8-4e56-8e2c-1ce7eec70a8e",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SubAttackTapped",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

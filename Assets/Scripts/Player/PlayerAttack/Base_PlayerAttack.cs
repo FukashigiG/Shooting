@@ -15,9 +15,9 @@ public class Base_PlayerAttack : MonoBehaviour
         public WeaponEnum _weaponEnum;
 
         float cooltime_Attack;
-        public float ratio_Cooling {  get; private set; }
+        public float ratio_Cooling {  get; protected set; }
 
-        Image image_Fill;
+        protected Image image_Fill { get; private set; }
 
 
         public void Cooling()
@@ -85,7 +85,7 @@ public class Base_PlayerAttack : MonoBehaviour
     {
         standBy,
         onAction,
-        onCharge,
+        onCharge
     }
 
     WeaponEnum _weaponEnum;
@@ -102,8 +102,6 @@ public class Base_PlayerAttack : MonoBehaviour
     {
         _cancellationToken = cancellationTokenSource.Token;
 
-        onPlay = true;
-
         TryGetComponent(out AS);
 
         transform.parent.TryGetComponent(out _controller);
@@ -114,37 +112,57 @@ public class Base_PlayerAttack : MonoBehaviour
 
     protected virtual void Start()
     {
-
+        onPlay = true;
     }
 
     protected virtual void Update()
     {
-
+        if (onPlay != true) return;
     }
 
-    protected virtual void OnAttackPlessed()
+    protected virtual void OnMainAttackPlessed()
     {
-
+        if (onPlay != true) return;
     }
 
-    protected virtual void OnAttackReleased()
+    protected virtual void OnMainAttackReleased()
     {
-
+        if (onPlay != true) return;
     }
 
-    protected virtual void OnAttackHolded()
+    protected virtual void OnMainAttackHolded()
     {
-
+        if (onPlay != true) return;
     }
 
-    protected virtual void OnAttackTapped()
+    protected virtual void OnMainAttackTapped()
     {
+        if (onPlay != true) return;
+    }
 
+    protected virtual void OnSubAttackPlessed()
+    {
+        if (onPlay != true) return;
+    }
+
+    protected virtual void OnSubAttackReleased()
+    {
+        if (onPlay != true) return;
+    }
+
+    protected virtual void OnSubAttackHolded()
+    {
+        if (onPlay != true) return;
+    }
+
+    protected virtual void OnSubAttackTapped()
+    {
+        if (onPlay != true) return;
     }
 
     protected virtual void WhenJustAction()
     {
-
+        if (onPlay != true) return;
     }
 
     public void FInishPlaying()
