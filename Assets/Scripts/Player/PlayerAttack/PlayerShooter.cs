@@ -138,8 +138,7 @@ public class PlayerShooter : Base_PlayerAttack
     protected override void OnMainAttackHolded()
     {
         if (onPlay != true) return;
-        if (funk_Main._weaponEnum != WeaponEnum.standBy) return;
-        if (funk_Main.ratio_Cooling < 1f) return;
+        if (! funk_Main.ActionIfCan()) return;
 
         base.OnMainAttackHolded();
 
@@ -163,14 +162,11 @@ public class PlayerShooter : Base_PlayerAttack
     protected override void OnSubAttackPlessed()
     {
         if (onPlay != true) return;
-        if (funk_Sub._weaponEnum != WeaponEnum.standBy) return;
-        if (funk_Sub.ratio_Cooling < 1f) return;
+        if (! funk_Sub.ActionIfCan()) return;
 
         base.OnSubAttackPlessed();
 
         Slide(_cancellationToken).Forget();
-
-        funk_Sub.SetCooling(0f);
     }
 
 
@@ -191,7 +187,7 @@ public class PlayerShooter : Base_PlayerAttack
     {
         if (onPlay != true) return;
 
-        funk_Main._weaponEnum = WeaponEnum.onAction;
+        funk_Sub._weaponEnum = WeaponEnum.onAction;
 
         _controller.isMovable = false;
 
@@ -233,7 +229,7 @@ public class PlayerShooter : Base_PlayerAttack
 
         _controller.isMovable = true;
 
-        funk_Main._weaponEnum = WeaponEnum.standBy;
+        funk_Sub._weaponEnum = WeaponEnum.standBy;
     }
 
     async UniTask Shot(CancellationToken token, float chargeWariai)

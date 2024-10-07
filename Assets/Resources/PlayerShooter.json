@@ -4,6 +4,7 @@
   "main": {
 
     "cooltime_Attack": 1.3,
+    "num_MaxStock": 1,
     "sec_MaxCharge": 0.7,
     "interval_Shot": 0.1,
     "maxNum_Bullet": 10,
@@ -13,7 +14,8 @@
 
   "sub": {
 
-    "cooltime_Attack": 0.5,
+    "cooltime_Attack": 1,
+    "num_MaxStock": 2,
     "distance_Slide": 1.8,
     "flame_JustAction": 6
   }

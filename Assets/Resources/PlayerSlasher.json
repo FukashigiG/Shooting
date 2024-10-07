@@ -4,6 +4,7 @@
   "main": {
 
     "cooltime_Attack": 1.6,
+    "num_MaxStock": 1,
     "sec_MaxCharge": 1,
     "maxNum_SlashHit": 10,
     "maxLength_Slash": 8,
@@ -13,7 +14,8 @@
 
   "sub": {
 
-    "cooltime_Attack": 1.2
+    "cooltime_Attack": 1.2,
+    "num_MaxStock": 1
   }
 
 }

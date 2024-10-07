@@ -17,19 +17,30 @@ public class Base_PlayerAttack : MonoBehaviour
         float cooltime_Attack;
         public float ratio_Cooling {  get; protected set; }
 
+        int maxNum_Stock;
+
+        int stock_Action;
+
         protected Image image_Fill { get; private set; }
 
 
         public void Cooling()
         {
-            if (_weaponEnum == WeaponEnum.standBy)
+            if (_weaponEnum == WeaponEnum.standBy && stock_Action < maxNum_Stock)
             {
                 ratio_Cooling += Time.deltaTime / cooltime_Attack;
 
                 ratio_Cooling = Mathf.Clamp01(ratio_Cooling);
-            }
 
-            image_Fill.fillAmount = 1 - ratio_Cooling;
+                image_Fill.fillAmount = 1 - ratio_Cooling;
+
+                if (ratio_Cooling >= 1f && stock_Action < maxNum_Stock)
+                {
+                    stock_Action++;
+
+                    ratio_Cooling = 0f;
+                }
+            }
         }
 
         public void SetCooling(float size)
@@ -41,10 +52,12 @@ public class Base_PlayerAttack : MonoBehaviour
             image_Fill.fillAmount = 1f - ratio_Cooling;
         }
 
-        public bool isReadyToAct()
+        public bool ActionIfCan()
         {
-            if(ratio_Cooling >= 1f)
+            if(stock_Action > 0 && _weaponEnum == WeaponEnum.standBy)
             {
+                stock_Action--;
+
                 return true;
             }
             else
@@ -60,13 +73,21 @@ public class Base_PlayerAttack : MonoBehaviour
 
             image_Fill = fillImage;
 
-            SetCooling(1f);
+            ratio_Cooling = 0f;
+
+            image_Fill.fillAmount = 0;
+
+            maxNum_Stock = status.num_MaxStock;
+
+            stock_Action = maxNum_Stock;
         }
     }
 
     [Serializable] protected class BaseStatus
     {
         public float cooltime_Attack;
+
+        public int num_MaxStock;
     }
 
     [SerializeField] protected TextAsset jsonFile;

@@ -129,7 +129,7 @@ public class PlayerSlasher : Base_PlayerAttack
     protected override void OnMainAttackHolded()
     {
         if (onPlay != true) return;
-        if (! funk_Main.isReadyToAct()) return;
+        if (! funk_Main.ActionIfCan()) return;
 
         base.OnMainAttackHolded();
 
@@ -158,13 +158,11 @@ public class PlayerSlasher : Base_PlayerAttack
     protected override void OnSubAttackPlessed()
     {
         if (onPlay != true) return;
-        if (!funk_Sub.isReadyToAct()) return;
+        if (! funk_Sub.ActionIfCan()) return;
 
         base.OnSubAttackPlessed();
 
         Slash(_cancellationToken).Forget();
-
-        funk_Sub.SetCooling(0f);
     }
 
 

@@ -129,13 +129,11 @@ public class PlayerArmerd : Base_PlayerAttack
     protected override void OnMainAttackPlessed()
     {
         if (!onPlay) return;
-        if (!funk_Main.isReadyToAct()) return;
+        if (!funk_Main.ActionIfCan()) return;
 
         base.OnSubAttackPlessed();
 
         FiringMissiles(_cancellationToken).Forget();
-
-        funk_Main.SetCooling(0);
     }
 
     protected override void OnSubAttackHolded()

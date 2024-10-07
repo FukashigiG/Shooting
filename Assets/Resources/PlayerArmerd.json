@@ -4,6 +4,7 @@
   "main": {
 
     "cooltime_Attack": 2,
+    "num_MaxStock": 1,
     "interval_shot": 0.15,
     "length_Ray_SearchTatget": 30,
     "num_Missile": 7,
@@ -13,6 +14,7 @@
   "sub": {
 
     "cooltime_Attack": 2,
+    "num_MaxStock": 1,
     "sec_DeployableShield": 2
   }
 }

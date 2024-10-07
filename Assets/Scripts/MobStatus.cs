@@ -17,7 +17,7 @@ public class MobStatus : MonoBehaviour, IDamagable
     [SerializeField] GameObject obj_Txt_Damage;
     [SerializeField] GameObject obj_Txt_RecoverHP;
 
-    GameObject canvas;
+    GameObject parent_DamageUI;
 
     [NonSerialized] public UnityEvent onDie = new UnityEvent();
 
@@ -52,7 +52,7 @@ public class MobStatus : MonoBehaviour, IDamagable
     {
         HP = MaxHP;
 
-        canvas = GameObject.Find("Canvas");
+        parent_DamageUI = GameObject.Find("parent_DamageUI");
 
         canTakeDamage = true;
 
@@ -73,7 +73,7 @@ public class MobStatus : MonoBehaviour, IDamagable
 
         if (damageTxt.txtScript == null || damageTxt.txtScript.reloadable != true)
         {
-            GameObject obj = Instantiate(obj_Txt_Damage, screenPosi, Quaternion.identity, canvas.transform);
+            GameObject obj = Instantiate(obj_Txt_Damage, screenPosi, Quaternion.identity, parent_DamageUI.transform);
 
             //ê∂ê¨ÇµÇΩobjÇÃèÓïÒÇì¸ÇÍÇÈèâä˙âª
             damageTxt = new TheDamageTxt(obj, 0);
@@ -97,7 +97,7 @@ public class MobStatus : MonoBehaviour, IDamagable
         var screenPosi = RectTransformUtility.WorldToScreenPoint(Camera.main, dmgTxtPosi);
         screenPosi = new Vector2(screenPosi.x * UnityEngine.Random.Range(0.96f, 1.04f), screenPosi.y * UnityEngine.Random.Range(0.96f, 1.04f));
 
-        Txt_DamageValue txt = Instantiate(obj_Txt_RecoverHP, screenPosi, Quaternion.identity, canvas.transform).GetComponent<Txt_DamageValue>();
+        Txt_DamageValue txt = Instantiate(obj_Txt_RecoverHP, screenPosi, Quaternion.identity, parent_DamageUI.transform).GetComponent<Txt_DamageValue>();
         txt.SetTxt(point, screenPosi);
 
 
