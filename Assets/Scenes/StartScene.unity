@@ -4247,7 +4247,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "\u30E9\u30D7\u30E9\u30B9\u306E\u8A3C\u660E\n\u3000      \uFF08\u30D9\u30FC\u30BF\u7248.Ver
-    1.2.0\uFF09"
+    1.5.0\uFF09"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2f0a1074d7ad93c4bbd091f4851edd0f, type: 2}
   m_sharedMaterial: {fileID: -2150576331840411585, guid: 2f0a1074d7ad93c4bbd091f4851edd0f, type: 2}

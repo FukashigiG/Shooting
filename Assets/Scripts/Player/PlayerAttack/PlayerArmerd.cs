@@ -23,29 +23,50 @@ public class PlayerArmerd : Base_PlayerAttack
     {
         float guargableTime;
 
+        float ratio_GuardGauge;
+
         public UnityEvent _event;
+
+        Image image_ForFill_Guard;
+
+        public void onDeployShield()
+        {
+            _weaponEnum = WeaponEnum.onAction;
+
+            ratio_GuardGauge = 1f;
+        }
 
         public void onGuardIf()
         {
             if (_weaponEnum != WeaponEnum.onAction) return;
-            if (ratio_Cooling <= 0)
+            if (ratio_GuardGauge < 0)
             {
                 _event.Invoke();
 
                 return;
             }
 
-            ratio_Cooling -= Time.deltaTime / guargableTime;
-            image_Fill.fillAmount = 1 - ratio_Cooling;
+            ratio_GuardGauge -= Time.deltaTime / guargableTime;
 
-            
+            image_ForFill_Guard.fillAmount = ratio_GuardGauge;
         }
 
-        public ArmerdFunction_SubWeapon(ArmerdStatus_SubWeapon _status, Image _fillImage) : base(_status, _fillImage)
+        public void onCloseShield()
+        {
+            _weaponEnum = WeaponEnum.standBy;
+
+            image_ForFill_Guard.fillAmount = 0f;
+        }
+
+        public ArmerdFunction_SubWeapon(ArmerdStatus_SubWeapon _status, Image _fillImage, Image _fill_Guard) : base(_status, _fillImage)
         {
             guargableTime = _status.sec_DeployableShield;
 
             _event = new UnityEvent();
+
+            ratio_GuardGauge = 0;
+
+            image_ForFill_Guard = _fill_Guard;
         }
     }
 
@@ -83,7 +104,7 @@ public class PlayerArmerd : Base_PlayerAttack
 
     ArmerdStatus status = new ArmerdStatus();
 
-
+    [SerializeField] Image image_ForFill_Guard;
 
     [SerializeField] GameObject laser;
 
@@ -102,7 +123,7 @@ public class PlayerArmerd : Base_PlayerAttack
         status = JsonUtility.FromJson<ArmerdStatus>(jsonStr);
 
         funk_Main = new ArmerdFunction_MainWeapon(_status: status.main, _fillImage: image_ForFill_Main);
-        funk_Sub = new ArmerdFunction_SubWeapon(_status: status.sub, _fillImage: image_ForFill_Sub);
+        funk_Sub = new ArmerdFunction_SubWeapon(_status: status.sub, _fillImage: image_ForFill_Sub, image_ForFill_Guard);
 
         shield = null;
     }
@@ -138,21 +159,22 @@ public class PlayerArmerd : Base_PlayerAttack
 
     protected override void OnSubAttackHolded()
     {
-        if (onPlay != true) return;
-        if (funk_Sub.ratio_Cooling <= 0) return;
+        if (! onPlay) return;
+        if (! funk_Sub.ActionIfCan()) return;
 
         base.OnSubAttackHolded();
 
+        funk_Sub.onDeployShield();
         DeployShield();
     }
 
     protected override void OnSubAttackReleased()
     {
-        if (onPlay != true) return;
+        if (! onPlay) return;
         if (funk_Sub._weaponEnum != WeaponEnum.onAction) return;
 
         base.OnSubAttackPlessed();
-        
+
         CloseShield();
     }
 
@@ -190,6 +212,8 @@ public class PlayerArmerd : Base_PlayerAttack
 
     void DeployShield()
     {
+        Debug.Log(Time.time);
+
         funk_Sub._weaponEnum = WeaponEnum.onAction;
 
         shield = Instantiate(prefab_Shield, transform.position + transform.up * 1f, transform.rotation, parent: this.transform); 
@@ -199,7 +223,7 @@ public class PlayerArmerd : Base_PlayerAttack
 
     void CloseShield()
     {
-        funk_Sub._weaponEnum = WeaponEnum.standBy;
+        funk_Sub.onDeployShield();
 
         Destroy(shield);
     }

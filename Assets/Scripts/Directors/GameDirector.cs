@@ -29,6 +29,7 @@ public class GameDirector : MonoBehaviour
 
     CinemachineImpulseSource impulseSource;
 
+    [SerializeField] CinemachineTargetGroup targetGroup;
     public static float remainingHP_Boss {  get; private set; }
 
     [SerializeField] Sprite[] icon_Player;
@@ -92,6 +93,23 @@ public class GameDirector : MonoBehaviour
         tranjitionPanel.SetActive(true);
         tranjitionPanel.TryGetComponent(out RectTransform _rect);
         _rect.DOAnchorPos(new Vector2(0, -1200), 0.8f);
+
+        targetGroup.m_Targets = new CinemachineTargetGroup.Target[]
+        {
+            new CinemachineTargetGroup.Target
+            {
+                target = player.transform,
+                weight = 1,
+                radius = 1.2f
+            },
+
+            new CinemachineTargetGroup.Target
+            {
+                target = theBoss.transform,
+                weight = 1,
+                radius = 1.2f
+            }
+        };
     }
 
     private void Update()

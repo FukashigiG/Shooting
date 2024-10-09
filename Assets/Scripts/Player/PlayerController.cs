@@ -137,8 +137,6 @@ public class PlayerController : MonoBehaviour
         Time.timeScale *= 0.05f;
 
         panel_Pause.SetActive(true);
-
-        Debug.Log("dde");
     }
 
     public void RestartGame()

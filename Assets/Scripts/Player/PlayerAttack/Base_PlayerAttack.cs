@@ -19,7 +19,7 @@ public class Base_PlayerAttack : MonoBehaviour
 
         int maxNum_Stock;
 
-        int stock_Action;
+        protected int stock_Action;
 
         protected Image image_Fill { get; private set; }
 
@@ -80,6 +80,8 @@ public class Base_PlayerAttack : MonoBehaviour
             maxNum_Stock = status.num_MaxStock;
 
             stock_Action = maxNum_Stock;
+
+            _weaponEnum = WeaponEnum.standBy;
         }
     }
 

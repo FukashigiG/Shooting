@@ -13,9 +13,19 @@ public class PlayerSlasher : Base_PlayerAttack
     [Serializable]
     class SlasherFunction_MainWeapon : BaseFunction_Weapon
     {
+        GameObject thisObj;
+
         Image image_Fill_Charge;
 
+        GameObject FX_Charge;
+        GameObject FX_MaxCharge;
+
+        GameObject chargingEffect;
+
         float maxChargeTime;
+
+        bool chargedMax;
+
         public float ratio_Charging { get; private set; }
 
         public void StartCharge()
@@ -23,16 +33,30 @@ public class PlayerSlasher : Base_PlayerAttack
             ratio_Charging = 0;
 
             _weaponEnum = WeaponEnum.onCharge;
+
+            chargedMax = false;
+
+            chargingEffect = Instantiate(FX_Charge, thisObj.transform.position, Quaternion.identity, thisObj.transform);
         }
 
         public void ChargingIfOn()
         {
             if (_weaponEnum != WeaponEnum.onCharge) return;
+            if (chargedMax) return;
 
             ratio_Charging += Time.deltaTime / maxChargeTime;
             ratio_Charging = Mathf.Clamp01(ratio_Charging);
 
             image_Fill_Charge.fillAmount = ratio_Charging;
+
+            if (ratio_Charging >= 1f && chargedMax == false)
+            {
+                chargedMax = true;
+
+                Destroy(chargingEffect);
+
+                chargingEffect = Instantiate(FX_MaxCharge, thisObj.transform.position, Quaternion.identity, thisObj.transform);
+            }
         }
 
         public float SubmitChargeValue()
@@ -47,16 +71,27 @@ public class PlayerSlasher : Base_PlayerAttack
 
             image_Fill_Charge.fillAmount = 0f;
 
+            chargedMax = false;
+
+            Destroy(chargingEffect);
+
             return x;
         }
 
-        public SlasherFunction_MainWeapon(SlasherStatus_MainWeapon _status, Image _fillImage, Image _chargeFill) : base(_status, _fillImage)
+        public SlasherFunction_MainWeapon(SlasherStatus_MainWeapon _status, Image _fillImage, Image _chargeFill, GameObject chargeEffect, GameObject maxChargeEffect, GameObject obj) : base(_status, _fillImage)
         {
             maxChargeTime = _status.sec_MaxCharge;
 
             ratio_Charging = 0f;
 
             image_Fill_Charge = _chargeFill;
+
+            thisObj = obj;
+
+            FX_Charge = chargeEffect;
+            FX_MaxCharge = maxChargeEffect;
+
+            chargedMax = false;
         }
     }
 
@@ -106,8 +141,7 @@ public class PlayerSlasher : Base_PlayerAttack
     [SerializeField] GameObject Slashbullet;
     [SerializeField] GameObject SpiralSlash;
     [SerializeField] GameObject effect_Charging;
-    [SerializeField] GameObject effect_AnnounceMaxCharge;
-    GameObject chargeEffect;
+    [SerializeField] GameObject effect_MaxCharge;
 
     [SerializeField] AudioClip SE_AttackStart;
     [SerializeField] AudioClip SE_AttackEnd;
@@ -120,7 +154,7 @@ public class PlayerSlasher : Base_PlayerAttack
 
         status = JsonUtility.FromJson<SlasherStatus>(jsonStr);
 
-        funk_Main = new SlasherFunction_MainWeapon(_status: status.main, _fillImage: image_ForFill_Main, image_ForFill_Charge);
+        funk_Main = new SlasherFunction_MainWeapon(_status: status.main, _fillImage: image_ForFill_Main, image_ForFill_Charge, effect_Charging, effect_MaxCharge, this.gameObject);
         funk_Sub = new SlasherFunction_SubWeapon(_status: status.sub, _fillImage: image_ForFill_Sub);
     }
 
@@ -148,8 +182,6 @@ public class PlayerSlasher : Base_PlayerAttack
         _controller.isMovable = false;
 
         AS.PlayOneShot(SE_AttackStart);
-
-        chargeEffect = Instantiate(effect_Charging, transform.position, Quaternion.identity, this.transform);
     }
 
     protected override void OnMainAttackReleased()
@@ -160,9 +192,6 @@ public class PlayerSlasher : Base_PlayerAttack
         base.OnMainAttackReleased();
 
         DashSlash(funk_Main.SubmitChargeValue(), _cancellationToken).Forget();
-
-        Destroy(chargeEffect);
-
     }
 
     protected override void OnSubAttackPlessed()

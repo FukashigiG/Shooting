@@ -448,6 +448,7 @@ MonoBehaviour:
   effect_BeChargeMax: {fileID: 1064919628000095592, guid: 579ce35f90c4f1f49941f8fea0643ced, type: 3}
   SE_Shot: {fileID: 8300000, guid: 784d2201cd8d66e4daeb0f665023faf9, type: 3}
   SE_Slide: {fileID: 8300000, guid: daff15c335376f640b0bc7ce628374dd, type: 3}
+  image_ForFill_Charge: {fileID: 0}
 --- !u!114 &2134167266198198667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -466,10 +467,11 @@ MonoBehaviour:
     m_Bits: 1024
   image_ForFill_Main: {fileID: 0}
   image_ForFill_Sub: {fileID: 0}
+  image_ForFill_Charge: {fileID: 0}
   Slashbullet: {fileID: 1815753595108182684, guid: 65112bb21838a6b4b96a722577a51caf, type: 3}
   SpiralSlash: {fileID: 2360655870356088562, guid: 6eee5df7bf69ff244bce090943190992, type: 3}
-  effect_Charging: {fileID: 5824670795371433373, guid: 90272fa62a363c7459340e5b9c20cb89, type: 3}
-  effect_AnnounceMaxCharge: {fileID: 8771972552311404799, guid: bbf9e36a48d6c5648a13889afab076fd, type: 3}
+  effect_Charging: {fileID: 4063973215585577254, guid: 20bb49e27a1c4564f8af45d4ccc405b2, type: 3}
+  effect_MaxCharge: {fileID: 1064919628000095592, guid: 9016a3e1107dee449bca7b3411d2c997, type: 3}
   SE_AttackStart: {fileID: 8300000, guid: 52f3b4b817ab3a4499bf50de34a0e127, type: 3}
   SE_AttackEnd: {fileID: 8300000, guid: 4186e7dc966e1b8488a653921b526096, type: 3}
 --- !u!114 &3599011012204617152
