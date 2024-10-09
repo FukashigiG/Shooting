@@ -13,6 +13,8 @@ public class PlayerSlasher : Base_PlayerAttack
     [Serializable]
     class SlasherFunction_MainWeapon : BaseFunction_Weapon
     {
+        Image image_Fill_Charge;
+
         float maxChargeTime;
         public float ratio_Charging { get; private set; }
 
@@ -29,6 +31,8 @@ public class PlayerSlasher : Base_PlayerAttack
 
             ratio_Charging += Time.deltaTime / maxChargeTime;
             ratio_Charging = Mathf.Clamp01(ratio_Charging);
+
+            image_Fill_Charge.fillAmount = ratio_Charging;
         }
 
         public float SubmitChargeValue()
@@ -41,14 +45,18 @@ public class PlayerSlasher : Base_PlayerAttack
 
             SetCooling(0f);
 
+            image_Fill_Charge.fillAmount = 0f;
+
             return x;
         }
 
-        public SlasherFunction_MainWeapon(SlasherStatus_MainWeapon _status, Image _fillImage) : base(_status, _fillImage)
+        public SlasherFunction_MainWeapon(SlasherStatus_MainWeapon _status, Image _fillImage, Image _chargeFill) : base(_status, _fillImage)
         {
             maxChargeTime = _status.sec_MaxCharge;
 
             ratio_Charging = 0f;
+
+            image_Fill_Charge = _chargeFill;
         }
     }
 
@@ -93,6 +101,8 @@ public class PlayerSlasher : Base_PlayerAttack
     SlasherStatus status = new SlasherStatus();
 
 
+    [SerializeField] Image image_ForFill_Charge;
+
     [SerializeField] GameObject Slashbullet;
     [SerializeField] GameObject SpiralSlash;
     [SerializeField] GameObject effect_Charging;
@@ -110,7 +120,7 @@ public class PlayerSlasher : Base_PlayerAttack
 
         status = JsonUtility.FromJson<SlasherStatus>(jsonStr);
 
-        funk_Main = new SlasherFunction_MainWeapon(_status: status.main, _fillImage: image_ForFill_Main);
+        funk_Main = new SlasherFunction_MainWeapon(_status: status.main, _fillImage: image_ForFill_Main, image_ForFill_Charge);
         funk_Sub = new SlasherFunction_SubWeapon(_status: status.sub, _fillImage: image_ForFill_Sub);
     }
 

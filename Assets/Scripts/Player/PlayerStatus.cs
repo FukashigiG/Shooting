@@ -60,6 +60,8 @@ public class PlayerStatus : MobStatus
 
     public void Evasing(int flame)
     {
+        if (flame <= 0) return;
+
         evasionalCount_flame = flame;
         isEvasionable = true;
     }

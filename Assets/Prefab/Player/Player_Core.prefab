@@ -436,15 +436,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 4900000, guid: 39a2e4e9248163c4e830780831d2305b, type: 3}
-  image_Fill: {fileID: 0}
-  image_Fill_charge: {fileID: 0}
   wallLayer:
     serializedVersion: 2
     m_Bits: 1024
+  image_ForFill_Main: {fileID: 0}
+  image_ForFill_Sub: {fileID: 0}
   bullet: {fileID: 3387600967565597642, guid: 9e1b0659bc1674841afcb8a23b802350, type: 3}
   effect_Slide: {fileID: 8474044172995968643, guid: 41c7d23bb68b4d04e9189f16f977572c, type: 3}
-  effect_Charge: {fileID: 1064919628000095592, guid: 579ce35f90c4f1f49941f8fea0643ced, type: 3}
+  effect_Charge: {fileID: 4063973215585577254, guid: 94ce611fdd842c643bb8cc1d1f7a1ec2, type: 3}
   effect_StartShot: {fileID: 7680900537556279518, guid: 32bc39d84eb843b458cd35b23bd31c17, type: 3}
+  effect_BeChargeMax: {fileID: 1064919628000095592, guid: 579ce35f90c4f1f49941f8fea0643ced, type: 3}
   SE_Shot: {fileID: 8300000, guid: 784d2201cd8d66e4daeb0f665023faf9, type: 3}
   SE_Slide: {fileID: 8300000, guid: daff15c335376f640b0bc7ce628374dd, type: 3}
 --- !u!114 &2134167266198198667
@@ -460,20 +461,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 4900000, guid: e28d54bec0d672f4a989f20e0c7b41b9, type: 3}
-  image_Fill: {fileID: 0}
-  image_Fill_charge: {fileID: 0}
   wallLayer:
     serializedVersion: 2
     m_Bits: 1024
-  slasherData:
-    cooltime_Attack: 0
-    sec_MaxCharge: 0
-    maxNum_SlashHit: 0
-    maxLength_Slash: 0
-    fleezeTime_AfterAttack: 0
-    ratio_cooltime_Dash: 0
-    ratio_cooltime_Spiral: 0
-    flame_JustAction: 0
+  image_ForFill_Main: {fileID: 0}
+  image_ForFill_Sub: {fileID: 0}
   Slashbullet: {fileID: 1815753595108182684, guid: 65112bb21838a6b4b96a722577a51caf, type: 3}
   SpiralSlash: {fileID: 2360655870356088562, guid: 6eee5df7bf69ff244bce090943190992, type: 3}
   effect_Charging: {fileID: 5824670795371433373, guid: 90272fa62a363c7459340e5b9c20cb89, type: 3}
@@ -493,11 +485,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 4900000, guid: 8b929855111f57d49bd98d8406f5d2b2, type: 3}
-  image_Fill: {fileID: 0}
-  image_Fill_charge: {fileID: 0}
   wallLayer:
     serializedVersion: 2
     m_Bits: 1024
+  image_ForFill_Main: {fileID: 0}
+  image_ForFill_Sub: {fileID: 0}
   laser: {fileID: 3387600967565597642, guid: ca14a51b7ca9e454fa710e33c940472d, type: 3}
   enemyLayer:
     serializedVersion: 2

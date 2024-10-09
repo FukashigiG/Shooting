@@ -5721,6 +5721,10 @@ PrefabInstance:
       propertyPath: image_ForFill_Main
       value: 
       objectReference: {fileID: 201186783}
+    - target: {fileID: 2134167266198198667, guid: 796c68edb8b24914887f8eff3bdff803, type: 3}
+      propertyPath: image_ForFill_Charge
+      value: 
+      objectReference: {fileID: 1148975025}
     - target: {fileID: 2275153277674452176, guid: 796c68edb8b24914887f8eff3bdff803, type: 3}
       propertyPath: panel_Pause
       value: 
@@ -5765,6 +5769,10 @@ PrefabInstance:
       propertyPath: image_ForFill_Main
       value: 
       objectReference: {fileID: 201186783}
+    - target: {fileID: 5783774802398816388, guid: 796c68edb8b24914887f8eff3bdff803, type: 3}
+      propertyPath: image_ForFill_Charge
+      value: 
+      objectReference: {fileID: 1148975025}
     - target: {fileID: 8511125388560695370, guid: 796c68edb8b24914887f8eff3bdff803, type: 3}
       propertyPath: HPG_C
       value: 

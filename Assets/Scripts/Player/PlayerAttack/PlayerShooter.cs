@@ -14,7 +14,18 @@ public class PlayerShooter : Base_PlayerAttack
     [Serializable]
     protected class ShooterFunction_MainWeapon : BaseFunction_Weapon
     {
+        GameObject thisObj;
+
         float maxChargeTime;
+
+        bool ChargedMax;
+
+        GameObject chargingEffect;
+
+        GameObject FX_Charge;
+        GameObject FX_MaxCharge;
+
+        Image image_fill_Charge;
 
         public float ratio_Charging {  get; private set; }
 
@@ -23,34 +34,64 @@ public class PlayerShooter : Base_PlayerAttack
             ratio_Charging = 0;
 
             _weaponEnum = WeaponEnum.onCharge;
+
+            ChargedMax = false;
+
+            chargingEffect = Instantiate(FX_Charge, thisObj.transform.position, Quaternion.identity, thisObj.transform);
         }
 
         public void ChargingIfOn()
         {
             if (_weaponEnum != WeaponEnum.onCharge) return;
+            if (ChargedMax) return;
 
             ratio_Charging += Time.deltaTime / maxChargeTime;
             ratio_Charging = Mathf.Clamp01(ratio_Charging);
+
+            image_fill_Charge.fillAmount = ratio_Charging;
+
+            if (ratio_Charging >= 1f && ChargedMax == false)
+            {
+                ChargedMax=true;
+
+                Destroy(chargingEffect);
+
+                chargingEffect = Instantiate(FX_MaxCharge, thisObj.transform.position, Quaternion.identity, thisObj.transform);
+            }
         }
 
         public float SubmitChargeValue()
         {
+            Destroy(chargingEffect);
+
             float x = ratio_Charging;
 
             ratio_Charging = 0;
 
             _weaponEnum = WeaponEnum.standBy;
 
+            image_fill_Charge.fillAmount = 0f;
+
             SetCooling(0f);
 
             return x;
         }
 
-        public ShooterFunction_MainWeapon(ShooterStatus_MainWeapon _status, Image _fillImage) :base(_status, _fillImage)
+        public ShooterFunction_MainWeapon(ShooterStatus_MainWeapon _status, Image _fillImage, Image chargeFill, GameObject thisone,  GameObject FX_BeChargeMax, GameObject FX_BeCharge) :base(_status, _fillImage)
         {
             maxChargeTime = _status.sec_MaxCharge;
 
+            FX_MaxCharge = FX_BeChargeMax;
+            FX_Charge = FX_BeCharge;
+            chargingEffect = null;
+
+            image_fill_Charge = chargeFill;
+
+            thisObj = thisone;
+
             ratio_Charging = 0f;
+
+            ChargedMax = false;
         }
     }
 
@@ -97,11 +138,14 @@ public class PlayerShooter : Base_PlayerAttack
     [SerializeField] GameObject effect_Slide;
     [SerializeField] GameObject effect_Charge;
     [SerializeField] GameObject effect_StartShot;
+    [SerializeField] GameObject effect_BeChargeMax;
 
     float magnitude_Shake;
 
     [SerializeField] AudioClip SE_Shot;
     [SerializeField] AudioClip SE_Slide;
+
+    [SerializeField] Image image_ForFill_Charge;
 
     GameObject chargeEffect;
 
@@ -119,7 +163,7 @@ public class PlayerShooter : Base_PlayerAttack
 
         status = JsonUtility.FromJson<ShooterStatus>(jsonStr);
 
-        funk_Main = new ShooterFunction_MainWeapon(status.main, image_ForFill_Main);
+        funk_Main = new ShooterFunction_MainWeapon(status.main, image_ForFill_Main, image_ForFill_Charge, this.gameObject , effect_BeChargeMax, effect_Charge);
         funk_Sub = new ShooterFunction_SubWeapon(status.sub, image_ForFill_Sub);
     }
 
@@ -143,8 +187,6 @@ public class PlayerShooter : Base_PlayerAttack
         base.OnMainAttackHolded();
 
         funk_Main.StartCharge();
-
-        chargeEffect = Instantiate(effect_Charge, transform.position, Quaternion.identity, transform.parent);
     }
 
     protected override void OnMainAttackReleased()
