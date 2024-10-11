@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ShieldStatus : MonoBehaviour, IDamagable
 {
@@ -9,6 +10,8 @@ public class ShieldStatus : MonoBehaviour, IDamagable
     bool JustGuardable;
 
     int count_JustGuardable;
+
+    public UnityEvent _event {  get; private set; } = new UnityEvent();
 
     private void Start()
     {
@@ -47,5 +50,7 @@ public class ShieldStatus : MonoBehaviour, IDamagable
     void JustGuard()
     {
         Instantiate(FX_JustGuard, transform.position, transform.rotation);
+
+        _event.Invoke();
     }
 }

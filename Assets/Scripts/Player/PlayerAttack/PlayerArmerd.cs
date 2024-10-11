@@ -114,6 +114,8 @@ public class PlayerArmerd : Base_PlayerAttack
 
     GameObject shield;
 
+    ShieldStatus _shieldStatus;
+
     protected override void Awake()
     {
         base.Awake();
@@ -214,16 +216,20 @@ public class PlayerArmerd : Base_PlayerAttack
     {
         Debug.Log(Time.time);
 
-        funk_Sub._weaponEnum = WeaponEnum.onAction;
+        funk_Sub.onDeployShield();
 
-        shield = Instantiate(prefab_Shield, transform.position + transform.up * 1f, transform.rotation, parent: this.transform); 
+        shield = Instantiate(prefab_Shield, transform.position + transform.up * 1.4f, transform.rotation, parent: this.transform); 
 
-        ShieldStatus _shieldStatus = shield.GetComponent<ShieldStatus>();
+        _shieldStatus = shield.GetComponent<ShieldStatus>();
+
+        _shieldStatus._event.AddListener(WhenJustAction);
     }
 
     void CloseShield()
     {
-        funk_Sub.onDeployShield();
+        funk_Sub?.onCloseShield();
+
+        _shieldStatus._event?.RemoveAllListeners();
 
         Destroy(shield);
     }
