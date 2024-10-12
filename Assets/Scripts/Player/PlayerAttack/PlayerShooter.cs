@@ -219,8 +219,8 @@ public class PlayerShooter : Base_PlayerAttack
 
         base.WhenJustAction();
 
-        funk_Main.SetCooling(1);
-        funk_Sub.SetCooling(1);
+        funk_Main.AddStock();
+        funk_Sub.AddStock();
 
         Shot360(_cancellationToken).Forget();
     }
@@ -255,7 +255,7 @@ public class PlayerShooter : Base_PlayerAttack
         AS.PlayOneShot(SE_Slide);
 
 
-        _status.Evasing(status.sub.flame_JustAction);
+        _playerStatus.Evasing(status.sub.flame_JustAction);
 
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, slideDirection, status.sub.distance_Slide, wallLayer);

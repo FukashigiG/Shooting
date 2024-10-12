@@ -22,7 +22,7 @@ public class PlayerStatus : MobStatus
     AudioSource _audioSource;
     [SerializeField] AudioClip _clip_Evasion;
 
-    [NonSerialized] public UnityEvent Evasioned = new UnityEvent();
+    [NonSerialized] public UnityEvent _event_JustAction = new UnityEvent();
 
 
     protected override void Start()
@@ -37,7 +37,7 @@ public class PlayerStatus : MobStatus
 
     private void Update()
     {
-        if(evasionalCount_flame > 0)
+        if(evasionalCount_flame > 0 || isEvasionable)
         {
             evasionalCount_flame--;
 
@@ -49,7 +49,10 @@ public class PlayerStatus : MobStatus
     {
         if (isEvasionable)
         {
-            WhenEvasion(_cancellationToken).Forget();
+            TriggerJustAction();
+
+            isEvasionable = false;
+            evasionalCount_flame = 0;
 
             return false;
         }
@@ -66,18 +69,20 @@ public class PlayerStatus : MobStatus
         isEvasionable = true;
     }
 
-    async UniTask WhenEvasion(CancellationToken token)
+    public void TriggerJustAction()
     {
-        isEvasionable = false;
-        evasionalCount_flame = 0;
+        WhenJustAction(_cancellationToken).Forget();
+    }
 
+    async UniTask WhenJustAction(CancellationToken token)
+    {
         Instantiate(effect_Evasion, transform.position, Quaternion.identity);
 
         _audioSource.PlayOneShot(_clip_Evasion);
 
         _collider.enabled = false;
 
-        Evasioned.Invoke();
+        _event_JustAction.Invoke();
 
         Time.timeScale *= timeScale_WhenEvasion;
 
@@ -88,5 +93,13 @@ public class PlayerStatus : MobStatus
         await UniTask.Delay((int)(0.5f * 1000f * Time.timeScale), cancellationToken: token);
 
         _collider.enabled = true;
+    }
+
+    public override void Die()
+    {
+        base.Die();
+
+        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource.Dispose();
     }
 }

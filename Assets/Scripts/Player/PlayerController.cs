@@ -152,6 +152,7 @@ public class PlayerController : MonoBehaviour
     {
         if(shooter != null) shooter.FInishPlaying();
         if(slasher != null) slasher.FInishPlaying();
+        if(armerd  != null) armerd.FInishPlaying();
 
         onPlay = false;
     }

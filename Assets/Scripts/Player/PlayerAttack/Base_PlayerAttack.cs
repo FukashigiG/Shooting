@@ -58,12 +58,25 @@ public class Base_PlayerAttack : MonoBehaviour
             {
                 stock_Action--;
 
+                image_Fill.fillAmount = 1f;
+
                 return true;
             }
             else
             {
                 return false;
             }
+        }
+
+        public void AddStock()
+        {
+            if (stock_Action >= maxNum_Stock) return;
+
+            stock_Action++;
+
+            ratio_Cooling = 0f;
+
+            image_Fill.fillAmount = 0;
         }
 
 
@@ -98,7 +111,7 @@ public class Base_PlayerAttack : MonoBehaviour
     [SerializeField] protected Image image_ForFill_Sub;
 
     protected PlayerController _controller;
-    protected PlayerStatus _status;
+    protected PlayerStatus _playerStatus;
     protected AudioSource AS;
 
     readonly protected CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -128,9 +141,9 @@ public class Base_PlayerAttack : MonoBehaviour
         TryGetComponent(out AS);
 
         transform.parent.TryGetComponent(out _controller);
-        transform.parent.TryGetComponent(out _status);
+        transform.parent.TryGetComponent(out _playerStatus);
 
-        _status.Evasioned.AddListener(WhenJustAction);
+        _playerStatus._event_JustAction.AddListener(WhenJustAction);
     }
 
     protected virtual void Start()
@@ -188,7 +201,7 @@ public class Base_PlayerAttack : MonoBehaviour
         if (onPlay != true) return;
     }
 
-    public void FInishPlaying()
+    public virtual void FInishPlaying()
     {
         onPlay = false;
 

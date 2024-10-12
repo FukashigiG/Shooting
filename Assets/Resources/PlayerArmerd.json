@@ -15,6 +15,6 @@
 
     "cooltime_Attack": 2,
     "num_MaxStock": 1,
-    "sec_DeployableShield": 99
+    "sec_DeployableShield": 3
   }
 }

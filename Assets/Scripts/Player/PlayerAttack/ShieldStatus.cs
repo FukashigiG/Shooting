@@ -1,23 +1,33 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class ShieldStatus : MonoBehaviour, IDamagable
 {
+    [SerializeField] float timeScale_WhenJustGuard;
+
     [SerializeField] GameObject FX_JustGuard;
 
     bool JustGuardable;
 
     int count_JustGuardable;
 
-    public UnityEvent _event {  get; private set; } = new UnityEvent();
+    public UnityEvent _event_JustGuard {  get; private set; } = new UnityEvent();
+
+    readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+    CancellationToken _cancellationToken;
+
 
     private void Start()
     {
         JustGuardable = true;
 
         count_JustGuardable = 4;
+
+        _cancellationToken = _cancellationTokenSource.Token;
     }
 
     private void Update()
@@ -49,8 +59,9 @@ public class ShieldStatus : MonoBehaviour, IDamagable
 
     void JustGuard()
     {
-        Instantiate(FX_JustGuard, transform.position, transform.rotation);
+        JustGuardable = false;
+        count_JustGuardable = 0;
 
-        _event.Invoke();
+        _event_JustGuard.Invoke();
     }
 }

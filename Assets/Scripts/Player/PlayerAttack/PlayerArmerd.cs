@@ -112,6 +112,8 @@ public class PlayerArmerd : Base_PlayerAttack
 
     [SerializeField] GameObject prefab_Shield;
 
+    [SerializeField] GameObject FX_CloseShield;
+
     GameObject shield;
 
     ShieldStatus _shieldStatus;
@@ -214,22 +216,22 @@ public class PlayerArmerd : Base_PlayerAttack
 
     void DeployShield()
     {
-        Debug.Log(Time.time);
-
         funk_Sub.onDeployShield();
 
         shield = Instantiate(prefab_Shield, transform.position + transform.up * 1.4f, transform.rotation, parent: this.transform); 
 
         _shieldStatus = shield.GetComponent<ShieldStatus>();
 
-        _shieldStatus._event.AddListener(WhenJustAction);
+        _shieldStatus._event_JustGuard.AddListener(_playerStatus.TriggerJustAction);
     }
 
     void CloseShield()
     {
         funk_Sub?.onCloseShield();
 
-        _shieldStatus._event?.RemoveAllListeners();
+        _shieldStatus._event_JustGuard?.RemoveAllListeners();
+
+        Instantiate(FX_CloseShield, shield.transform.position, Quaternion.identity);
 
         Destroy(shield);
     }
@@ -238,7 +240,7 @@ public class PlayerArmerd : Base_PlayerAttack
     {
         base.WhenJustAction();
 
-        funk_Main.SetCooling(1);
-        funk_Sub.SetCooling(1);
+        funk_Main.AddStock();
+        funk_Sub.AddStock(); ;
     }
 }

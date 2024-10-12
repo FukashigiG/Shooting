@@ -232,7 +232,7 @@ public class PlayerSlasher : Base_PlayerAttack
 
         Vector2 posi_BeforeSlash = transform.position;
 
-        _status.Evasing((int)(status.main.flame_JustAction * power));
+        _playerStatus.Evasing((int)(status.main.flame_JustAction * power));
 
         int num_slash = (int)(status.main.maxNum_SlashHit * power);
 
@@ -275,8 +275,8 @@ public class PlayerSlasher : Base_PlayerAttack
 
         base.WhenJustAction();
 
-        funk_Main.SetCooling(1);
-        funk_Sub.SetCooling(1);
+        funk_Main.AddStock();
+        funk_Sub.AddStock();
 
         Slash(_cancellationToken).Forget();
     }
