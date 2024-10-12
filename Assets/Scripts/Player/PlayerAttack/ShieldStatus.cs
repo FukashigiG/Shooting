@@ -7,8 +7,7 @@ using UnityEngine.Events;
 
 public class ShieldStatus : MonoBehaviour, IDamagable
 {
-    [SerializeField] float timeScale_WhenJustGuard;
-
+    [SerializeField] GameObject impuct;
     [SerializeField] GameObject FX_JustGuard;
 
     bool JustGuardable;
@@ -61,6 +60,8 @@ public class ShieldStatus : MonoBehaviour, IDamagable
     {
         JustGuardable = false;
         count_JustGuardable = 0;
+
+        Instantiate(impuct, transform.position, Quaternion.identity);
 
         _event_JustGuard.Invoke();
     }

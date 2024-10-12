@@ -4913,7 +4913,7 @@ GameObject:
   - component: {fileID: 2708598583397607910}
   - component: {fileID: 2708598583397607899}
   m_Layer: 0
-  m_Name: CFXR Impact Glowing HDR (Blue)
+  m_Name: FX_DeleteBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -4895,6 +4895,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeScale_WhenJustGuard: 0
+  impuct: {fileID: 8696540676737190472, guid: cc28ddde6c9ef494585f4867e27511f9, type: 3}
   FX_JustGuard: {fileID: 5592345250874215172, guid: 7537cdf749f23ce40993f545d4ba9048, type: 3}
 --- !u!1 &431459110689400287
 GameObject:
