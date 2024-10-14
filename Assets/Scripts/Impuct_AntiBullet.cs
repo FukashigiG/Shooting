@@ -9,8 +9,6 @@ public class Impuct_AntiBullet : MonoBehaviour
 
     [SerializeField] GameObject hitEffect;
 
-    [SerializeField] LayerMask tergetLayer;
-
     List<GameObject> hits = new List<GameObject>();
 
     void Start()
@@ -18,7 +16,6 @@ public class Impuct_AntiBullet : MonoBehaviour
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         flame_LifeTime--;
@@ -28,9 +25,9 @@ public class Impuct_AntiBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (hits.Contains(collision.gameObject)) return;
+        //if (hits.Contains(collision.gameObject)) return;
 
-        if (collision.TryGetComponent(out Base_BulletController bc))
+        if (collision.TryGetComponent(out Projectile projectile))
         {
             Destroy(collision.gameObject);
 
@@ -38,5 +35,7 @@ public class Impuct_AntiBullet : MonoBehaviour
 
             hits.Add(collision.gameObject);
         }
+
+        Debug.Log(collision.gameObject);
     }
 }

@@ -7,7 +7,7 @@ using DG.Tweening;
 using System.Threading;
 
 [RequireComponent (typeof(Collider2D))]
-public class Base_BulletController : MonoBehaviour
+public class Base_BulletController : MonoBehaviour, Projectile
 {
     [SerializeField] protected float speed;
 
@@ -54,8 +54,12 @@ public class Base_BulletController : MonoBehaviour
 
         if (! collision.TryGetComponent(out IDamagable ID)) return;
         if (! ID.Damage(power, transform.position, JudgeCritical())) return;
-        
 
+        Hit(collision.gameObject);
+    }
+
+    public void Hit(GameObject terget)
+    {
         Instantiate(hitEffect, transform.position, Quaternion.identity);
         AudioSource.PlayClipAtPoint(SE_Hit, (Vector2)transform.position);
 

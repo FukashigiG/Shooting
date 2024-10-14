@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rock_B01Controller : MonoBehaviour
+public class Rock_B01Controller : MonoBehaviour, Projectile
 {
     [SerializeField] float power;
     [SerializeField] float chance_Critical;
@@ -32,9 +32,14 @@ public class Rock_B01Controller : MonoBehaviour
         {
             if (! ID.Damage(power, transform.position, JudgeCritical())) return;
 
-            Instantiate(effect_Hit, transform.position, Quaternion.identity);
-            AudioSource.PlayClipAtPoint(SE_Hit, transform.position);
+            Hit(collision.gameObject);
         }
+    }
+
+    public void Hit(GameObject terget)
+    {
+        Instantiate(effect_Hit, transform.position, Quaternion.identity);
+        AudioSource.PlayClipAtPoint(SE_Hit, transform.position);
     }
 
     bool JudgeCritical()
