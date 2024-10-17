@@ -159,6 +159,8 @@ public class Boss_1Controller : Base_BossController
 
     async UniTask Attack03(CancellationToken token)
     {
+        cam_BeWide.Invoke();
+
         await transform.DORotate(new Vector3(0, 0, PlayerDirection()), 0.6f).ToUniTask(cancellationToken: token);
 
         await transform.DOMove(transform.position - transform.up * 0.5f, 0.5f).ToUniTask(cancellationToken: token);
@@ -186,6 +188,8 @@ public class Boss_1Controller : Base_BossController
 
         onStage = true;
         isinAttack03 = false;
+
+        cam_BeDef.Invoke();
 
         await UniTask.Delay(TimeSpan.FromSeconds(def_CoolTime_AfterAttack), cancellationToken: token);
 

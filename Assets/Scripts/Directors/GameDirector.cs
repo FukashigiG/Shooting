@@ -30,6 +30,8 @@ public class GameDirector : MonoBehaviour
     CinemachineImpulseSource impulseSource;
 
     [SerializeField] CinemachineTargetGroup targetGroup;
+
+    [SerializeField] Cam_Director _camDirector;
     public static float remainingHP_Boss {  get; private set; }
 
     [SerializeField] Sprite[] icon_Player;
@@ -110,6 +112,12 @@ public class GameDirector : MonoBehaviour
                 radius = 1.2f
             }
         };
+
+        _bossController.cam_BeDef.AddListener(() => _camDirector.SetCam_Def());
+        _bossController.cam_BeOnlyPlayer.AddListener(() => _camDirector.SetCam_FollowPlayer());
+        _bossController.cam_BeWide.AddListener(() => _camDirector.SetCam_Wide());
+
+        _camDirector.SetCam_Def();
     }
 
     private void Update()
@@ -130,6 +138,10 @@ public class GameDirector : MonoBehaviour
         onGame = false;
 
         onFinish.Invoke();
+
+        _bossController.cam_BeDef.RemoveAllListeners();
+        _bossController.cam_BeOnlyPlayer.RemoveAllListeners();
+        _bossController.cam_BeWide.RemoveAllListeners();
 
         sceneloader.GoToGamaOverScene();
     }

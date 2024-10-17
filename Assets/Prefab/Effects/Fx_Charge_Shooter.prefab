@@ -94,47 +94,47 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095592, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: m_Name
-      value: CFXR2 Power Aura Alt (Loop) 1
+      value: Fx_Charge_Shooter
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ShapeModule.m_Scale.x
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ShapeModule.m_Scale.y
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ShapeModule.m_Scale.z
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: SizeBySpeedModule.range.y
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strength.scalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.x.scalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.y.scalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.z.scalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strengthY.scalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strengthZ.scalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.maxNumParticles
@@ -142,47 +142,47 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.56
+      value: 0.30240002
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strength.minScalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.x.minScalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.y.minScalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.z.minScalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSizeY.scalar
-      value: 5.6
+      value: 3.024
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSizeZ.scalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
-      value: 0.0139999995
+      value: 0.0075599994
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strengthY.minScalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strengthZ.minScalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSize.minScalar
-      value: 0.28
+      value: 0.15120001
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
@@ -190,15 +190,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSizeY.minScalar
-      value: 5.6
+      value: 3.024
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSizeZ.minScalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSpeed.minScalar
-      value: 7
+      value: 3.7800002
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -226,11 +226,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: VelocityModule.speedModifier.scalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.magnitude.scalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startLifetime.minScalar
@@ -238,7 +238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: VelocityModule.speedModifier.minScalar
-      value: 1.4
+      value: 0.756
       objectReference: {fileID: 0}
     - target: {fileID: 1064919628000095593, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.atime1
@@ -298,19 +298,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ShapeModule.m_Scale.x
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ShapeModule.m_Scale.y
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ShapeModule.m_Scale.z
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: SizeBySpeedModule.range.y
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.dampen
@@ -318,83 +318,83 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strength.scalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.x.scalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.y.scalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.z.scalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strengthY.scalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strengthZ.scalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.2548
+      value: 0.13759199
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strength.minScalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.x.minScalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.y.minScalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.z.minScalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSizeY.scalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSizeZ.scalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
-      value: -47.039997
+      value: -25.401598
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strengthY.minScalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strengthZ.minScalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSize.minScalar
-      value: 0.098
+      value: 0.05292
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSizeY.minScalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSizeZ.minScalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSpeed.minScalar
-      value: -31.359999
+      value: -16.934399
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -410,15 +410,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: VelocityModule.speedModifier.scalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.magnitude.scalar
-      value: 0.196
+      value: 0.10584
       objectReference: {fileID: 0}
     - target: {fileID: 2089611945685574732, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: VelocityModule.speedModifier.minScalar
-      value: 1.9599999
+      value: 1.0583999
       objectReference: {fileID: 0}
     - target: {fileID: 2784243882575294820, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: m_IsActive
@@ -434,83 +434,83 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ShapeModule.m_Scale.x
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ShapeModule.m_Scale.y
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ShapeModule.m_Scale.z
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: SizeBySpeedModule.range.y
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strength.scalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.x.scalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.y.scalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.z.scalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strengthY.scalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strengthZ.scalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 5.04
+      value: 2.7216
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strength.minScalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.x.minScalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.y.minScalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.z.minScalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSizeY.scalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSizeZ.scalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strengthY.minScalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: NoiseModule.strengthZ.minScalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSize.minScalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
@@ -518,15 +518,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSizeY.minScalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSizeZ.minScalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startSpeed.minScalar
-      value: 8.400001
+      value: 4.5360003
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: InitialModule.startColor.maxColor.a
@@ -546,15 +546,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: VelocityModule.speedModifier.scalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ClampVelocityModule.magnitude.scalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: VelocityModule.speedModifier.minScalar
-      value: 1.6800001
+      value: 0.9072001
       objectReference: {fileID: 0}
     - target: {fileID: 3765939417993967919, guid: 885f95ee485017e47972d993c5815757, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key0.a

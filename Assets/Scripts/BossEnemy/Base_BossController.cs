@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Base_BossController : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class Base_BossController : MonoBehaviour
     protected CancellationToken _cancellationToken;
 
     bool isStopped = false;
+
+    public UnityEvent cam_BeDef = new UnityEvent();
+    public UnityEvent cam_BeOnlyPlayer = new UnityEvent();
+    public UnityEvent cam_BeWide = new UnityEvent();
 
     protected virtual void Start()
     {
