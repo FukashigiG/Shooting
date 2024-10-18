@@ -7,6 +7,7 @@ using System;
 using DG.Tweening;
 using System.Threading;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class PlayerShooter : Base_PlayerAttack
 {
@@ -28,6 +29,8 @@ public class PlayerShooter : Base_PlayerAttack
         Image image_fill_Charge;
 
         public float ratio_Charging {  get; private set; }
+
+        public UnityEvent call_ChargeMax {  get; private set; } = new UnityEvent();
 
         public void StartCharge()
         {
@@ -53,6 +56,8 @@ public class PlayerShooter : Base_PlayerAttack
             if (ratio_Charging >= 1f && ChargedMax == false)
             {
                 ChargedMax=true;
+
+                call_ChargeMax.Invoke();
 
                 Destroy(chargingEffect);
 
@@ -144,6 +149,8 @@ public class PlayerShooter : Base_PlayerAttack
 
     [SerializeField] AudioClip SE_Shot;
     [SerializeField] AudioClip SE_Slide;
+    [SerializeField] AudioClip SE_Charging;
+    [SerializeField] AudioClip SE_MaxCharge;
 
     [SerializeField] Image image_ForFill_Charge;
 
@@ -165,6 +172,8 @@ public class PlayerShooter : Base_PlayerAttack
 
         funk_Main = new ShooterFunction_MainWeapon(status.main, image_ForFill_Main, image_ForFill_Charge, this.gameObject , effect_BeChargeMax, effect_Charge);
         funk_Sub = new ShooterFunction_SubWeapon(status.sub, image_ForFill_Sub);
+
+        funk_Main.call_ChargeMax.AddListener(() => AS.PlayOneShot(SE_MaxCharge));
     }
 
     protected override void Update()
@@ -186,6 +195,8 @@ public class PlayerShooter : Base_PlayerAttack
 
         base.OnMainAttackHolded();
 
+        SetAndPlaySE(SE_Charging);
+
         funk_Main.StartCharge();
     }
 
@@ -195,6 +206,8 @@ public class PlayerShooter : Base_PlayerAttack
         if (funk_Main._weaponEnum != WeaponEnum.onCharge) return;
 
         base.OnMainAttackPlessed();
+
+        AS.Stop();
 
         Shot(_cancellationToken, funk_Main.SubmitChargeValue()).Forget();
 
@@ -319,7 +332,11 @@ public class PlayerShooter : Base_PlayerAttack
         }
 
         _controller.isRotatable = true;
+    }
 
-        
+    void SetAndPlaySE(AudioClip _clip)
+    {
+        AS.clip = _clip;
+        AS.Play();
     }
 }

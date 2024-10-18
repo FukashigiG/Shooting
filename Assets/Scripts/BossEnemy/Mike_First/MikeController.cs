@@ -236,6 +236,8 @@ public class MikeController : Base_BossController
 
     async UniTask Attack04(CancellationToken token)
     {
+        cam_BeOnlyPlayer.Invoke();
+
         await transform.DORotate(Vector3.zero, 0.1f).ToUniTask(cancellationToken: token);
 
         audioSource.PlayOneShot(SE_A04_jump);
@@ -260,6 +262,8 @@ public class MikeController : Base_BossController
 
                 await transform.DOMove(tergetPosi + new Vector2(-3f, 0), 0.1f).SetEase(ease:Ease.Linear).ToUniTask(cancellationToken: token);
 
+                cam_BeDef.Invoke();
+
                 audioSource.PlayOneShot(SE_HeroPunch);
 
                 Instantiate(Impuct_Attack04, core.transform.position, transform.rotation, core.transform);
@@ -278,6 +282,8 @@ public class MikeController : Base_BossController
                 transform.rotation = Quaternion.Euler(0, 0, -40);
 
                 await transform.DOMove(tergetPosi + new Vector2(3f, 0), 0.1f).SetEase(ease: Ease.Linear).ToUniTask(cancellationToken: token);
+
+                cam_BeDef.Invoke();
 
                 audioSource.PlayOneShot(SE_HeroPunch);
 

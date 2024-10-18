@@ -395,6 +395,8 @@ MonoBehaviour:
   effect_BeChargeMax: {fileID: 1064919628000095592, guid: 579ce35f90c4f1f49941f8fea0643ced, type: 3}
   SE_Shot: {fileID: 8300000, guid: 784d2201cd8d66e4daeb0f665023faf9, type: 3}
   SE_Slide: {fileID: 8300000, guid: daff15c335376f640b0bc7ce628374dd, type: 3}
+  SE_Charging: {fileID: 8300000, guid: 4a2a8114981629942bab2b65b9ea8d0f, type: 3}
+  SE_MaxCharge: {fileID: 8300000, guid: 1fa370c0926fabe4c8857244319fa127, type: 3}
   image_ForFill_Charge: {fileID: 0}
 --- !u!114 &2134167266198198667
 MonoBehaviour:
@@ -421,6 +423,7 @@ MonoBehaviour:
   effect_MaxCharge: {fileID: 1064919628000095592, guid: 9016a3e1107dee449bca7b3411d2c997, type: 3}
   SE_AttackStart: {fileID: 8300000, guid: 52f3b4b817ab3a4499bf50de34a0e127, type: 3}
   SE_AttackEnd: {fileID: 8300000, guid: 4186e7dc966e1b8488a653921b526096, type: 3}
+  SE_MaxCharge: {fileID: 8300000, guid: 1fa370c0926fabe4c8857244319fa127, type: 3}
 --- !u!114 &3599011012204617152
 MonoBehaviour:
   m_ObjectHideFlags: 0

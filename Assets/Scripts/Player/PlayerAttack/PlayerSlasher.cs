@@ -7,6 +7,7 @@ using System;
 using UnityEngine.InputSystem;
 using System.Threading;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class PlayerSlasher : Base_PlayerAttack
 {
@@ -25,6 +26,8 @@ public class PlayerSlasher : Base_PlayerAttack
         float maxChargeTime;
 
         bool chargedMax;
+
+        public UnityEvent call_ChargeMax { get; private set; } = new UnityEvent();
 
         public float ratio_Charging { get; private set; }
 
@@ -52,6 +55,8 @@ public class PlayerSlasher : Base_PlayerAttack
             if (ratio_Charging >= 1f && chargedMax == false)
             {
                 chargedMax = true;
+
+                call_ChargeMax.Invoke();
 
                 Destroy(chargingEffect);
 
@@ -145,6 +150,7 @@ public class PlayerSlasher : Base_PlayerAttack
 
     [SerializeField] AudioClip SE_AttackStart;
     [SerializeField] AudioClip SE_AttackEnd;
+    [SerializeField] AudioClip SE_MaxCharge;
 
     protected override void Awake()
     {
@@ -156,6 +162,8 @@ public class PlayerSlasher : Base_PlayerAttack
 
         funk_Main = new SlasherFunction_MainWeapon(_status: status.main, _fillImage: image_ForFill_Main, image_ForFill_Charge, effect_Charging, effect_MaxCharge, this.gameObject);
         funk_Sub = new SlasherFunction_SubWeapon(_status: status.sub, _fillImage: image_ForFill_Sub);
+
+        funk_Main.call_ChargeMax.AddListener(() => AS.PlayOneShot(SE_MaxCharge));
     }
 
     protected override void Update()
