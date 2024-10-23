@@ -33,6 +33,8 @@ public class PlayerSlasher : Base_PlayerAttack
 
         public void StartCharge()
         {
+            SetCooling(0f);
+            
             ratio_Charging = 0;
 
             _weaponEnum = WeaponEnum.onCharge;
@@ -71,8 +73,6 @@ public class PlayerSlasher : Base_PlayerAttack
             ratio_Charging = 0;
 
             _weaponEnum = WeaponEnum.standBy;
-
-            SetCooling(0f);
 
             image_Fill_Charge.fillAmount = 0f;
 

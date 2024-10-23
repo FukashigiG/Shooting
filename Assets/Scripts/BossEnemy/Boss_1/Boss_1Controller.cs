@@ -161,9 +161,9 @@ public class Boss_1Controller : Base_BossController
     {
         cam_BeWide.Invoke();
 
-        await transform.DORotate(new Vector3(0, 0, PlayerDirection()), 0.6f).ToUniTask(cancellationToken: token);
+        await transform.DORotate(new Vector3(0, 0, PlayerDirection()), 0.8f).ToUniTask(cancellationToken: token);
 
-        await transform.DOMove(transform.position - transform.up * 0.5f, 0.5f).ToUniTask(cancellationToken: token);
+        await transform.DOMove(transform.position - transform.up * 0.5f, 1.2f).ToUniTask(cancellationToken: token);
 
         float mylage = 40;
 

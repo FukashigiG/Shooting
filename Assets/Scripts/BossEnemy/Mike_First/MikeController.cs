@@ -176,9 +176,11 @@ public class MikeController : Base_BossController
 
         audioSource.PlayOneShot(SE_A02);
 
+        cam_BeOnlyPlayer.Invoke();
+
         await transform.DORotate(new Vector3(0, 0, 45), 0.2f).ToUniTask(cancellationToken: token);
-        transform.DORotate(new Vector3(0, 0, -45), 1f);
-        transform.DOShakeScale(1f);
+        transform.DORotate(new Vector3(0, 0, -45), 1f).ToUniTask(cancellationToken: token).Forget();
+        transform.DOShakeScale(1f).ToUniTask(cancellationToken: token).Forget();
 
         for (int i = 0; i < num_CallUFO_A02; i++)
         {
@@ -194,6 +196,8 @@ public class MikeController : Base_BossController
             await UniTask.Delay(400, cancellationToken: token);
         }
 
+        cam_BeDef.Invoke();
+
         await transform.DORotate(new Vector3(0, 0, PlayerDirection()), 1f).ToUniTask(cancellationToken: token);
 
         await UniTask.Delay(TimeSpan.FromSeconds(def_CoolTime_AfterAttack * 0.7f), cancellationToken: token);
@@ -207,7 +211,7 @@ public class MikeController : Base_BossController
 
         audioSource.PlayOneShot(SE_A03);
 
-        transform.DOMove(player.transform.position, 2.4f);
+        transform.DOMove(player.transform.position, 2.4f).ToUniTask(cancellationToken: token).Forget();
 
         for (int i = 0; i < num_bullet_A03; i++)
         {
@@ -242,10 +246,10 @@ public class MikeController : Base_BossController
 
         audioSource.PlayOneShot(SE_A04_jump);
 
-        transform.DOMoveY(transform.position.y - 1.75f, 0.3f);
+        transform.DOMoveY(transform.position.y - 1.75f, 0.3f).ToUniTask(cancellationToken: token).Forget();
         await transform.DOScaleY(defScale.y * 0.35f, 0.3f).ToUniTask(cancellationToken: token);
 
-        transform.DOScale(new Vector2(defScale.x * 0.2f, defScale.y), 0.1f);
+        transform.DOScale(new Vector2(defScale.x * 0.2f, defScale.y), 0.1f).ToUniTask(cancellationToken: token).Forget();
         await transform.DOMoveY(player.transform.position.y + 12f, 0.4f).ToUniTask(cancellationToken: token);
 
         transform.localScale = defScale;

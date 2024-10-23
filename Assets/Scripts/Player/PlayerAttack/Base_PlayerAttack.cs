@@ -36,9 +36,7 @@ public class Base_PlayerAttack : MonoBehaviour
 
                 if (ratio_Cooling >= 1f && stock_Action < maxNum_Stock)
                 {
-                    stock_Action++;
-
-                    ratio_Cooling = 0f;
+                    AddStock();
                 }
             }
         }
@@ -52,13 +50,11 @@ public class Base_PlayerAttack : MonoBehaviour
             image_Fill.fillAmount = 1f - ratio_Cooling;
         }
 
-        public bool ActionIfCan()
+        public virtual bool ActionIfCan()
         {
             if(stock_Action > 0 && _weaponEnum == WeaponEnum.standBy)
             {
                 stock_Action--;
-
-                image_Fill.fillAmount = 1f;
 
                 return true;
             }

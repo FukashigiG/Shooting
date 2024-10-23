@@ -34,6 +34,8 @@ public class PlayerShooter : Base_PlayerAttack
 
         public void StartCharge()
         {
+            SetCooling(0f);
+
             ratio_Charging = 0;
 
             _weaponEnum = WeaponEnum.onCharge;
@@ -76,8 +78,6 @@ public class PlayerShooter : Base_PlayerAttack
             _weaponEnum = WeaponEnum.standBy;
 
             image_fill_Charge.fillAmount = 0f;
-
-            SetCooling(0f);
 
             return x;
         }

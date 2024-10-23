@@ -13,6 +13,15 @@ public class PlayerArmerd : Base_PlayerAttack
     [Serializable]
     class ArmerdFunction_MainWeapon : BaseFunction_Weapon
     {
+        public override bool ActionIfCan()
+        {
+            bool x = base.ActionIfCan();
+
+            if (x == true) SetCooling(0);
+
+            return x;
+        }
+
         public ArmerdFunction_MainWeapon(ArmerdStatus_MainWeapon _status, Image _fillImage) : base(_status, _fillImage)
         {
         }
@@ -31,6 +40,8 @@ public class PlayerArmerd : Base_PlayerAttack
 
         public void onDeployShield()
         {
+            SetCooling(0f);
+
             _weaponEnum = WeaponEnum.onAction;
 
             ratio_GuardGauge = 1f;
