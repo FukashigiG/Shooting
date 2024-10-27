@@ -20,7 +20,7 @@ public class StartSceneDirector : MonoBehaviour
 
     public enum stageEnum
     {
-        stage0, stage1
+        stage0, stage1, stage2
     }
     public static stageEnum stage { get; private set;}
 
@@ -47,9 +47,6 @@ public class StartSceneDirector : MonoBehaviour
     }
     [SerializeField] info_Weapon[] infos_Wp;
 
-    weaponEnum weapon_WatchedNow;
-    stageEnum stage_WatchedNow;
-
     [SerializeField] GameObject tranjitionPanel;
 
     bool alreadyGoToGame;
@@ -65,12 +62,17 @@ public class StartSceneDirector : MonoBehaviour
         {
             case stageEnum.stage0:
                 ShowDescription_Stage(0);
-                stage_WatchedNow = stageEnum.stage0;
+                stage = stageEnum.stage0;
                 break;
 
             case stageEnum.stage1:
                 ShowDescription_Stage(1);
-                stage_WatchedNow = stageEnum.stage1;
+                stage = stageEnum.stage1;
+                break;
+
+            case stageEnum.stage2:
+                ShowDescription_Stage(2);
+                stage = stageEnum.stage2;
                 break;
         }
 
@@ -78,17 +80,14 @@ public class StartSceneDirector : MonoBehaviour
         {
             case weaponEnum.weapon0:
                 ShowDescription_Weapon(0);
-                weapon_WatchedNow= weaponEnum.weapon0;
                 break;
 
             case weaponEnum.weapon1:
                 ShowDescription_Weapon(1);
-                weapon_WatchedNow = weaponEnum.weapon1;
                 break;
 
             case weaponEnum.weapon2:
                 ShowDescription_Weapon(2);
-                weapon_WatchedNow = weaponEnum.weapon2;
                 break;
         }
 
@@ -100,17 +99,6 @@ public class StartSceneDirector : MonoBehaviour
 
         alreadyGoToGame = false;
     }
-
-    public void SelectWeapon()
-    {
-        weapon = weapon_WatchedNow;
-    }
-
-    public void SelectStage()
-    {
-        stage = stage_WatchedNow;
-    }
-
     public void GoToMainScene()
     {
         LoadMainScene().Forget();
@@ -148,15 +136,15 @@ public class StartSceneDirector : MonoBehaviour
         switch (x)
         {
             case 0:
-                stage_WatchedNow = stageEnum.stage0;
+                stage = stageEnum.stage0;
                 break;
 
             case 1:
-                stage_WatchedNow = stageEnum.stage1;
+                stage = stageEnum.stage1;
                 break;
 
             default:
-                stage_WatchedNow = stageEnum.stage0;
+                stage = stageEnum.stage0;
                 break;
 
         }
@@ -179,15 +167,15 @@ public class StartSceneDirector : MonoBehaviour
         switch(x)
         {
             case 0:
-                weapon_WatchedNow = weaponEnum.weapon0;
+                weapon = weaponEnum.weapon0;
                 break;
 
             case 1:
-                weapon_WatchedNow = weaponEnum.weapon1;
+                weapon = weaponEnum.weapon1;
                 break;
 
             case 2:
-                weapon_WatchedNow= weaponEnum.weapon2;
+                weapon = weaponEnum.weapon2;
                 break;
         }
     }

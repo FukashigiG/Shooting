@@ -6,8 +6,11 @@ using System;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class MobStatus : MonoBehaviour, IDamagable
+public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
 {
+    //購読先のリスト
+    private List<IObserver<GameObject>> _observers = new List<IObserver<GameObject>>();
+
     [field:SerializeField] public float MaxHP {  get; private set; }
 
     public float HP { get; private set; }
@@ -18,8 +21,6 @@ public class MobStatus : MonoBehaviour, IDamagable
     [SerializeField] GameObject obj_Txt_RecoverHP;
 
     GameObject parent_DamageUI;
-
-    [NonSerialized] public UnityEvent onDie = new UnityEvent();
 
     [SerializeField] HPGaugeController HPG_C;
 
@@ -115,6 +116,15 @@ public class MobStatus : MonoBehaviour, IDamagable
         return true;
     }
 
+    //購読メソッド
+    public IDisposable Subscribe(IObserver<GameObject> observer)
+    {
+        if(! _observers.Contains(observer)) _observers.Add(observer);
+
+        //購読解除用のクラスをIDisposableとして返す
+        return new Unsubscriber(_observers, observer);
+    }
+
     public void SetHPGauge(HPGaugeController gauge)
     {
         if (HPG_C == null) HPG_C = gauge;
@@ -124,6 +134,27 @@ public class MobStatus : MonoBehaviour, IDamagable
     {
         canTakeDamage = false;
 
-        onDie.Invoke();
+        foreach (var observer in _observers)
+        {
+            observer.OnNext(this.gameObject);
+        }
+    }
+}
+
+class Unsubscriber : IDisposable
+{
+    private List<IObserver<GameObject>> _observers;
+    private IObserver<GameObject> _observer;
+
+    public Unsubscriber(List<IObserver<GameObject>> observers, IObserver<GameObject> observer)
+    {
+        _observers = observers;
+        _observer = observer;
+    }
+
+    //購読先リストから対象の購読者を削除
+    public void Dispose()
+    {
+        _observers.Remove(_observer);
     }
 }

@@ -9,8 +9,10 @@ using Cinemachine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class GameDirector : MonoBehaviour
+public class GameDirector : MonoBehaviour, IObserver<GameObject>
 {
+    List<IDisposable> _disposable = new List<IDisposable>();
+
     float randomAngle;
 
     [SerializeField] GameObject[] bossEnemy;
@@ -84,13 +86,11 @@ public class GameDirector : MonoBehaviour
 
         theBoss.TryGetComponent(out _bossController);
         bossStatus = _bossController.status;
-
         bossStatus.SetHPGauge(HPBar_Boss);
-
-        bossStatus.onDie.AddListener(ClearGame);
+        _disposable.Add(bossStatus.Subscribe(this));
 
         player.TryGetComponent(out playerStatus);
-        playerStatus.onDie.AddListener(PlayerDied);
+        _disposable.Add(playerStatus.Subscribe(this));
 
         tranjitionPanel.SetActive(true);
         tranjitionPanel.TryGetComponent(out RectTransform _rect);
@@ -143,6 +143,8 @@ public class GameDirector : MonoBehaviour
         _bossController.cam_BeOnlyPlayer.RemoveAllListeners();
         _bossController.cam_BeWide.RemoveAllListeners();
 
+
+
         sceneloader.GoToGamaOverScene();
     }
 
@@ -171,5 +173,30 @@ public class GameDirector : MonoBehaviour
         onFinish.Invoke();
 
         sceneloader.GoToTitleScene();
+    }
+
+    private void OnDisable()
+    {
+        foreach (var disposable in _disposable)
+        {
+            if (disposable != null) disposable.Dispose();
+        }
+    }
+
+    //以下オブザーバーのコールバック
+
+    public void OnCompleted()
+    {
+
+    }
+
+    public void OnError(Exception error)
+    {
+        //Debug.LogError(error);
+    }
+
+    public void OnNext(GameObject obj)
+    {
+        PlayerDied();
     }
 }

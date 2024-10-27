@@ -1,16 +1,19 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Base_BossController : MonoBehaviour
+public class Base_BossController : MonoBehaviour, IObserver<GameObject>
 {
+    private IDisposable _disposable;
+
     protected GameObject player;
 
     protected GameDirector _director;
-    [field: SerializeField] public MobStatus status {  get; protected set; }
+    [field: SerializeField] public MobStatus status { get; protected set; }
     protected CinemachineImpulseSource impulseSource;
     protected Collider2D collider2d;
     protected AudioSource audioSource;
@@ -24,8 +27,17 @@ public class Base_BossController : MonoBehaviour
     public UnityEvent cam_BeOnlyPlayer = new UnityEvent();
     public UnityEvent cam_BeWide = new UnityEvent();
 
+
+    public enum CameraStateEnum
+    {
+        def, followOnlyPlayer, wide
+    }
+
+    CameraStateEnum _camStateEnum;
+
     protected virtual void Start()
     {
+
         player = GameObject.Find("Player_Core");
 
         _director = GameObject.Find("GameDirector").GetComponent<GameDirector>();
@@ -36,7 +48,7 @@ public class Base_BossController : MonoBehaviour
 
         _cancellationToken = cancellationTokenSource.Token;
 
-        status.onDie.AddListener(WhenDie);
+        _disposable = status.Subscribe(this);
         _director.onFinish.AddListener(StopAction);
     }
 
@@ -63,5 +75,26 @@ public class Base_BossController : MonoBehaviour
         isStopped = true;
         cancellationTokenSource.Cancel();
         cancellationTokenSource.Dispose();
+    }
+
+    private void OnDisable()
+    {
+        _disposable.Dispose();
+    }
+
+    //以下コールバック
+    public void OnCompleted()
+    {
+
+    }
+
+    public void OnError(Exception error)
+    {
+        Debug.LogError(error);
+    }
+
+    public void OnNext(GameObject obj)
+    {
+        WhenDie();
     }
 }
