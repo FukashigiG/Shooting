@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using Cinemachine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UniRx;
 
 public class GameDirector : MonoBehaviour, IObserver<GameObject>
 {
@@ -113,9 +114,9 @@ public class GameDirector : MonoBehaviour, IObserver<GameObject>
             }
         };
 
-        _bossController.cam_BeDef.AddListener(() => _camDirector.SetCam_Def());
-        _bossController.cam_BeOnlyPlayer.AddListener(() => _camDirector.SetCam_FollowPlayer());
-        _bossController.cam_BeWide.AddListener(() => _camDirector.SetCam_Wide());
+        _bossController.CamStateProp
+            .Subscribe(SetCamera)
+            .AddTo(gameObject);
 
         _camDirector.SetCam_Def();
     }
@@ -138,12 +139,6 @@ public class GameDirector : MonoBehaviour, IObserver<GameObject>
         onGame = false;
 
         onFinish.Invoke();
-
-        _bossController.cam_BeDef.RemoveAllListeners();
-        _bossController.cam_BeOnlyPlayer.RemoveAllListeners();
-        _bossController.cam_BeWide.RemoveAllListeners();
-
-
 
         sceneloader.GoToGamaOverScene();
     }
@@ -173,6 +168,27 @@ public class GameDirector : MonoBehaviour, IObserver<GameObject>
         onFinish.Invoke();
 
         sceneloader.GoToTitleScene();
+    }
+
+    void SetCamera(Base_BossController.CameraStateEnum _enum)
+    {
+        switch (_enum)
+        {
+            case Base_BossController.CameraStateEnum.def:
+                _camDirector.SetCam_Def();
+                break;
+
+            case Base_BossController.CameraStateEnum.followOnlyPlayer:
+                _camDirector.SetCam_FollowPlayer();
+                break;
+
+            case Base_BossController.CameraStateEnum.wide:
+                _camDirector.SetCam_Wide();
+                break;
+
+            default:
+                break;
+        }
     }
 
     private void OnDisable()

@@ -96,7 +96,7 @@ public class Boss_1Controller : Base_BossController
     {
         collider2d.enabled = false;
 
-        transform.DOMoveY(transform.position.y + 0.7f, 0.35f);
+        transform.DOMoveY(transform.position.y + 0.7f, 0.35f).ToUniTask(cancellationToken: token).Forget();
 
         await transform.DOScale(Vector3.zero, 0.35f).ToUniTask(cancellationToken: token);
 
@@ -159,7 +159,7 @@ public class Boss_1Controller : Base_BossController
 
     async UniTask Attack03(CancellationToken token)
     {
-        cam_BeWide.Invoke();
+        SetCameraState(CameraStateEnum.wide);
 
         await transform.DORotate(new Vector3(0, 0, PlayerDirection()), 0.8f).ToUniTask(cancellationToken: token);
 
@@ -189,7 +189,7 @@ public class Boss_1Controller : Base_BossController
         onStage = true;
         isinAttack03 = false;
 
-        cam_BeDef.Invoke();
+        SetCameraState(CameraStateEnum.def);
 
         await UniTask.Delay(TimeSpan.FromSeconds(def_CoolTime_AfterAttack), cancellationToken: token);
 
@@ -202,10 +202,10 @@ public class Boss_1Controller : Base_BossController
         {
             await transform.DORotate(Vector3.zero, 0.1f).ToUniTask(cancellationToken: token);
 
-            transform.DOMoveY(transform.position.y - 1.75f, 0.3f);
+            transform.DOMoveY(transform.position.y - 1.75f, 0.3f).ToUniTask(cancellationToken: token).Forget();
             await transform.DOScaleY(defScale.y * 0.35f, 0.3f).ToUniTask(cancellationToken: token);
 
-            transform.DOScale(new Vector2(defScale.x * 0.2f, defScale.y), 0.1f);
+            transform.DOScale(new Vector2(defScale.x * 0.2f, defScale.y), 0.1f).ToUniTask(cancellationToken: token).Forget();
             await transform.DOMoveY(player.transform.position.y + 10, 0.4f).ToUniTask(cancellationToken: token);
 
             await UniTask.Delay(TimeSpan.FromSeconds(0.5f), cancellationToken: token);
@@ -258,10 +258,10 @@ public class Boss_1Controller : Base_BossController
             if (p == 3) Instantiate(effect_HyperMode, transform.position, Quaternion.identity, this.transform);
         }
 
-        transform.DOMoveY(transform.position.y - 1.75f, 0.05f);
+        transform.DOMoveY(transform.position.y - 1.75f, 0.05f).ToUniTask(cancellationToken: token).Forget();
         await transform.DOScale(new Vector2(defScale.x, defScale.y * 0.35f), 0.05f).ToUniTask(cancellationToken: token);
 
-        transform.DOMoveY(transform.position.y + 1.75f, 1f);
+        transform.DOMoveY(transform.position.y + 1.75f, 1f).ToUniTask(cancellationToken: token).Forget();
         await transform.DOScale(defScale, 1f).ToUniTask(cancellationToken: token);
 
         await UniTask.Delay(TimeSpan.FromSeconds(2), cancellationToken: token);

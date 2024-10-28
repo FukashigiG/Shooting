@@ -134,6 +134,8 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
     {
         canTakeDamage = false;
 
+        if (_observers == null) return;
+
         foreach (var observer in _observers)
         {
             observer.OnNext(this.gameObject);

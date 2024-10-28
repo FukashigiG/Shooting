@@ -176,7 +176,7 @@ public class MikeController : Base_BossController
 
         audioSource.PlayOneShot(SE_A02);
 
-        cam_BeOnlyPlayer.Invoke();
+        SetCameraState(CameraStateEnum.followOnlyPlayer);
 
         await transform.DORotate(new Vector3(0, 0, 45), 0.2f).ToUniTask(cancellationToken: token);
         transform.DORotate(new Vector3(0, 0, -45), 1f).ToUniTask(cancellationToken: token).Forget();
@@ -196,9 +196,9 @@ public class MikeController : Base_BossController
             await UniTask.Delay(400, cancellationToken: token);
         }
 
-        cam_BeDef.Invoke();
-
         await transform.DORotate(new Vector3(0, 0, PlayerDirection()), 1f).ToUniTask(cancellationToken: token);
+
+        SetCameraState(CameraStateEnum.def);
 
         await UniTask.Delay(TimeSpan.FromSeconds(def_CoolTime_AfterAttack * 0.7f), cancellationToken: token);
 
@@ -240,7 +240,7 @@ public class MikeController : Base_BossController
 
     async UniTask Attack04(CancellationToken token)
     {
-        cam_BeOnlyPlayer.Invoke();
+        SetCameraState(CameraStateEnum.followOnlyPlayer);
 
         await transform.DORotate(Vector3.zero, 0.1f).ToUniTask(cancellationToken: token);
 
@@ -266,7 +266,7 @@ public class MikeController : Base_BossController
 
                 await transform.DOMove(tergetPosi + new Vector2(-3f, 0), 0.1f).SetEase(ease:Ease.Linear).ToUniTask(cancellationToken: token);
 
-                cam_BeDef.Invoke();
+                SetCameraState(CameraStateEnum.def);
 
                 audioSource.PlayOneShot(SE_HeroPunch);
 
@@ -287,7 +287,7 @@ public class MikeController : Base_BossController
 
                 await transform.DOMove(tergetPosi + new Vector2(3f, 0), 0.1f).SetEase(ease: Ease.Linear).ToUniTask(cancellationToken: token);
 
-                cam_BeDef.Invoke();
+                SetCameraState(CameraStateEnum.def);
 
                 audioSource.PlayOneShot(SE_HeroPunch);
 

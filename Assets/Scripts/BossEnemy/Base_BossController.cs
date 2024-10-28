@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
+using UniRx;
 
 public class Base_BossController : MonoBehaviour, IObserver<GameObject>
 {
@@ -23,21 +24,27 @@ public class Base_BossController : MonoBehaviour, IObserver<GameObject>
 
     bool isStopped = false;
 
-    public UnityEvent cam_BeDef = new UnityEvent();
-    public UnityEvent cam_BeOnlyPlayer = new UnityEvent();
-    public UnityEvent cam_BeWide = new UnityEvent();
-
-
     public enum CameraStateEnum
     {
         def, followOnlyPlayer, wide
     }
 
-    CameraStateEnum _camStateEnum;
+
+    //↓CameraStateEnum型の変数っぽく振る舞い、こいつの中身が変わると購読先に通知が行くよ、すごい！
+    private readonly ReactiveProperty<CameraStateEnum> _camStateProp;
+    public IReadOnlyReactiveProperty<CameraStateEnum> CamStateProp => _camStateProp;
+    public CameraStateEnum CameraStateValue => _camStateProp.Value;
+
+
+    //コンストラクタ
+    //初期化処理的な感じかな？
+    public Base_BossController()
+    {
+        _camStateProp = new ReactiveProperty<CameraStateEnum>(CameraStateEnum.def);
+    }
 
     protected virtual void Start()
     {
-
         player = GameObject.Find("Player_Core");
 
         _director = GameObject.Find("GameDirector").GetComponent<GameDirector>();
@@ -50,6 +57,12 @@ public class Base_BossController : MonoBehaviour, IObserver<GameObject>
 
         _disposable = status.Subscribe(this);
         _director.onFinish.AddListener(StopAction);
+    }
+
+    //このメソッドを実行してカメラの状態を変更しよう
+    protected void SetCameraState(CameraStateEnum stateEnum)
+    {
+        _camStateProp.Value = stateEnum;
     }
 
     protected float PlayerDirection()
