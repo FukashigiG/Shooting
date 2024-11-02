@@ -101,9 +101,9 @@ public class UfoController : Base_BossController
         }
     }
 
-    protected override void WhenDie()
+    protected override void StopAction()
     {
-        base.WhenDie();
+        base.StopAction();
 
         Instantiate(Impuct_bomb_forEnemy, transform.position, Quaternion.identity);
 

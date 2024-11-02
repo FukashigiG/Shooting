@@ -53,7 +53,7 @@ public class Bullet_MikeController : Base_BulletController
 
     async public UniTask Activation()
     {
-        var token = _cancellationToken;
+        var token = this.GetCancellationTokenOnDestroy();
 
         await transform.DOMove(transform.position - transform.up * 0.5f, 0.2f).ToUniTask(cancellationToken: token);
 

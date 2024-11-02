@@ -198,6 +198,8 @@ public class Boss_1Controller : Base_BossController
 
     async UniTask Attack04(CancellationToken token)
     {
+        SetCameraState(CameraStateEnum.followOnlyPlayer);
+
         for (int p = 0; p < 4; p++)
         {
             await transform.DORotate(Vector3.zero, 0.1f).ToUniTask(cancellationToken: token);
@@ -263,6 +265,8 @@ public class Boss_1Controller : Base_BossController
 
         transform.DOMoveY(transform.position.y + 1.75f, 1f).ToUniTask(cancellationToken: token).Forget();
         await transform.DOScale(defScale, 1f).ToUniTask(cancellationToken: token);
+
+        SetCameraState(CameraStateEnum.def);
 
         await UniTask.Delay(TimeSpan.FromSeconds(2), cancellationToken: token);
 

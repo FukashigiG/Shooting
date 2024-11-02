@@ -154,8 +154,6 @@ public class PlayerShooter : Base_PlayerAttack
 
     [SerializeField] Image image_ForFill_Charge;
 
-    GameObject chargeEffect;
-
 
 
     //à»â∫ÉÅÉCÉìèàóù
@@ -210,8 +208,6 @@ public class PlayerShooter : Base_PlayerAttack
         AS.Stop();
 
         Shot(_cancellationToken, funk_Main.SubmitChargeValue()).Forget();
-
-        if (chargeEffect != null) Destroy(chargeEffect);
     }
 
     protected override void OnSubAttackPlessed()
@@ -309,7 +305,7 @@ public class PlayerShooter : Base_PlayerAttack
                 magnitude_Shake = UnityEngine.Random.Range(-1 * status.main.minMag_Shake, status.main.minMag_Shake);
             }
 
-            Instantiate(bullet, transform.position, Quaternion.Euler(0, 0, transform.localEulerAngles.z + magnitude_Shake));
+            Instantiate(bullet, transform.position + transform.forward * 0.8f, Quaternion.Euler(0, 0, transform.localEulerAngles.z + magnitude_Shake));
             AS.PlayOneShot(SE_Shot);
 
             await transform.DOShakePosition(status.main.interval_Shot, 0.5f, 15).ToUniTask(cancellationToken: token);
@@ -326,7 +322,7 @@ public class PlayerShooter : Base_PlayerAttack
 
         for(int i = 0; i < status.main.maxNum_Bullet; i++)
         {
-            Instantiate(bullet, transform.position, transform.rotation);
+            Instantiate(bullet, transform.position + transform.forward * 0.8f, transform.rotation);
 
             await transform.DORotate(new Vector3(0, 0, transform.localEulerAngles.z + (360f / status.main.maxNum_Bullet)), 0.05f).SetEase(Ease.Linear).ToUniTask(cancellationToken: token);
         }

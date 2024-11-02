@@ -143,6 +143,10 @@ public class StartSceneDirector : MonoBehaviour
                 stage = stageEnum.stage1;
                 break;
 
+            case 2:
+                stage = stageEnum.stage2;
+                break;
+
             default:
                 stage = stageEnum.stage0;
                 break;

@@ -130,13 +130,16 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
         if (HPG_C == null) HPG_C = gauge;
     }
 
+    //HPが尽きた時の処理
     public virtual void Die()
     {
         canTakeDamage = false;
 
-        if (_observers == null) return;
+        //_observersをそのままforeachしてしまうとOnNext先でオブジェが消える処理等があった場合
+        //foreach処理中にリストの中身が変わりエラーが起こる
+        var observers = new List<IObserver<GameObject>>(_observers);
 
-        foreach (var observer in _observers)
+        foreach (var observer in observers)
         {
             observer.OnNext(this.gameObject);
         }

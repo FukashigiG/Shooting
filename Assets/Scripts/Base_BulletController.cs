@@ -25,15 +25,10 @@ public class Base_BulletController : MonoBehaviour, Projectile
 
     protected bool isHittableToWall = false;
 
-    readonly protected CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-    protected CancellationToken _cancellationToken;
-
     protected virtual void Start()
     {
         TryGetComponent(out trailRenderer);
         TryGetComponent(out collider2d);
-
-        _cancellationToken = cancellationTokenSource.Token;
 
         BeHittableToWall();
     }
@@ -60,20 +55,21 @@ public class Base_BulletController : MonoBehaviour, Projectile
 
     public void Hit(GameObject terget)
     {
-        Instantiate(hitEffect, transform.position, Quaternion.identity);
-        AudioSource.PlayClipAtPoint(SE_Hit, (Vector2)transform.position);
+        if(hitEffect != null) Instantiate(hitEffect, transform.position, Quaternion.identity);
+        if(SE_Hit != null) AudioSource.PlayClipAtPoint(SE_Hit, (Vector2)transform.position);
+
+        BeSmallAndDie().Forget();
+    }
+
+    protected virtual async UniTask BeSmallAndDie()
+    {
+        var token = this.GetCancellationTokenOnDestroy();
 
         speed = 0;
 
         collider2d.enabled = false;
 
-        BeSmallAndDie(_cancellationToken).Forget();
-    }
-
-    protected async UniTask BeSmallAndDie(CancellationToken token)
-    {
         float x;
-
         if(trailRenderer == null)
         {
             x = 0.1f;
@@ -103,11 +99,5 @@ public class Base_BulletController : MonoBehaviour, Projectile
         await UniTask.Delay(TimeSpan.FromSeconds(0.05f));
 
         isHittableToWall = true;
-    }
-
-    protected void OnDestroy()
-    {
-        cancellationTokenSource.Cancel();
-        cancellationTokenSource.Dispose();
     }
 }

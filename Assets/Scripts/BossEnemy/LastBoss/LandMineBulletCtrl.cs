@@ -3,19 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMissileCtrl : Base_BulletController
+public class LandMineBulletCtrl : Base_BulletController
 {
     GameObject terget;
 
     [SerializeField] float def_RotateSpeed;
-    [SerializeField] float time_freezeRotate;
-    [SerializeField] float length_Ray_SearchTatget;
-    [SerializeField] LayerMask enemyLayer;
+    [SerializeField] float num_Bomb_PerSec;
+    [SerializeField] float lifeTime;
     [SerializeField] GameObject bomb;
+
+    float timeCount = 0;
+    float lifeCount = 0;
 
     float rotateSpeed;
 
     float math_x, math_y;
+
+    bool onLiving = true;
 
     protected override void Start()
     {
@@ -31,9 +35,26 @@ public class PlayerMissileCtrl : Base_BulletController
     {
         base.Update();
 
-        if(terget != null)
+        timeCount += Time.deltaTime;
+        lifeCount += Time.deltaTime;
+
+        if(timeCount > 1 / num_Bomb_PerSec)
         {
-            math_x += Time.deltaTime * 2f;
+            timeCount = 0;
+
+            Instantiate(bomb, transform.position, Quaternion.identity);
+        }
+
+        if(lifeCount > lifeTime && onLiving)
+        {
+            onLiving = false;
+
+            BeSmallAndDie().Forget();
+        }
+
+        if (terget != null)
+        {
+            math_x += Time.deltaTime;
 
             math_y = -1 * Mathf.Pow((math_x - 1f), 2) + 1f;
 
@@ -89,18 +110,6 @@ public class PlayerMissileCtrl : Base_BulletController
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Wall") && isHittableToWall == false) return;
 
-        if (!collision.TryGetComponent(out IDamagable ID)) return;
-
-        Instantiate(bomb, transform.position, Quaternion.identity);
-
-        AudioSource.PlayClipAtPoint(SE_Hit, (Vector2)transform.position);
-
-        speed = 0;
-
-        collider2d.enabled = false;
-
-        BeSmallAndDie().Forget();
     }
 }

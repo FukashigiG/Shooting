@@ -46,6 +46,6 @@ public class GreemBulletController : Base_BulletController
 
         collider2d.enabled = false;
 
-        BeSmallAndDie(_cancellationToken).Forget();
+        BeSmallAndDie().Forget();
     }
 }

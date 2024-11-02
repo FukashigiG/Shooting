@@ -38,7 +38,7 @@ public class GameDirector : MonoBehaviour, IObserver<GameObject>
     public static float remainingHP_Boss {  get; private set; }
 
     [SerializeField] Sprite[] icon_Player;
-    [SerializeField] Image image_UI;
+    [SerializeField] Image[] image_UI = new Image[2];
 
     [SerializeField] GameObject tranjitionPanel;
 
@@ -65,23 +65,33 @@ public class GameDirector : MonoBehaviour, IObserver<GameObject>
                 theBoss = Instantiate(bossEnemy[1], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
 
                 break;
+
+            case StartSceneDirector.stageEnum.stage2:
+
+                theBoss = Instantiate(bossEnemy[2], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
+
+                break;
         }
 
         switch (StartSceneDirector.weapon)
         {
             case StartSceneDirector.weaponEnum.weapon0:
 
-                image_UI.overrideSprite = icon_Player[0];
+                image_UI[0].overrideSprite = icon_Player[0];
+                image_UI[1].overrideSprite = icon_Player[0];
                 break;
 
             case StartSceneDirector.weaponEnum.weapon1:
 
-                image_UI.overrideSprite = icon_Player[1];
+                image_UI[0].overrideSprite = icon_Player[1];
+                image_UI[1].overrideSprite = icon_Player[1];
                 break;
 
             case StartSceneDirector.weaponEnum.weapon2:
 
-                image_UI.overrideSprite = icon_Player[2];
+                image_UI[0].overrideSprite = icon_Player[2];
+                image_UI[1].overrideSprite = icon_Player[2];
+
                 break;
         }
 
@@ -208,11 +218,19 @@ public class GameDirector : MonoBehaviour, IObserver<GameObject>
 
     public void OnError(Exception error)
     {
-        //Debug.LogError(error);
+        Debug.LogError(error);
     }
 
     public void OnNext(GameObject obj)
     {
-        PlayerDied();
+
+        if (obj == player)
+        {
+            PlayerDied();
+        }
+        else if(obj == theBoss)
+        {
+            ClearGame();
+        }
     }
 }
