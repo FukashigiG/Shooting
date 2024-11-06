@@ -89,8 +89,6 @@ public class PlayerMissileCtrl : Base_BulletController
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Wall") && isHittableToWall == false) return;
-
         if (!collision.TryGetComponent(out IDamagable ID)) return;
 
         Instantiate(bomb, transform.position, Quaternion.identity);

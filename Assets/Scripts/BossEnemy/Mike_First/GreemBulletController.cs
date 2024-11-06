@@ -33,8 +33,6 @@ public class GreemBulletController : Base_BulletController
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Wall") && isHittableToWall == false) return;
-
         if (!collision.TryGetComponent(out IDamagable ID)) return;
         if (!ID.Recover(power, transform.position)) return;
 

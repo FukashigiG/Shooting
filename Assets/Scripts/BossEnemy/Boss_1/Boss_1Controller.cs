@@ -81,7 +81,7 @@ public class Boss_1Controller : Base_BossController
         {
             if(i == 0 || flag_HPUnder50) await transform.DORotate(new Vector3(0, 0, PlayerDirection()), 0.2f).ToUniTask(cancellationToken: token);
 
-            Instantiate(bullet_A01, transform.position, transform.rotation);
+            Instantiate(bullet_A01, transform.position + transform.up, transform.rotation);
             audioSource.PlayOneShot(SE_ShotBullet);
 
             await transform.DOPunchPosition(-transform.up, A01_Interval_Shot, 1, 1f).ToUniTask(cancellationToken: token);
@@ -112,7 +112,7 @@ public class Boss_1Controller : Base_BossController
 
         for(int i = 0;i < A02_Num_Shot; i++)
         {
-            Instantiate(bullet_A01, transform.position, transform.rotation);
+            Instantiate(bullet_A01, transform.position + transform.up, transform.rotation);
             audioSource.PlayOneShot(SE_ShotBullet);
 
             await transform.DOPunchPosition(-transform.up, 0.1f, 1, 1).ToUniTask(cancellationToken: token);
@@ -165,7 +165,7 @@ public class Boss_1Controller : Base_BossController
 
         await transform.DOMove(transform.position - transform.up * 0.5f, 1.2f).ToUniTask(cancellationToken: token);
 
-        float mylage = 40;
+        float mylage = 99;
 
         isinAttack03 = true;
         onStage = true;
@@ -174,16 +174,23 @@ public class Boss_1Controller : Base_BossController
 
         if (hit.collider)
         {
+            Debug.Log(hit.collider.gameObject.name);
+
             float length = Vector2.Distance(hit.point, transform.position);
 
-            await transform.DOMove(hit.point + (Vector2)transform.up * 5, 0.7f).SetEase(Ease.Linear).ToUniTask(cancellationToken: token);
-
-            transform.position = -1 * transform.position;
-            transform.rotation = Quaternion.Euler(0, 0, PlayerDirection());
+            await transform.DOMove(hit.point + (Vector2)transform.up * 9f, 0.7f).SetEase(Ease.Linear).ToUniTask(cancellationToken: token);
 
             onStage = false;
 
-            await transform.DOMove(player.transform.position, 0.7f).SetEase(Ease.OutCubic).ToUniTask(cancellationToken: token);
+            isinAttack03 = false;
+
+            transform.localScale = Vector2.zero;
+            transform.position = new Vector3(UnityEngine.Random.Range(-8.5f, 8.5f), UnityEngine.Random.Range(-8.5f, 8.5f), 0);
+            transform.rotation = Quaternion.Euler(0, 0, PlayerDirection());
+
+            await UniTask.Delay(700, cancellationToken:token);
+
+            await transform.DOScale(Vector2.one, 0.3f).ToUniTask(cancellationToken: token);
         }
 
         onStage = true;

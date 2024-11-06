@@ -56,8 +56,8 @@ MonoBehaviour:
   isMovable: 0
   isRotatable: 0
   isMoving: 0
-  moveLlimit_X: 10
-  moveLlimit_Y: 10
+  moveLlimit_X: 9.5
+  moveLlimit_Y: 9.5
   panel_Pause: {fileID: 0}
 --- !u!114 &8972280588518888515
 MonoBehaviour:

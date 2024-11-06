@@ -23,14 +23,10 @@ public class Base_BulletController : MonoBehaviour, Projectile
 
     protected Collider2D collider2d;
 
-    protected bool isHittableToWall = false;
-
     protected virtual void Start()
     {
         TryGetComponent(out trailRenderer);
         TryGetComponent(out collider2d);
-
-        BeHittableToWall();
     }
 
     protected virtual void Update()
@@ -45,8 +41,6 @@ public class Base_BulletController : MonoBehaviour, Projectile
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Wall") && isHittableToWall == false) return;
-
         if (! collision.TryGetComponent(out IDamagable ID)) return;
         if (! ID.Damage(power, transform.position, JudgeCritical())) return;
 
@@ -92,12 +86,5 @@ public class Base_BulletController : MonoBehaviour, Projectile
         if(chance_Critical >= y) x = true;
 
         return x;
-    }
-
-    protected async void BeHittableToWall()
-    {
-        await UniTask.Delay(TimeSpan.FromSeconds(0.05f));
-
-        isHittableToWall = true;
     }
 }
