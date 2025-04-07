@@ -746,11 +746,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &153527403 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 643792725459769638, guid: 1608970cacc5b2246bfcea736d56c863, type: 3}
-  m_PrefabInstance: {fileID: 676317867}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &153527406 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5880092936420873060, guid: 1608970cacc5b2246bfcea736d56c863, type: 3}
@@ -5219,7 +5214,6 @@ GameObject:
   - component: {fileID: 1468329293}
   - component: {fileID: 1468329295}
   - component: {fileID: 1468329296}
-  - component: {fileID: 1468329297}
   m_Layer: 0
   m_Name: GameDirector
   m_TagString: Untagged
@@ -5419,19 +5413,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1468329297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1468329292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c65eb220bfda1a488b74c30cccd434f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeOutKun: {fileID: 153527403}
 --- !u!1 &1521592455
 GameObject:
   m_ObjectHideFlags: 0

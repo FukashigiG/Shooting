@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class GameOverSceneDirector : MonoBehaviour
 {
@@ -25,11 +25,11 @@ public class GameOverSceneDirector : MonoBehaviour
 
     public void GoToTitle()
     {
-        SceneManager.LoadScene("StartScene");
+        Sceneloader.Instance.LoadScene("StartScene");
     }
 
     public void Retry()
     {
-        SceneManager.LoadScene("MainScene");
+        Sceneloader.Instance.LoadScene("MainScene");
     }
 }

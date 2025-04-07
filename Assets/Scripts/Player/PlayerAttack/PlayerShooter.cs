@@ -165,7 +165,6 @@ public class PlayerShooter : Base_PlayerAttack
         base.Awake();
 
         string jsonStr = jsonFile.ToString();
-
         status = JsonUtility.FromJson<ShooterStatus>(jsonStr);
 
         funk_Main = new ShooterFunction_MainWeapon(status.main, image_ForFill_Main, image_ForFill_Charge, this.gameObject , effect_BeChargeMax, effect_Charge);

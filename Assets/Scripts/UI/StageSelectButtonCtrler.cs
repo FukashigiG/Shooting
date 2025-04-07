@@ -1,26 +1,48 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class StageSelectButtonCtrler : MonoBehaviour
+public class StageSelectButtonCtrler : MonoBehaviour, ISelectHandler
 {
-    [SerializeField] string stageName;
+
+    RectTransform _rectTransform;
+    RectTransform _parent;
 
     Button _button;
     Text txt_TitleName;
 
-    void Start()
+    int pointingID;
+
+    void Awake()
     {
         TryGetComponent(out _button);
-        _button.onClick.AddListener(Selected);
+        _button.onClick.AddListener(Clicked);
 
         txt_TitleName = transform.GetChild(0).GetComponent<Text>();
-        txt_TitleName.text = stageName;
+
+        TryGetComponent(out _rectTransform);
+        _parent = this.transform.parent.GetComponent<RectTransform>();
     }
 
-    void Selected()
+    public void SetInfo(int id, string name)
     {
-        StageSelectDirector.Instance.DisplayRightWindow(stageName);
+        pointingID = id;
+
+        txt_TitleName.text = name;
+    }
+
+    public void OnSelect(BaseEventData x)
+    {
+        StageSelectDirector.Instance.DisplayRightWindow(pointingID, this.gameObject);
+
+        _parent.DOAnchorPosX(0 - (_rectTransform.localPosition.x - 410f) , 0.5f);
+    }
+
+    public void Clicked()
+    {
+        StageSelectDirector.Instance.ReadyToFight();
     }
 }
