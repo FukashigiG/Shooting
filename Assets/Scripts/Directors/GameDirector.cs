@@ -4,7 +4,6 @@ using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 using Cinemachine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -22,8 +21,6 @@ public class GameDirector : MonoBehaviour, IObserver<GameObject>
     GameObject theBoss;
     MobStatus bossStatus;
     Base_BossController _bossController;
-
-    Sceneloader sceneloader;
 
     [SerializeField] GameObject player;
     MobStatus playerStatus;
@@ -48,9 +45,7 @@ public class GameDirector : MonoBehaviour, IObserver<GameObject>
 
     void Start()
     {
-
         TryGetComponent(out impulseSource);
-        TryGetComponent(out sceneloader);
 
         switch (StartSceneDirector.stage)
         {
@@ -150,7 +145,7 @@ public class GameDirector : MonoBehaviour, IObserver<GameObject>
 
         onFinish.Invoke();
 
-        sceneloader.GoToGamaOverScene();
+        Sceneloader.Instance.LoadScene("GameOverScene");
     }
 
 
@@ -166,7 +161,7 @@ public class GameDirector : MonoBehaviour, IObserver<GameObject>
 
         onFinish.Invoke();
 
-        sceneloader.GoToGameClearScene();
+        Sceneloader.Instance.LoadScene("ClearScene");
     }
 
     public void Retire()
@@ -177,7 +172,7 @@ public class GameDirector : MonoBehaviour, IObserver<GameObject>
 
         onFinish.Invoke();
 
-        sceneloader.GoToTitleScene();
+        Sceneloader.Instance.LoadScene("StartScene");
     }
 
     void SetCamera(Base_BossController.CameraStateEnum _enum)
