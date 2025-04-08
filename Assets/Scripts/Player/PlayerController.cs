@@ -36,36 +36,8 @@ public class PlayerController : MonoBehaviour
     {
         TryGetComponent(out playerInput);
 
-        switch (StartSceneDirector.weapon)
-        {
-            case StartSceneDirector.weaponEnum.weapon0:
-
-                body.TryGetComponent(out shooter);
-                shooter.enabled = true;
-
-                break;
-
-            case StartSceneDirector.weaponEnum.weapon1:
-
-                body.TryGetComponent(out slasher);
-                slasher.enabled = true;
-
-                break;
-
-            case StartSceneDirector.weaponEnum.weapon2:
-
-                body.TryGetComponent(out armerd);
-                armerd.enabled = true;
-
-                break;
-
-            default:
-
-                body.TryGetComponent(out shooter);
-                shooter.enabled = true;
-
-                break;
-        }
+        body.TryGetComponent(out shooter);
+        shooter.enabled = true;
 
         _gameDirector.onFinish.AddListener(WhenFinishGame);
 

@@ -47,48 +47,10 @@ public class GameDirector : MonoBehaviour, IObserver<GameObject>
     {
         TryGetComponent(out impulseSource);
 
-        switch (StartSceneDirector.stage)
-        {
-            case StartSceneDirector.stageEnum.stage0:
+        theBoss = Instantiate(bossEnemy[0], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
 
-                theBoss = Instantiate(bossEnemy[0], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
-
-                break;
-
-            case StartSceneDirector.stageEnum.stage1:
-
-                theBoss = Instantiate(bossEnemy[1], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
-
-                break;
-
-            case StartSceneDirector.stageEnum.stage2:
-
-                theBoss = Instantiate(bossEnemy[2], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
-
-                break;
-        }
-
-        switch (StartSceneDirector.weapon)
-        {
-            case StartSceneDirector.weaponEnum.weapon0:
-
-                image_UI[0].overrideSprite = icon_Player[0];
-                image_UI[1].overrideSprite = icon_Player[0];
-                break;
-
-            case StartSceneDirector.weaponEnum.weapon1:
-
-                image_UI[0].overrideSprite = icon_Player[1];
-                image_UI[1].overrideSprite = icon_Player[1];
-                break;
-
-            case StartSceneDirector.weaponEnum.weapon2:
-
-                image_UI[0].overrideSprite = icon_Player[2];
-                image_UI[1].overrideSprite = icon_Player[2];
-
-                break;
-        }
+        image_UI[0].overrideSprite = icon_Player[0];
+        image_UI[1].overrideSprite = icon_Player[0];
 
         theBoss.TryGetComponent(out _bossController);
         bossStatus = _bossController.status;

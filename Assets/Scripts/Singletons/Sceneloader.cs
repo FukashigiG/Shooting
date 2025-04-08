@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using DG.Tweening;
 using Cysharp.Threading.Tasks;
 
 public class Sceneloader : SingletonMonoDontDestroy<Sceneloader>

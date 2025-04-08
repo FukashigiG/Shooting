@@ -15,33 +15,11 @@ public class ClearSceneDirector : MonoBehaviour
 
     private void Start()
     {
-        switch (StartSceneDirector.stage)
-        {
-            case StartSceneDirector.stageEnum.stage0:
-                txt_Stage.text = "クリアステージ：ザ・ボス";
-                break;
-
-            case StartSceneDirector.stageEnum.stage1:
-                txt_Stage.text = "クリアステージ：マイク:FS";
-                break;
-
-            default:
-                txt_Weapon.text = "クリアステージ：ザ・ボス";
-                break;
-        }
+        txt_Weapon.text = "クリアステージ：ザ・ボス";
 
         txt_ClearTime.text = "クリアタイム：" + GameDirector.elapsedTime + " 秒";
 
-        switch (StartSceneDirector.weapon)
-        {
-            case StartSceneDirector.weaponEnum.weapon0:
-                txt_Weapon.text = "使用ウェポン : シューター";
-                break;
-
-            case StartSceneDirector.weaponEnum.weapon1:
-                txt_Weapon.text = "使用ウェポン : サムライ";
-                break;
-        }
+        txt_Weapon.text = "使用ウェポン : シューター";
 
         fadePanel.SetActive(true);
         Image image = fadePanel.GetComponent<Image>();

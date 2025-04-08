@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BGMDirector : MonoBehaviour
+public class BGMDirector : SingletonMonoDontDestroy<BGMDirector>
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override bool dontDestroyOnLoad { get { return true; } }
+
+    AudioSource _audioSource;
+
+    protected override void Awake()
     {
-        
+        base.Awake();
+
+        if (_audioSource == null) TryGetComponent(out _audioSource);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Play()
     {
-        
+
     }
 }
