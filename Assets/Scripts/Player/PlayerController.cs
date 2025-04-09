@@ -24,8 +24,6 @@ public class PlayerController : MonoBehaviour
     PlayerSlasher slasher;
     PlayerArmerd armerd;
 
-    bool onPlay = true;
-
     [SerializeField] GameObject panel_Pause;
 
     void Start()
@@ -43,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!onPlay) return;
+        if (! GameDirector.Instance.onGame) return;
 
         moving();   
     }
@@ -83,7 +81,7 @@ public class PlayerController : MonoBehaviour
     void OnPause()
     {
         if (panel_Pause.activeSelf) return;
-        if (!onPlay) return;
+        if (! GameDirector.Instance.onGame) return;
 
         Time.timeScale *= 0.05f;
 
@@ -104,8 +102,6 @@ public class PlayerController : MonoBehaviour
         if(shooter != null) shooter.FInishPlaying();
         if(slasher != null) slasher.FInishPlaying();
         if(armerd  != null) armerd.FInishPlaying();
-
-        onPlay = false;
     }
 
     float GetAngle(Vector2 start, Vector2 terget)

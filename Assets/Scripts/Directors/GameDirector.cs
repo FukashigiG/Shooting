@@ -39,7 +39,7 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
 
     public static float elapsedTime {  get; private set; } = 0;
 
-    bool onGame = true;
+    public bool onGame { get; private set; } = true;
 
     void Start()
     {
