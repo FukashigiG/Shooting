@@ -18,8 +18,6 @@ public class PlayerController : MonoBehaviour
     public Vector2 moveVector { get; private set; } = Vector2.zero;
     public Vector2 turnVector { get; private set; } = Vector2.zero;
 
-    [SerializeField] GameDirector _gameDirector;
-
     PlayerShooter shooter;
     PlayerSlasher slasher;
     PlayerArmerd armerd;
@@ -34,7 +32,7 @@ public class PlayerController : MonoBehaviour
         body.TryGetComponent(out shooter);
         shooter.enabled = true;
 
-        _gameDirector.onFinish.AddListener(WhenFinishGame);
+        GameDirector.Instance.onFinish.AddListener(WhenFinishGame);
 
         _model = new PlayerCtrlerModel();
     }

@@ -29,7 +29,6 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
 
     [SerializeField] CinemachineTargetGroup targetGroup;
 
-    [SerializeField] Cam_Director _camDirector;
     public static float remainingHP_Boss {  get; private set; }
 
     [SerializeField] Sprite[] icon_Player;
@@ -37,6 +36,7 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
 
     [SerializeField] GameObject tranjitionPanel;
 
+    float startTime;
     public static float elapsedTime {  get; private set; } = 0;
 
     public bool onGame { get; private set; } = true;
@@ -83,12 +83,9 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
             .Subscribe(SetCamera)
             .AddTo(gameObject);
 
-        _camDirector.SetCam_Def();
-    }
+        Cam_Director.Instance.SetCam_Def();
 
-    private void Update()
-    {
-        elapsedTime += Time.deltaTime;
+        startTime = Time.time;
     }
 
     void PlayerDied()
@@ -115,6 +112,8 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
 
         impulseSource.GenerateImpulse();
 
+        elapsedTime = Time.time - startTime;
+
         Time.timeScale *= 0.4f;
 
         onGame = false;
@@ -140,15 +139,15 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
         switch (_enum)
         {
             case Base_BossController.CameraStateEnum.def:
-                _camDirector.SetCam_Def();
+                Cam_Director.Instance.SetCam_Def();
                 break;
 
             case Base_BossController.CameraStateEnum.followOnlyPlayer:
-                _camDirector.SetCam_FollowPlayer();
+                Cam_Director.Instance.SetCam_FollowPlayer();
                 break;
 
             case Base_BossController.CameraStateEnum.wide:
-                _camDirector.SetCam_Wide();
+                Cam_Director.Instance.SetCam_Wide();
                 break;
 
             default:

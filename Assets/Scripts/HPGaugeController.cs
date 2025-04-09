@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using UniRx;
 
 public class HPGaugeController : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class HPGaugeController : MonoBehaviour
     [SerializeField] float dulation;
 
     RectTransform rect;
+
+    MobStatus _mobStatus;
 
     bool isAnimating = false;
     private void Start()

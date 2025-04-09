@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cam_Director : MonoBehaviour
+public class Cam_Director : SingletonMono<Cam_Director>
 {
     [SerializeField] GameObject cam_Def;
     [SerializeField] GameObject cam_OnlyPlayer;

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
-using UnityEngine.Events;
-using UnityEngine.UI;
+using UniRx;
+using static Base_BossController;
 
 public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
 {
@@ -13,7 +13,9 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
 
     [field:SerializeField] public float MaxHP {  get; private set; }
 
-    public float HP { get; private set; }
+    private readonly ReactiveProperty<float> hpProp = new ReactiveProperty<float>();
+    public IReadOnlyReactiveProperty<float> HP_Prop => hpProp;
+    public float HP => hpProp.Value;
 
     bool canTakeDamage;
 
@@ -47,11 +49,16 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
     }
 
     TheDamageTxt damageTxt;
- 
+
+
+    public MobStatus()
+    {
+        
+    }
 
     protected virtual void Start()
     {
-        HP = MaxHP;
+        hpProp.Value = MaxHP;
 
         parent_DamageUI = GameObject.Find("parent_DamageUI");
 
@@ -82,7 +89,7 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
 
         damageTxt.AddDamage(damage, screenPosi);
 
-        HP -= damage;
+        hpProp.Value -= damage;
         if (HPG_C != null) HPG_C.SetGauge_Damage(HP / MaxHP);
         if (HP <= 0) Die();
 
@@ -104,11 +111,11 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
 
         if (MaxHP - HP <= point)
         {
-            HP = MaxHP;
+            hpProp.Value = MaxHP;
         }
         else
         {
-            HP += point;
+            hpProp.Value += point;
 
         }
         if (HPG_C != null) HPG_C.SetGauge_Heal(HP / MaxHP);

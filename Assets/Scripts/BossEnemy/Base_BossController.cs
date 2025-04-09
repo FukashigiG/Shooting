@@ -13,7 +13,6 @@ public class Base_BossController : MonoBehaviour, IObserver<GameObject>
 
     protected GameObject player;
 
-    protected GameDirector _director;
     [field: SerializeField] public MobStatus status { get; protected set; }
     protected CinemachineImpulseSource impulseSource;
     protected Collider2D collider2d;
@@ -47,8 +46,6 @@ public class Base_BossController : MonoBehaviour, IObserver<GameObject>
     {
         player = GameObject.Find("Player_Core");
 
-        _director = GameObject.Find("GameDirector").GetComponent<GameDirector>();
-
         TryGetComponent(out impulseSource);
         TryGetComponent(out collider2d);
         TryGetComponent(out audioSource);
@@ -56,7 +53,7 @@ public class Base_BossController : MonoBehaviour, IObserver<GameObject>
         _cancellationToken = cancellationTokenSource.Token;
 
         _disposable = status.Subscribe(this);
-        _director.onFinish.AddListener(StopAction);
+        GameDirector.Instance.onFinish.AddListener(StopAction);
     }
 
     //このメソッドを実行してカメラの状態を変更しよう
