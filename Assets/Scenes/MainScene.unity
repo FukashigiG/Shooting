@@ -6786,6 +6786,18 @@ PrefabInstance:
       propertyPath: image_ForFill_Charge
       value: 
       objectReference: {fileID: 1148975025}
+    - target: {fileID: 6789525796291171637, guid: 796c68edb8b24914887f8eff3bdff803, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789525796291171637, guid: 796c68edb8b24914887f8eff3bdff803, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789525796291171637, guid: 796c68edb8b24914887f8eff3bdff803, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8511125388560695370, guid: 796c68edb8b24914887f8eff3bdff803, type: 3}
       propertyPath: HPG_C
       value: 

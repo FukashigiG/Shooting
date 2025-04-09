@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject body;
 
     PlayerInput playerInput;
+    public Rigidbody2D _rigidbody { get; private set; }
+
+    PlayerCtrlerModel _model;
 
     public Vector2 moveVector { get; private set; } = Vector2.zero;
     public Vector2 turnVector { get; private set; } = Vector2.zero;
@@ -21,30 +25,20 @@ public class PlayerController : MonoBehaviour
     PlayerArmerd armerd;
 
     bool onPlay = true;
-    public bool isMovable;
-    public bool isRotatable;
-    public bool isMoving = false;
-
-    Vector2 posi_BeforeFlame;
-
-    [SerializeField] float moveLlimit_X;
-    [SerializeField] float moveLlimit_Y;
 
     [SerializeField] GameObject panel_Pause;
 
     void Start()
     {
         TryGetComponent(out playerInput);
+        _rigidbody = GetComponent<Rigidbody2D>();
 
         body.TryGetComponent(out shooter);
         shooter.enabled = true;
 
         _gameDirector.onFinish.AddListener(WhenFinishGame);
 
-        posi_BeforeFlame = transform.position;
-
-        isMovable = true;
-        isRotatable = true;
+        _model = new PlayerCtrlerModel();
     }
 
     void Update()
@@ -52,28 +46,13 @@ public class PlayerController : MonoBehaviour
         if (!onPlay) return;
 
         moving();   
-
-        if((Vector2)transform.position == posi_BeforeFlame)
-        {
-            isMoving = false;
-        }
-        else
-        {
-            isMoving = true;
-        }
-
-        posi_BeforeFlame = transform.position;
-        posi_BeforeFlame.x = Mathf.Clamp(posi_BeforeFlame.x, -1 * moveLlimit_X, moveLlimit_X);
-        posi_BeforeFlame.y = Mathf.Clamp(posi_BeforeFlame.y, -1 * moveLlimit_Y, moveLlimit_Y);
-
-        transform.position = posi_BeforeFlame;
     }
 
     void moving()
     {
         if (panel_Pause.activeSelf) return;
 
-        if (isRotatable)
+        if (_model.isRotatable)
         {
             if(playerInput.actions["Turn"].ReadValue<Vector2>() != Vector2.zero)
             {
@@ -89,10 +68,10 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (isMovable)
+        if (_model.isMovable)
         {
             moveVector = playerInput.actions["Move"].ReadValue<Vector2>();
-            transform.Translate(moveVector * speed * Time.deltaTime);
+            _rigidbody.velocity = moveVector * speed;
         }
     }
 
@@ -136,5 +115,15 @@ public class PlayerController : MonoBehaviour
         float degree = Mathf.Atan2(dt.y, dt.x) * Mathf.Rad2Deg;
 
         return degree;
+    }
+
+    public void SetState_move(bool x)
+    {
+        _model.SetMovable(x);
+    }
+
+    public void SetState_rotate(bool x)
+    {
+        _model.SetRotetable(x);
     }
 }

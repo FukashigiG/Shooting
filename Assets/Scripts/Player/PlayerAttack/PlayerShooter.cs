@@ -239,7 +239,7 @@ public class PlayerShooter : Base_PlayerAttack
 
         funk_Sub._weaponEnum = WeaponEnum.onAction;
 
-        _controller.isMovable = false;
+        _controller.SetState_move(false);
 
         Vector3 slideDirection  = Vector3.zero;
 
@@ -277,7 +277,7 @@ public class PlayerShooter : Base_PlayerAttack
             await transform.parent.DOMove(transform.position + slideDirection * status.sub.distance_Slide, 0.08f).ToUniTask(cancellationToken: token);
         }
 
-        _controller.isMovable = true;
+        _controller.SetState_move(true);
 
         funk_Sub._weaponEnum = WeaponEnum.standBy;
     }
@@ -295,7 +295,7 @@ public class PlayerShooter : Base_PlayerAttack
 
         for (int i = 0; i < num_bullet; i++)
         {
-            if (_controller.isMoving)
+            if (_controller._rigidbody.velocity != Vector2.zero)
             {
                 magnitude_Shake = UnityEngine.Random.Range(-1 * status.main.maxMag_Shake, status.main.maxMag_Shake);
             }
@@ -317,7 +317,7 @@ public class PlayerShooter : Base_PlayerAttack
     {
         if (onPlay != true) return;
 
-        _controller.isRotatable = false;
+        _controller.SetState_rotate(false);
 
         for(int i = 0; i < status.main.maxNum_Bullet; i++)
         {
@@ -326,7 +326,7 @@ public class PlayerShooter : Base_PlayerAttack
             await transform.DORotate(new Vector3(0, 0, transform.localEulerAngles.z + (360f / status.main.maxNum_Bullet)), 0.05f).SetEase(Ease.Linear).ToUniTask(cancellationToken: token);
         }
 
-        _controller.isRotatable = true;
+        _controller.SetState_rotate(true);
     }
 
     void SetAndPlaySE(AudioClip _clip)

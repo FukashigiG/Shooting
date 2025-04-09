@@ -187,7 +187,7 @@ public class PlayerSlasher : Base_PlayerAttack
 
         funk_Main.StartCharge();
 
-        _controller.isMovable = false;
+        _controller.SetState_move(false);
 
         AS.PlayOneShot(SE_AttackStart);
     }
@@ -217,15 +217,15 @@ public class PlayerSlasher : Base_PlayerAttack
     {
         if (onPlay != true) return;
 
-        _controller.isMovable = false;
-        _controller.isRotatable = false;
+        _controller.SetState_move(false);
+        _controller.SetState_rotate(false);
 
         Instantiate(SpiralSlash, transform.position , transform.rotation);
 
         await transform.DORotate(new Vector3(0, 0, transform.localEulerAngles.z - 360) ,0.2f, RotateMode.FastBeyond360).ToUniTask(cancellationToken: token);
 
-        _controller.isMovable = true;
-        _controller.isRotatable = true;
+        _controller.SetState_move(true);
+        _controller.SetState_rotate(true);
     }
 
     async UniTask DashSlash(float power, CancellationToken token)
@@ -236,7 +236,7 @@ public class PlayerSlasher : Base_PlayerAttack
 
         funk_Main._weaponEnum = WeaponEnum.onAction;
 
-        _controller.isRotatable = false;
+        _controller.SetState_rotate(false);
 
         Vector2 posi_BeforeSlash = transform.position;
 
@@ -273,8 +273,8 @@ public class PlayerSlasher : Base_PlayerAttack
 
         funk_Main._weaponEnum = WeaponEnum.standBy;
 
-        _controller.isMovable = true;
-        _controller.isRotatable = true;
+        _controller.SetState_move(true);
+        _controller.SetState_rotate(true);
     }
 
     protected override void WhenJustAction()

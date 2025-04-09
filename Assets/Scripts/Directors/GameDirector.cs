@@ -9,11 +9,9 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UniRx;
 
-public class GameDirector : MonoBehaviour, IObserver<GameObject>
+public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
 {
     List<IDisposable> _disposable = new List<IDisposable>();
-
-    float randomAngle;
 
     [SerializeField] GameObject[] bossEnemy;
     [SerializeField] HPGaugeController HPBar_Boss;
