@@ -52,7 +52,7 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
 
         theBoss.TryGetComponent(out _bossController);
         bossStatus = _bossController.status;
-        bossStatus.SetHPGauge(HPBar_Boss);
+        //bossStatus.SetHPGauge(HPBar_Boss);
         _disposable.Add(bossStatus.Subscribe(this));
 
         player.TryGetComponent(out playerStatus);

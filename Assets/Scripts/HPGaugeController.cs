@@ -21,6 +21,13 @@ public class HPGaugeController : MonoBehaviour
 
     }
 
+    void xxx()
+    {
+        _mobStatus.ratio_HP
+            .Subscribe(SetGauge_Damage)
+            .AddTo(this.gameObject);
+    }
+
     public void SetGauge_Damage(float tergetRate)
     {
         health.fillAmount = tergetRate;

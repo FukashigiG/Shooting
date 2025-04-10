@@ -5,6 +5,8 @@ using TMPro;
 using System;
 using UniRx;
 using static Base_BossController;
+using Unity.Collections;
+using System.Drawing;
 
 public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
 {
@@ -13,9 +15,9 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
 
     [field:SerializeField] public float MaxHP {  get; private set; }
 
-    private readonly ReactiveProperty<float> hpProp = new ReactiveProperty<float>();
-    public IReadOnlyReactiveProperty<float> HP_Prop => hpProp;
-    public float HP => hpProp.Value;
+    public float HP { get; private set; }
+
+    public ReactiveProperty<float> ratio_HP { get; private set; } = new ReactiveProperty<float>();
 
     bool canTakeDamage;
 
@@ -23,8 +25,6 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
     [SerializeField] GameObject obj_Txt_RecoverHP;
 
     GameObject parent_DamageUI;
-
-    [SerializeField] HPGaugeController HPG_C;
 
     class TheDamageTxt
     {
@@ -51,15 +51,23 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
     TheDamageTxt damageTxt;
 
 
+    //初期化用
     public MobStatus()
     {
         
     }
 
+    protected virtual void Awake()
+    {
+        HP = MaxHP;
+        HP = Mathf.Clamp(HP, 0, MaxHP);
+
+        ratio_HP.Value = HP / MaxHP;
+
+    }
+
     protected virtual void Start()
     {
-        hpProp.Value = MaxHP;
-
         parent_DamageUI = GameObject.Find("parent_DamageUI");
 
         canTakeDamage = true;
@@ -89,8 +97,11 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
 
         damageTxt.AddDamage(damage, screenPosi);
 
-        hpProp.Value -= damage;
-        if (HPG_C != null) HPG_C.SetGauge_Damage(HP / MaxHP);
+        HP += damage;
+        HP = Mathf.Clamp(HP, 0, MaxHP);
+
+        ratio_HP.Value = HP / MaxHP;
+
         if (HP <= 0) Die();
 
         return true;
@@ -108,17 +119,10 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
         Txt_DamageValue txt = Instantiate(obj_Txt_RecoverHP, screenPosi, Quaternion.identity, parent_DamageUI.transform).GetComponent<Txt_DamageValue>();
         txt.SetTxt(point, screenPosi);
 
+        HP += point;
+        HP = Mathf.Clamp(HP, 0, MaxHP);
 
-        if (MaxHP - HP <= point)
-        {
-            hpProp.Value = MaxHP;
-        }
-        else
-        {
-            hpProp.Value += point;
-
-        }
-        if (HPG_C != null) HPG_C.SetGauge_Heal(HP / MaxHP);
+        ratio_HP.Value = HP / MaxHP;
 
         return true;
     }
@@ -130,11 +134,6 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
 
         //購読解除用のクラスをIDisposableとして返す
         return new Unsubscriber(_observers, observer);
-    }
-
-    public void SetHPGauge(HPGaugeController gauge)
-    {
-        if (HPG_C == null) HPG_C = gauge;
     }
 
     //HPが尽きた時の処理
