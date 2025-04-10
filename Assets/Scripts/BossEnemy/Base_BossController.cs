@@ -7,10 +7,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UniRx;
 
-public class Base_BossController : MonoBehaviour, IObserver<GameObject>
+public class Base_BossController : MonoBehaviour, IObserver<Unit>
 {
-    private IDisposable _disposable;
-
     protected GameObject player;
 
     [field: SerializeField] public MobStatus status { get; protected set; }
@@ -27,7 +25,6 @@ public class Base_BossController : MonoBehaviour, IObserver<GameObject>
     {
         def, followOnlyPlayer, wide
     }
-
 
     //↓CameraStateEnum型の変数っぽく振る舞い、こいつの中身が変わると購読先に通知が行くよ、すごい！
     private readonly ReactiveProperty<CameraStateEnum> _camStateProp;
@@ -52,7 +49,8 @@ public class Base_BossController : MonoBehaviour, IObserver<GameObject>
 
         _cancellationToken = cancellationTokenSource.Token;
 
-        _disposable = status.Subscribe(this).AddTo(this);
+        var _disposable = status.Subscribe(this).AddTo(this);
+
         GameDirector.Instance.onFinish.AddListener(StopAction);
     }
 
@@ -99,7 +97,7 @@ public class Base_BossController : MonoBehaviour, IObserver<GameObject>
         Debug.LogError(error);
     }
 
-    public void OnNext(GameObject obj)
+    public void OnNext(Unit x)
     {
         WhenDie();
     }

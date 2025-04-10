@@ -1,17 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using System;
 using UniRx;
 using static Base_BossController;
 using Unity.Collections;
 using System.Drawing;
 
-public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
+public class MobStatus : MonoBehaviour, IDamagable, IObservable<Unit>
 {
     //購読先のリスト
-    private List<IObserver<GameObject>> _observers = new List<IObserver<GameObject>>();
+    private List<IObserver<Unit>> _observers = new List<IObserver<Unit>>();
 
     [field:SerializeField] public float MaxHP {  get; private set; }
     public float HP { get; private set; }
@@ -125,7 +124,7 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
     }
 
     //購読メソッド
-    public IDisposable Subscribe(IObserver<GameObject> observer)
+    public IDisposable Subscribe(IObserver<Unit> observer)
     {
         if(! _observers.Contains(observer)) _observers.Add(observer);
 
@@ -140,21 +139,21 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
 
         //_observersをそのままforeachしてしまうとOnNext先でオブジェが消える処理等があった場合
         //foreach処理中にリストの中身が変わりエラーが起こる
-        var observers = new List<IObserver<GameObject>>(_observers);
+        var observers = new List<IObserver<Unit>>(_observers);
 
         foreach (var observer in observers)
         {
-            observer.OnNext(this.gameObject);
+            observer.OnNext(Unit.Default);
         }
     }
 }
 
 class Unsubscriber : IDisposable
 {
-    private List<IObserver<GameObject>> _observers;
-    private IObserver<GameObject> _observer;
+    private List<IObserver<Unit>> _observers;
+    private IObserver<Unit> _observer;
 
-    public Unsubscriber(List<IObserver<GameObject>> observers, IObserver<GameObject> observer)
+    public Unsubscriber(List<IObserver<Unit>> observers, IObserver<Unit> observer)
     {
         _observers = observers;
         _observer = observer;

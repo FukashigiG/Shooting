@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UniRx;
 
-public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
+public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
 {
     List<IDisposable> _disposable = new List<IDisposable>();
 
@@ -211,16 +211,8 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
         Debug.LogError(error);
     }
 
-    public void OnNext(GameObject obj)
+    public void OnNext(Unit x)
     {
-
-        if (obj == player)
-        {
-            PlayerDied();
-        }
-        else if(obj == theBoss)
-        {
-            ClearGame();
-        }
+        PlayerDied();
     }
 }
