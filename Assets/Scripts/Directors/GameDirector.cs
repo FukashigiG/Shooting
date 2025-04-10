@@ -24,6 +24,8 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
     [SerializeField] HPGaugeController HPBar_Player;
     MobStatus playerStatus;
 
+    [SerializeField] GameObject panel_Pause;
+
     [NonSerialized] public UnityEvent onFinish = new UnityEvent();
 
     CinemachineImpulseSource impulseSource;
@@ -40,7 +42,14 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
     float startTime;
     public static float elapsedTime {  get; private set; } = 0;
 
-    public bool onGame { get; private set; } = true;
+    public enum GameStateEnum
+    {
+        onGame,pause, finish
+    }
+    public GameStateEnum gamestateEnum;
+
+
+
 
     void Awake()
     {
@@ -52,6 +61,8 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
 
         player.TryGetComponent(out playerStatus);
         _disposable.Add(playerStatus.Subscribe(this));
+
+        gamestateEnum = GameStateEnum.onGame;
     }
 
     void Start()
@@ -94,9 +105,27 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
         startTime = Time.time;
     }
 
+    void OnPause()
+    {
+        if (gamestateEnum != GameStateEnum.onGame) return;
+
+        Time.timeScale *= 0.05f;
+
+        panel_Pause.SetActive(true);
+    }
+
+    public void ReleasePause()
+    {
+        if (gamestateEnum != GameStateEnum.pause) return;
+
+        Time.timeScale /= 0.05f;
+
+        panel_Pause.SetActive(false);
+    }
+
     void PlayerDied()
     {
-        if (!onGame) return;
+        if (gamestateEnum != GameStateEnum.onGame) return;
 
         impulseSource.GenerateImpulse();
 
@@ -104,7 +133,7 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
 
         Time.timeScale *= 0.4f;
 
-        onGame = false;
+        gamestateEnum = GameStateEnum.finish;
 
         onFinish.Invoke();
 
@@ -114,7 +143,7 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
 
     void ClearGame()
     {
-        if (!onGame) return;
+        if (gamestateEnum != GameStateEnum.onGame) return;
 
         impulseSource.GenerateImpulse();
 
@@ -122,7 +151,7 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
 
         Time.timeScale *= 0.4f;
 
-        onGame = false;
+        gamestateEnum = GameStateEnum.finish;
 
         onFinish.Invoke();
 
@@ -131,9 +160,9 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
 
     public void Retire()
     {
-        if (! onGame) return;
+        if (gamestateEnum != GameStateEnum.onGame) return;
 
-        onGame = false;
+        gamestateEnum = GameStateEnum.finish;
 
         onFinish.Invoke();
 

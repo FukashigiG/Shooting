@@ -52,7 +52,7 @@ public class Base_BossController : MonoBehaviour, IObserver<GameObject>
 
         _cancellationToken = cancellationTokenSource.Token;
 
-        _disposable = status.Subscribe(this);
+        _disposable = status.Subscribe(this).AddTo(this);
         GameDirector.Instance.onFinish.AddListener(StopAction);
     }
 
@@ -87,10 +87,6 @@ public class Base_BossController : MonoBehaviour, IObserver<GameObject>
         cancellationTokenSource.Dispose();
     }
 
-    private void OnDisable()
-    {
-        _disposable.Dispose();
-    }
 
     //以下コールバック
     public void OnCompleted()

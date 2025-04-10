@@ -22,8 +22,6 @@ public class PlayerController : MonoBehaviour
     PlayerSlasher slasher;
     PlayerArmerd armerd;
 
-    [SerializeField] GameObject panel_Pause;
-
     void Start()
     {
         TryGetComponent(out playerInput);
@@ -39,15 +37,13 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (! GameDirector.Instance.onGame) return;
+        if (GameDirector.Instance.gamestateEnum != GameDirector.GameStateEnum.onGame) return;
 
         moving();   
     }
 
     void moving()
     {
-        if (panel_Pause.activeSelf) return;
-
         if (_model.isRotatable)
         {
             if(playerInput.actions["Turn"].ReadValue<Vector2>() != Vector2.zero)
@@ -74,25 +70,6 @@ public class PlayerController : MonoBehaviour
     float Vector2toAngle()
     {
         return Mathf.Atan2(turnVector.y, turnVector.x) * Mathf.Rad2Deg;
-    }
-
-    void OnPause()
-    {
-        if (panel_Pause.activeSelf) return;
-        if (! GameDirector.Instance.onGame) return;
-
-        Time.timeScale *= 0.05f;
-
-        panel_Pause.SetActive(true);
-    }
-
-    public void RestartGame()
-    {
-        if (panel_Pause.activeSelf == false) return;
-
-        Time.timeScale /= 0.05f;
-
-        panel_Pause.SetActive(false);
     }
 
     void WhenFinishGame()
