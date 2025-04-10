@@ -11,39 +11,37 @@ public class HPGaugeController : MonoBehaviour
 
     [SerializeField] float dulation;
 
-    RectTransform rect;
+    RectTransform _rectTransform;
 
-    MobStatus _mobStatus;
+    Vector3 initPosi;
 
-    bool isAnimating = false;
+    Tweener shaker;
+
     private void Start()
     {
+        TryGetComponent(out _rectTransform);
 
+        initPosi = _rectTransform.position;
     }
 
-    void xxx()
+    public void Set(MobStatus x)
     {
-        _mobStatus.ratio_HP
-            .Subscribe(SetGauge_Damage)
+        x.ratio_HP
+            .Skip(1)
+            .Subscribe(ValueFluctuations)
             .AddTo(this.gameObject);
     }
 
-    public void SetGauge_Damage(float tergetRate)
+    public void ValueFluctuations(float tergetRate)
     {
         health.fillAmount = tergetRate;
 
-        if(isAnimating != true)
+        if(shaker != null)
         {
-            isAnimating = true;
-            transform.DOShakePosition(0.4f, 20f, 20).OnComplete(() =>
-            {
-                isAnimating = false;
-            });
+            shaker.Kill();
+            _rectTransform.position = initPosi;
         }
-    }
 
-    public void SetGauge_Heal(float tergetRate)
-    {
-        health.fillAmount = tergetRate;
+        _rectTransform.DOShakeAnchorPos(dulation, 20f, 20);
     }
 }

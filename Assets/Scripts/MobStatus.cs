@@ -14,9 +14,7 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
     private List<IObserver<GameObject>> _observers = new List<IObserver<GameObject>>();
 
     [field:SerializeField] public float MaxHP {  get; private set; }
-
     public float HP { get; private set; }
-
     public ReactiveProperty<float> ratio_HP { get; private set; } = new ReactiveProperty<float>();
 
     bool canTakeDamage;
@@ -63,7 +61,6 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
         HP = Mathf.Clamp(HP, 0, MaxHP);
 
         ratio_HP.Value = HP / MaxHP;
-
     }
 
     protected virtual void Start()
@@ -97,7 +94,7 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<GameObject>
 
         damageTxt.AddDamage(damage, screenPosi);
 
-        HP += damage;
+        HP -= damage;
         HP = Mathf.Clamp(HP, 0, MaxHP);
 
         ratio_HP.Value = HP / MaxHP;

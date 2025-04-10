@@ -21,6 +21,7 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
     Base_BossController _bossController;
 
     [SerializeField] GameObject player;
+    [SerializeField] HPGaugeController HPBar_Player;
     MobStatus playerStatus;
 
     [NonSerialized] public UnityEvent onFinish = new UnityEvent();
@@ -41,22 +42,27 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
 
     public bool onGame { get; private set; } = true;
 
-    void Start()
+    void Awake()
     {
-        TryGetComponent(out impulseSource);
-
         theBoss = Instantiate(bossEnemy[0], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
-
-        image_UI[0].overrideSprite = icon_Player[0];
-        image_UI[1].overrideSprite = icon_Player[0];
 
         theBoss.TryGetComponent(out _bossController);
         bossStatus = _bossController.status;
-        //bossStatus.SetHPGauge(HPBar_Boss);
         _disposable.Add(bossStatus.Subscribe(this));
 
         player.TryGetComponent(out playerStatus);
         _disposable.Add(playerStatus.Subscribe(this));
+    }
+
+    void Start()
+    {
+        TryGetComponent(out impulseSource);
+
+        image_UI[0].overrideSprite = icon_Player[0];
+        image_UI[1].overrideSprite = icon_Player[0];
+
+        HPBar_Boss.Set(bossStatus);
+        HPBar_Player.Set(playerStatus);
 
         tranjitionPanel.SetActive(true);
         tranjitionPanel.TryGetComponent(out RectTransform _rect);
@@ -136,6 +142,7 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<GameObject>
 
     void SetCamera(Base_BossController.CameraStateEnum _enum)
     {
+
         switch (_enum)
         {
             case Base_BossController.CameraStateEnum.def:
