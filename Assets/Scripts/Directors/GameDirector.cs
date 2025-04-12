@@ -51,7 +51,24 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
 
     void Awake()
     {
-        theBoss = Instantiate(bossEnemy[1], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
+        int theID = StageInfoHolder.Instance.stageID;
+
+        switch (theID)
+        {
+            case 0:
+                theBoss = Instantiate(bossEnemy[0], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
+                break;
+
+            case 1:
+                theBoss = Instantiate(bossEnemy[1], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
+                break;
+
+            default:
+                theBoss = Instantiate(bossEnemy[0], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
+                break;
+        }
+
+        StageInfoHolder.Instance.DestroyThis();
 
         theBoss.TryGetComponent(out _bossController);
         bossStatus = _bossController.status;

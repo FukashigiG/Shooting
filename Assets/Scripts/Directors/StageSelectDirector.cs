@@ -6,12 +6,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[Serializable] class StageData
-{
-    public int ID;
-    public string stageName;
-}
-
 
 //jsonからデータを持ってくる際List型や配列型の変数じゃダメっぽいのでこれを用意してるよ
 [Serializable] class DataColections
@@ -28,6 +22,7 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
     [SerializeField] GameObject rightWindow;
     RectTransform windowRect;
     [SerializeField] Text txt_Title;
+    [SerializeField] Text txt_Description;
 
     [SerializeField] Transform parent_selectButtons;
 
@@ -36,6 +31,8 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
 
     [SerializeField] Button button_LoadBattleScene;
     [SerializeField] Button button_GoBack;
+
+    [SerializeField] GameObject IDHolder;
 
     private void Start()
     {
@@ -67,6 +64,7 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
         StageData _stageData = stageDatas.collections.Find(x => x.ID == id);
 
         txt_Title.text = _stageData.stageName;
+        txt_Description.text = _stageData.description;
 
         rightWindow.SetActive(true);
 
@@ -87,6 +85,8 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
 
     void GoToMainScene()
     {
+        Instantiate(IDHolder).GetComponent<StageInfoHolder>().SetID(cullentPointingID);
+
         Sceneloader.Instance.LoadScene("MainScene");
     }
 

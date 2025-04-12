@@ -36,12 +36,12 @@ public class HPGaugeController : MonoBehaviour
     {
         health.fillAmount = tergetRate;
 
-        if(shaker != null)
+        if (shaker != null) 
         {
             shaker.Kill();
             _rectTransform.position = initPosi;
         }
 
-        _rectTransform.DOShakeAnchorPos(dulation, 20f, 20);
+        shaker = _rectTransform.DOShakeAnchorPos(dulation, 20f, 20);
     }
 }

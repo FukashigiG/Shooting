@@ -1,11 +1,11 @@
 {
 "collections":[
-    {"ID":0, "stageName":"チュートリアル"}, 
-    {"ID":1, "stageName":"初陣"}, 
-    {"ID":22, "stageName":"ステジ２"}, 
-    {"ID":3, "stageName":"ぺええええ"}, 
-    {"ID":4, "stageName":"んんｎ"}, 
-    {"ID":5, "stageName":"チューアル"}, 
-    {"ID":6, "stageName":"トリアル"}
+    {"ID":0, "stageName":"チュートリアル", "description": "基本的な操作法を確認せよ"}, 
+    {"ID":1, "stageName":"初陣", "description": "初回だからと油断していませんか？\nその先に待つのは　死"}, 
+    {"ID":22, "stageName":"ステジ２", "description": "基本的な操作法を確認せよ"}, 
+    {"ID":3, "stageName":"ぺええええ", "description": "基本的な操作法を確認せよ"}, 
+    {"ID":4, "stageName":"んんｎ", "description": "基本的な操作法を確認せよ"}, 
+    {"ID":5, "stageName":"チューアル", "description": "基本的な操作法を確認せよ"}, 
+    {"ID":6, "stageName":"トリアル", "description": "基本的な操作法を確認せよ"}
     ]
 }
