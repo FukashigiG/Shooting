@@ -11,8 +11,6 @@ using UniRx;
 
 public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
 {
-    List<IDisposable> _disposable = new List<IDisposable>();
-
     [SerializeField] GameObject[] bossEnemy;
     [SerializeField] HPGaugeController HPBar_Boss;
 
@@ -53,14 +51,18 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
 
     void Awake()
     {
-        theBoss = Instantiate(bossEnemy[0], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
+        theBoss = Instantiate(bossEnemy[1], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
 
         theBoss.TryGetComponent(out _bossController);
         bossStatus = _bossController.status;
-        _disposable.Add(bossStatus.Subscribe(this));
+        bossStatus.died
+            .Subscribe(x => ClearGame())
+            .AddTo(this);
 
         player.TryGetComponent(out playerStatus);
-        _disposable.Add(playerStatus.Subscribe(this));
+        playerStatus.died
+            .Subscribe(x => PlayerDied())
+            .AddTo(this);
 
         gamestateEnum = GameStateEnum.onGame;
     }
@@ -191,14 +193,6 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
         }
     }
 
-    private void OnDisable()
-    {
-        foreach (var disposable in _disposable)
-        {
-            if (disposable != null) disposable.Dispose();
-        }
-    }
-
     //以下オブザーバーのコールバック
 
     public void OnCompleted()
@@ -213,6 +207,5 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
 
     public void OnNext(Unit x)
     {
-        PlayerDied();
     }
 }

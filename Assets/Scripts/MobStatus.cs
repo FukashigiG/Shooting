@@ -7,10 +7,11 @@ using static Base_BossController;
 using Unity.Collections;
 using System.Drawing;
 
-public class MobStatus : MonoBehaviour, IDamagable, IObservable<Unit>
+public class MobStatus : MonoBehaviour, IDamagable
 {
     //購読先のリスト
-    private List<IObserver<Unit>> _observers = new List<IObserver<Unit>>();
+    /*private List<IObserver<Unit>> _observers = new List<IObserver<Unit>>();*/
+    public Subject<Unit> died { get; private set; } = new Subject<Unit>();
 
     [field:SerializeField] public float MaxHP {  get; private set; }
     public float HP { get; private set; }
@@ -123,14 +124,6 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<Unit>
         return true;
     }
 
-    //購読メソッド
-    public IDisposable Subscribe(IObserver<Unit> observer)
-    {
-        if(! _observers.Contains(observer)) _observers.Add(observer);
-
-        //購読解除用のクラスをIDisposableとして返す
-        return new Unsubscriber(_observers, observer);
-    }
 
     //HPが尽きた時の処理
     public virtual void Die()
@@ -139,16 +132,18 @@ public class MobStatus : MonoBehaviour, IDamagable, IObservable<Unit>
 
         //_observersをそのままforeachしてしまうとOnNext先でオブジェが消える処理等があった場合
         //foreach処理中にリストの中身が変わりエラーが起こる
-        var observers = new List<IObserver<Unit>>(_observers);
+        /*var observers = new List<IObserver<Unit>>(_observers);
 
         foreach (var observer in observers)
         {
             observer.OnNext(Unit.Default);
-        }
+        }*/
+
+        died.OnNext(Unit.Default);
     }
 }
 
-class Unsubscriber : IDisposable
+/*class Unsubscriber : IDisposable
 {
     private List<IObserver<Unit>> _observers;
     private IObserver<Unit> _observer;
@@ -164,4 +159,4 @@ class Unsubscriber : IDisposable
     {
         _observers.Remove(_observer);
     }
-}
+}*/

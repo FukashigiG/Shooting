@@ -49,7 +49,7 @@ public class Base_BossController : MonoBehaviour, IObserver<Unit>
 
         _cancellationToken = cancellationTokenSource.Token;
 
-        var _disposable = status.Subscribe(this).AddTo(this);
+        var _disposable = status.died.Subscribe(x => StopAction()).AddTo(this);
 
         GameDirector.Instance.onFinish.AddListener(StopAction);
     }
@@ -69,12 +69,6 @@ public class Base_BossController : MonoBehaviour, IObserver<Unit>
         return x;
     }
 
-    protected virtual void WhenDie()
-    {
-        StopAction();
-    }
-
-
     protected virtual void StopAction()
     {
         if (_cancellationToken == null) return;
@@ -89,16 +83,12 @@ public class Base_BossController : MonoBehaviour, IObserver<Unit>
     //以下コールバック
     public void OnCompleted()
     {
-
     }
-
     public void OnError(Exception error)
     {
         Debug.LogError(error);
     }
-
     public void OnNext(Unit x)
     {
-        WhenDie();
     }
 }
