@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UniRx;
 
 public class PlayerController : MonoBehaviour
 {
@@ -30,7 +31,9 @@ public class PlayerController : MonoBehaviour
         body.TryGetComponent(out shooter);
         shooter.enabled = true;
 
-        GameDirector.Instance.onFinish.AddListener(WhenFinishGame);
+        GameDirector.Instance.finish
+            .Subscribe(x => WhenFinishGame())
+            .AddTo(this);
 
         _model = new PlayerCtrlerModel();
     }

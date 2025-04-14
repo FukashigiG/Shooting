@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
-using UnityEngine.Events;
 using Cinemachine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UniRx;
+using System.Threading;
 
 public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
 {
@@ -24,7 +24,7 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
 
     [SerializeField] GameObject panel_Pause;
 
-    [NonSerialized] public UnityEvent onFinish = new UnityEvent();
+    public Subject<Unit> finish { get; private set; } = new Subject<Unit>();
 
     CinemachineImpulseSource impulseSource;
 
@@ -34,6 +34,9 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
 
     [SerializeField] Sprite[] icon_Player;
     [SerializeField] Image[] image_UI = new Image[2];
+
+    [SerializeField] GameObject panel_GameOver;
+
 
     [SerializeField] GameObject tranjitionPanel;
 
@@ -46,7 +49,8 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
     }
     public GameStateEnum gamestateEnum;
 
-
+    readonly  CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+    CancellationToken _cancellationToken;
 
 
     void Awake()
@@ -78,10 +82,12 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
 
         player.TryGetComponent(out playerStatus);
         playerStatus.died
-            .Subscribe(x => PlayerDied())
+            .Subscribe(x => PlayerDied().Forget())
             .AddTo(this);
 
         gamestateEnum = GameStateEnum.onGame;
+
+        _cancellationToken = cancellationTokenSource.Token;
     }
 
     void Start()
@@ -142,7 +148,7 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
         panel_Pause.SetActive(false);
     }
 
-    void PlayerDied()
+    async UniTask PlayerDied()
     {
         if (gamestateEnum != GameStateEnum.onGame) return;
 
@@ -154,7 +160,11 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
 
         gamestateEnum = GameStateEnum.finish;
 
-        onFinish.Invoke();
+        finish.OnNext(Unit.Default);
+
+        panel_GameOver.SetActive(true);
+
+        await UniTask.Delay(1400, cancellationToken: _cancellationToken);
 
         Sceneloader.Instance.LoadScene("GameOverScene");
     }
@@ -172,7 +182,7 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
 
         gamestateEnum = GameStateEnum.finish;
 
-        onFinish.Invoke();
+        finish.OnNext(Unit.Default);
 
         Sceneloader.Instance.LoadScene("ClearScene");
     }
@@ -183,7 +193,7 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
 
         gamestateEnum = GameStateEnum.finish;
 
-        onFinish.Invoke();
+        finish.OnNext(Unit.Default);
 
         Sceneloader.Instance.LoadScene("StartScene");
     }

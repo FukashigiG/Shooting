@@ -51,7 +51,9 @@ public class Base_BossController : MonoBehaviour, IObserver<Unit>
 
         var _disposable = status.died.Subscribe(x => StopAction()).AddTo(this);
 
-        GameDirector.Instance.onFinish.AddListener(StopAction);
+        GameDirector.Instance.finish
+            .Subscribe(x => StopAction())
+            .AddTo(this);
     }
 
     //このメソッドを実行してカメラの状態を変更しよう

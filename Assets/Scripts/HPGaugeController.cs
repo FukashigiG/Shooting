@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using UniRx;
+using Cysharp.Threading.Tasks;
 
 public class HPGaugeController : MonoBehaviour
 {
@@ -43,5 +44,10 @@ public class HPGaugeController : MonoBehaviour
         }
 
         shaker = _rectTransform.DOShakeAnchorPos(dulation, 20f, 20);
+    }
+
+    private void OnDisable()
+    {
+        if (DOTween.instance != null) shaker?.Kill();
     }
 }
