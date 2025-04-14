@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using System;
 using System.Collections;
@@ -32,6 +33,8 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
     [SerializeField] Button button_LoadBattleScene;
     [SerializeField] Button button_GoBack;
 
+    [SerializeField] GameObject transitionPanel;
+
     [SerializeField] GameObject IDHolder;
 
     private void Start()
@@ -52,7 +55,7 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
             ctrler.SetInfo(stageDatas.collections[i].ID, stageDatas.collections[i].stageName);
         }
 
-        button_LoadBattleScene.onClick.AddListener(GoToMainScene);
+        button_LoadBattleScene.onClick.AddListener(() => GoToMainScene().Forget());
         button_GoBack.onClick.AddListener(GoBackToStageSelect);
     }
 
@@ -83,9 +86,13 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
         EventSystem.current.SetSelectedGameObject(pointingStageButtonObj);
     }
 
-    void GoToMainScene()
+    async UniTask GoToMainScene()
     {
         Instantiate(IDHolder).GetComponent<StageInfoHolder>().SetID(cullentPointingID, 1);
+
+        transitionPanel.SetActive(true);
+
+        await UniTask.Delay(1400);
 
         Sceneloader.Instance.LoadScene("MainScene");
     }
