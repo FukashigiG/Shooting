@@ -72,8 +72,6 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
                 break;
         }
 
-        StageInfoHolder.Instance.DestroyThis();
-
         theBoss.TryGetComponent(out _bossController);
         bossStatus = _bossController.status;
         bossStatus.died
@@ -92,6 +90,8 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
 
     void Start()
     {
+        player.GetComponent<PlayerController>().ActivateWeapon(StageInfoHolder.Instance.weaponID);
+
         TryGetComponent(out impulseSource);
 
         image_UI[0].overrideSprite = icon_Player[0];
@@ -128,6 +128,8 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
         Cam_Director.Instance.SetCam_Def();
 
         startTime = Time.time;
+
+        StageInfoHolder.Instance.DestroyThis();
     }
 
     void OnPause()

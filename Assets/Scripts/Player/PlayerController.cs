@@ -23,19 +23,19 @@ public class PlayerController : MonoBehaviour
     PlayerSlasher slasher;
     PlayerArmerd armerd;
 
-    void Start()
+    void Awake()
     {
         TryGetComponent(out playerInput);
         _rigidbody = GetComponent<Rigidbody2D>();
 
-        body.TryGetComponent(out shooter);
-        shooter.enabled = true;
+        _model = new PlayerCtrlerModel();
+    }
 
+    void Start()
+    {
         GameDirector.Instance.finish
             .Subscribe(x => WhenFinishGame())
             .AddTo(this);
-
-        _model = new PlayerCtrlerModel();
     }
 
     void Update()
@@ -43,6 +43,31 @@ public class PlayerController : MonoBehaviour
         if (GameDirector.Instance.gamestateEnum != GameDirector.GameStateEnum.onGame) return;
 
         moving();   
+    }
+
+    public void ActivateWeapon(int x)
+    {
+        switch (x)
+        {
+            case 0:
+                body.TryGetComponent(out shooter);
+                shooter.enabled = true;
+
+                break;
+
+            case 1:
+                body.TryGetComponent(out slasher);
+                slasher.enabled = true;
+
+                break;
+
+
+            default:
+                body.TryGetComponent(out shooter);
+                shooter.enabled = true;
+
+                break;
+        }
     }
 
     void moving()

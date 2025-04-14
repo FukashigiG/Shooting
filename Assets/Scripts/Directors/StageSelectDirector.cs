@@ -85,7 +85,7 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
 
     void GoToMainScene()
     {
-        Instantiate(IDHolder).GetComponent<StageInfoHolder>().SetID(cullentPointingID);
+        Instantiate(IDHolder).GetComponent<StageInfoHolder>().SetID(cullentPointingID, 1);
 
         Sceneloader.Instance.LoadScene("MainScene");
     }
