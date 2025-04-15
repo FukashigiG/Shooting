@@ -39,6 +39,11 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
 
     [SerializeField] GameObject IDHolder;
 
+    private void Awake()
+    {
+        button_OpenWeaponWindow.onClick.AddListener(Open_WeaponSelectWindow);
+    }
+
     private void Start()
     {
         string jsonStr = jsonFile.ToString();
