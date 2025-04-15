@@ -93,6 +93,10 @@ public class PlayerController : MonoBehaviour
             moveVector = playerInput.actions["Move"].ReadValue<Vector2>();
             _rigidbody.velocity = moveVector * speed;
         }
+        else
+        {
+            _rigidbody.velocity = Vector2.zero;
+        }
     }
 
     float Vector2toAngle()

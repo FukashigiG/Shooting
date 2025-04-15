@@ -45,9 +45,7 @@ public class StartSceneDirector : SingletonMono<StartSceneDirector>
 
         tranjitionPanel.SetActive(true);
 
-        tranjitionPanel.TryGetComponent(out RectTransform _rect);
-
-        await _rect.DOAnchorPos(Vector3.zero, 0.8f).ToUniTask();
+        await UniTask.Delay(1000);
 
         Sceneloader.Instance.LoadScene("StageSelectScene");
     }

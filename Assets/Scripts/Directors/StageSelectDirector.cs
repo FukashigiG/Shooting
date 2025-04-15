@@ -32,7 +32,9 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
 
     [SerializeField] Button button_LoadBattleScene;
     [SerializeField] Button button_GoBack;
+    [SerializeField] Button button_OpenWeaponWindow;
 
+    [SerializeField] GameObject window_WeaponSelect;
     [SerializeField] GameObject transitionPanel;
 
     [SerializeField] GameObject IDHolder;
@@ -74,6 +76,11 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
         windowRect.anchoredPosition = Vector3.zero;
 
         windowRect.DOAnchorPosX(-250, 0.5f);
+    }
+
+    void Open_WeaponSelectWindow()
+    {
+        window_WeaponSelect.SetActive(true);
     }
 
     public void ReadyToFight()
