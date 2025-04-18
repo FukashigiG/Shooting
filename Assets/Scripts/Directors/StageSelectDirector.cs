@@ -32,16 +32,24 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
 
     [SerializeField] Button button_LoadBattleScene;
     [SerializeField] Button button_GoBack;
-    [SerializeField] Button button_OpenWeaponWindow;
 
     [SerializeField] GameObject window_WeaponSelect;
     [SerializeField] GameObject transitionPanel;
 
     [SerializeField] GameObject IDHolder;
 
+    [SerializeField] GameObject weaponWindow;
+
+    [SerializeField] Button button_OpenWeaponWindow;
+
+
+
     private void Awake()
     {
-        button_OpenWeaponWindow.onClick.AddListener(Open_WeaponSelectWindow);
+        button_LoadBattleScene.onClick.AddListener(() => GoToMainScene().Forget());
+        button_GoBack.onClick.AddListener(GoBackToStageSelect);
+
+        button_OpenWeaponWindow.onClick.AddListener(OpenWeaponWindow);
     }
 
     private void Start()
@@ -62,8 +70,6 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
             ctrler.SetInfo(stageDatas.collections[i].ID, stageDatas.collections[i].stageName);
         }
 
-        button_LoadBattleScene.onClick.AddListener(() => GoToMainScene().Forget());
-        button_GoBack.onClick.AddListener(GoBackToStageSelect);
     }
 
     public void DisplayRightWindow(int id, GameObject stageButton)
@@ -81,11 +87,6 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
         windowRect.anchoredPosition = Vector3.zero;
 
         windowRect.DOAnchorPosX(-250, 0.5f);
-    }
-
-    void Open_WeaponSelectWindow()
-    {
-        window_WeaponSelect.SetActive(true);
     }
 
     public void ReadyToFight()
@@ -109,4 +110,11 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
         Sceneloader.Instance.LoadScene("MainScene");
     }
 
+
+    void OpenWeaponWindow()
+    {
+        weaponWindow.SetActive(true);
+
+        EventSystem.current.SetSelectedGameObject(pointingStageButtonObj);
+    }
 }
