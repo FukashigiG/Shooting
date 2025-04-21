@@ -61,6 +61,11 @@ public class PlayerController : MonoBehaviour
 
                 break;
 
+            case 2:
+                body.TryGetComponent(out armerd);
+                armerd.enabled = true;
+
+                break;
 
             default:
                 body.TryGetComponent(out shooter);

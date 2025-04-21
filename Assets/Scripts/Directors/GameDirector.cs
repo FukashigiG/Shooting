@@ -128,8 +128,6 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
         Cam_Director.Instance.SetCam_Def();
 
         startTime = Time.time;
-
-        StageInfoHolder.Instance.DestroyThis();
     }
 
     void OnPause()

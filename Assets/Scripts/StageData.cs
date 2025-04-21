@@ -9,3 +9,11 @@ public class StageData
     public string stageName;
     public string description;
 }
+
+[Serializable]
+public class WeaponData
+{
+    public int ID;
+    public string stageName;
+    public string description;
+}

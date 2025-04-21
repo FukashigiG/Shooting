@@ -9,14 +9,15 @@ using UnityEngine.UI;
 
 
 //jsonからデータを持ってくる際List型や配列型の変数じゃダメっぽいのでこれを用意してるよ
-[Serializable] class DataColections
+[Serializable] class StageDataColections
 {
-    public List<StageData> collections;
+    public List<StageData> collections_S;
+    public List<WeaponData> collections_W;
 }
 
 public class StageSelectDirector : SingletonMono<StageSelectDirector>
 {
-    DataColections stageDatas;
+    StageDataColections stageDatas;
 
     [SerializeField] TextAsset jsonFile;
 
@@ -27,7 +28,8 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
 
     [SerializeField] Transform parent_selectButtons;
 
-    int cullentPointingID = 0;
+    int cullentPointingStageID = 0;
+    int cullentPointingWeaponID = 0;
     GameObject pointingStageButtonObj;
 
     [SerializeField] Button button_LoadBattleScene;
@@ -55,7 +57,7 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
     private void Start()
     {
         string jsonStr = jsonFile.ToString();
-        stageDatas = JsonUtility.FromJson<DataColections>(jsonStr);
+        stageDatas = JsonUtility.FromJson<StageDataColections>(jsonStr);
 
         rightWindow.TryGetComponent(out windowRect);
 
@@ -67,17 +69,17 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
 
             buttonTransform.TryGetComponent(out StageSelectButtonCtrler ctrler);
 
-            ctrler.SetInfo(stageDatas.collections[i].ID, stageDatas.collections[i].stageName);
+            ctrler.SetInfo(stageDatas.collections_S[i].ID, stageDatas.collections_S[i].stageName);
         }
 
     }
 
     public void DisplayRightWindow(int id, GameObject stageButton)
     {
-        cullentPointingID = id;
+        cullentPointingStageID = id;
         pointingStageButtonObj = stageButton;
 
-        StageData _stageData = stageDatas.collections.Find(x => x.ID == id);
+        StageData _stageData = stageDatas.collections_S.Find(x => x.ID == id);
 
         txt_Title.text = _stageData.stageName;
         txt_Description.text = _stageData.description;
@@ -101,7 +103,14 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
 
     async UniTask GoToMainScene()
     {
-        Instantiate(IDHolder).GetComponent<StageInfoHolder>().SetID(cullentPointingID, 1);
+        if(StageInfoHolder.Instance != null)
+        {
+            Instantiate(IDHolder);
+
+            Debug.Log("w");
+        }
+
+        StageInfoHolder.Instance.GetComponent<StageInfoHolder>().SetID(cullentPointingStageID, cullentPointingWeaponID);
 
         transitionPanel.SetActive(true);
 
@@ -116,5 +125,10 @@ public class StageSelectDirector : SingletonMono<StageSelectDirector>
         weaponWindow.SetActive(true);
 
         EventSystem.current.SetSelectedGameObject(pointingStageButtonObj);
+    }
+
+    public void setWeapon(int x)
+    {
+        cullentPointingWeaponID = x;
     }
 }
