@@ -67,6 +67,10 @@ public class GameDirector : SingletonMono<GameDirector>, IObserver<Unit>
                 theBoss = Instantiate(bossEnemy[1], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
                 break;
 
+            case 2:
+                theBoss = Instantiate(bossEnemy[2], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
+                break;
+
             default:
                 theBoss = Instantiate(bossEnemy[0], new Vector3(0, 3, 0), Quaternion.Euler(0, 0, 180));
                 break;

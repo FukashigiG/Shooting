@@ -8,6 +8,7 @@ using UniRx;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed;
+    [SerializeField] float power_FixingSpeed;
 
     [SerializeField] GameObject body;
 
@@ -96,11 +97,12 @@ public class PlayerController : MonoBehaviour
         if (_model.isMovable)
         {
             moveVector = playerInput.actions["Move"].ReadValue<Vector2>();
-            _rigidbody.velocity = moveVector * speed;
+            _rigidbody.AddForce((moveVector * speed - _rigidbody.velocity) * power_FixingSpeed);
         }
         else
         {
-            _rigidbody.velocity = Vector2.zero;
+            moveVector = Vector2.zero;
+            _rigidbody.AddForce((moveVector * speed - _rigidbody.velocity) * power_FixingSpeed);
         }
     }
 

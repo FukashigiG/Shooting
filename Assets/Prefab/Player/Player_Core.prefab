@@ -50,15 +50,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 871bd297ad723f34f9c95a9cd6b548fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4.5
+  speed: 6
+  power_FixingSpeed: 4.5
   body: {fileID: 7632670207784846906}
-  _gameDirector: {fileID: 0}
-  isMovable: 0
-  isRotatable: 0
-  isMoving: 0
-  moveLlimit_X: 9.5
-  moveLlimit_Y: 9.5
-  panel_Pause: {fileID: 0}
 --- !u!114 &8972280588518888515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,7 +128,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -148,14 +142,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3727445281938189639}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -166,7 +160,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &8511125388560695370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +176,6 @@ MonoBehaviour:
   <MaxHP>k__BackingField: 300
   obj_Txt_Damage: {fileID: 1598026534661515434, guid: 6d3add8c94975bf43ac69f89703bc5e3, type: 3}
   obj_Txt_RecoverHP: {fileID: 1598026534661515434, guid: 14564ae9bd90fb34fa43878bbc34d67f, type: 3}
-  HPG_C: {fileID: 0}
   effect_Evasion: {fileID: 5592345250874215172, guid: 7537cdf749f23ce40993f545d4ba9048, type: 3}
   timeScale_WhenEvasion: 0.3
   _clip_Evasion: {fileID: 8300000, guid: 240ccfd0d5ff47141ace6694e18e9738, type: 3}
