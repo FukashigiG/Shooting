@@ -167,6 +167,7 @@ MonoBehaviour:
   exprodeBullet: {fileID: 5323637168826648936, guid: fe217b32eca585a47a9e7cf3f3574110, type: 3}
   chaseBullet: {fileID: 4489838415356669865, guid: a310af44ae387314e8907293a9dfebc6, type: 3}
   pullBullet: {fileID: 3696754893377584203, guid: f191b62cef56464468f930b9bbe8d03f, type: 3}
+  blockBomb: {fileID: 4284057795350540479, guid: 8c670d8eddeb0614abcc2560a07eb58b, type: 3}
 --- !u!50 &8914757383005460960
 Rigidbody2D:
   serializedVersion: 4

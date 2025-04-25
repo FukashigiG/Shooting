@@ -10,6 +10,7 @@ public class LastBossCtrl : Base_BossController
     [SerializeField] GameObject exprodeBullet;
     [SerializeField] GameObject chaseBullet;
     [SerializeField] GameObject pullBullet;
+    [SerializeField] GameObject blockBomb;
 
     int Num_Bullet_A01 = 6;
     int Num_Bullet_A02 = 3;
@@ -29,7 +30,7 @@ public class LastBossCtrl : Base_BossController
 
         while(true)
         {
-            x = Random.Range(2, 3);
+            x = Random.Range(0, 4);
 
             switch (x)
             {
@@ -43,6 +44,10 @@ public class LastBossCtrl : Base_BossController
 
                 case 2:
                     await Attack03(token);
+                    break;
+
+                case 3:
+                    await Attack04(token);
                     break;
 
                 default:
@@ -90,5 +95,12 @@ public class LastBossCtrl : Base_BossController
         Instantiate(pullBullet, transform.position + transform.up, transform.rotation);
 
         await transform.DOPunchPosition(-transform.up, 1.2f, 1, 1f).ToUniTask(cancellationToken: token);
+    }
+
+    async UniTask Attack04(CancellationToken token)
+    {
+        await transform.DORotate(new Vector3(0, 0, PlayerDirection()), 0.8f).ToUniTask(cancellationToken: token);
+
+        Instantiate(blockBomb, transform.position + transform.up * 2, transform.rotation);
     }
 }
